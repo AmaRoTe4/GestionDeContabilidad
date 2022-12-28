@@ -1,0 +1,91 @@
+.btn-Links-totales{
+    height:20%;
+    width:70%;
+    border:solid 1px black;
+    border-radius:10px;
+    margin:30px;
+    background-color:chartreuse;
+    text-decoration: none;
+    cursor:pointer;
+}
+
+.btn-Links-totales option{
+    color:white;
+    background-color:black;
+    border-radius: 10px;
+}
+
+.btn-Links-totales option:active{
+    color:black;
+    background-color:white;
+}
+
+.btn-Links-totales:hover{
+    color:black;
+    opacity:0.8;
+}
+
+.box-links-totales{
+    margin:0px;
+    padding:0px;
+    height:40vh;
+    width:100vw;
+}
+
+.box-table-totales-producto{
+    max-height: 60vh;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.box-table-totales{
+    height: 83.1vh;
+    width: 100vw;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.box-table-totales::-webkit-progress-bar{
+    display: none;
+}
+
+.barra-totales-ventas{
+    display: flex;
+    border:solid 1px black;
+    width: 100vw;
+    height: 7vh;
+    background-color:rgb(65, 145, 45);
+}
+
+.table-valor-ventas{
+    width:30%;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content:end;
+    margin-right:10px;
+}
+
+.table-total-ventas{
+    margin-left:10px;
+    height:100%;
+    display: flex;
+    align-items: center;
+}
+
+.unidad-de-tabla-total-ventas{
+    cursor: pointer;  
+}
+
+.individual{
+    height:71.8vh;
+}
+
+@media (max-width: 768px){
+    .box-table-totales{
+        height: 83.6vh;
+    }
+    .individual{
+        height:72.2vh;
+    }
+}

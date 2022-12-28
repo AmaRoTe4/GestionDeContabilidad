@@ -1,0 +1,73 @@
+.formularioProductos{
+    height:35vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.formularioProductos div{
+    height: 30%;
+    display:flex;
+    flex-direction:column;
+    margin: 15px 10px;
+    width: 30%;
+}
+
+.formularioProductos div label{
+    font-size: 20px;
+}
+
+.formularioProductos div select{
+    height: 40px;
+}
+
+.formularioAgregar{
+    height:50vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formularioAgregar div{
+    height:40%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.formularioAgregar div p{
+    width: 100%;
+    margin: 0px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.formularioAgregar div a{
+    text-decoration: none;
+    color:black;
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border:solid 1px black;
+    background-color:rgb(206, 206, 206);
+}
+
+.basuraProductos:hover{
+    cursor:pointer;
+}
+
+@media (max-width: 768px){
+    .formularioProductos div{
+        width: 100%;
+    }
+    .formularioAgregar div a{
+        width: 100%;
+    }
+}

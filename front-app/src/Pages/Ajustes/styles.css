@@ -1,0 +1,17 @@
+.box-formulario-reset{
+    margin-top:10vh;
+    height:80vh;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+}
+
+.btn-reset{
+    height:70%;
+    width:80%;
+}
+
+.box-btn-reset{
+    height:10vh;
+    width:100vw;
+}

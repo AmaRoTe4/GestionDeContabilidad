@@ -1,0 +1,20 @@
+*{
+  margin:0px;
+  padding:0px;
+  box-sizing: border-box;
+}
+
+*::-webkit-scrollbar{
+  display:none;
+}
+
+.containt100{
+  height:90vh;
+  width:100vw;
+}
+
+.centrado{
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}

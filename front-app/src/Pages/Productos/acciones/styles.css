@@ -1,0 +1,189 @@
+.box-categoria{
+    padding:0px;
+    margin:0px;
+    min-height: 78vh;
+    width: 90vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px black solid;
+    border-radius: 10px;
+    list-style: none;
+}
+
+.box-categoria::-webkit-scrollbar{
+    display: none;
+}
+
+.box-titulo-categoria{
+    height: 10vh;
+}
+
+/* formulario */
+.box-formulario-categoria{
+    height:50vh;
+    width:100vw;
+}
+
+.box-formulario-categoria div{
+    margin:5% 0%;
+    height:30%;
+    display:flex;
+    flex-direction: column;
+}   
+
+.box-formulario-categoria div label{
+    width:80%;
+    font-size: 25px;
+}   
+
+.box-formulario-categoria div input{
+    width:80%;
+    height: 40%;
+    font-size: 25px;
+    border:solid 1px black;
+}   
+
+.box-buttom-categoria{
+    height:40vh;
+    width:100vw;
+    margin:0px;
+    padding:0px;
+}
+
+.box-buttom-categoria a {
+    height: 20%;
+    margin-top: 5vh;
+    width: 80%;
+    color:black;
+    text-align: center;
+    text-decoration: none;
+    border:solid 1px black;
+}
+
+.box-buttom-categoria button{
+    height: 20%;
+    width: 80%;
+    color:black;
+    text-align: center;
+    text-decoration: none;
+}
+
+.box-buttom-categoria a button{
+    height: 100%;
+    width: 100%;
+}
+
+/* separacion */
+
+.box-productos{
+    padding:0px;
+    margin:0px;
+    min-height: 78vh;
+    width: 90vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px black solid;
+    border-radius: 10px;
+    list-style: none;
+}
+
+.box-productos::-webkit-scrollbar{
+    display: none;
+}
+
+.box-titulo-productos{
+    margin-top: 50vh;
+    height: 5vh;
+}
+
+/* formulario */
+.box-formulario-productos{
+    margin-top:2vh;
+    margin-bottom:2vh;
+    height:auto;
+    width:100vw;
+}
+
+.box-formulario-productos div{
+    margin:4% 0%;
+    height:10%;
+    width:100vw;
+    display:flex;
+    flex-direction: column;
+}   
+
+.box-formulario-productos div label{
+    width:60%;
+    font-size: 20px;
+}   
+
+.box-formulario-productos div select{
+    border-radius: 7px;
+    min-width:60%;
+    height: 30px;
+    font-size: 20px;
+    border:solid 1px black;
+}
+
+.box-formulario-productos div input{
+    border-radius: 7px;
+    width:60%;
+    height:30px;
+    font-size: 20px;
+    border:solid 1px black;
+}   
+
+.box-buttom-productos{
+    height:40vh;
+    width:100vw;
+    margin:0px;
+    padding:0px;
+}
+
+.box-buttom-productos a {
+    height: 40%;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    width: 80%;
+    color:black;
+    text-align: center;
+    text-decoration: none;
+    border:solid 1px black;
+}
+
+
+.btnProductos {
+    height: 50%;
+    width: 80%;
+    text-align: center;
+    border:solid 1px black;
+}
+
+.box-buttom-productos a button{
+    height: 100%;
+    width: 100%;
+}
+
+.editCategoria:hover{
+    cursor: pointer;
+}
+
+@media (min-width: 768px){
+    .box-formulario-productos div label{
+        width:20%;
+    }   
+    
+    .box-formulario-productos div select{
+        min-width:20%;
+    }
+    
+    .box-formulario-productos div input{
+        width:20%;
+    }  
+    .box-formulario-productos div{
+        margin:20px;
+        height:10%;
+        width:100vw;
+        margin:1% 0%;
+    }
+}

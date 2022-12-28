@@ -1,0 +1,65 @@
+.boxTitleMain{
+    width: 95%;
+    margin-left: 5%;
+    margin-top: 1%;
+}
+
+.boxTitleMain h1{
+    color:rgb(255, 20, 20)
+}
+
+.boxTextAndImage{
+    width:100%;
+    height:auto;
+    display: flex;
+}
+
+.boxTextAndImage div{
+    width: 50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.boxTextAndImage ul{
+    width: 50%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding-left: 20px;
+}
+
+.boxTextAndImage ul li{
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    height:50%;
+}
+
+.boxTextAndImage ul li p{
+    margin:0;
+    padding:0;
+}
+
+.boxTextAndImage ul li p a{
+    margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .boxTextAndImage{
+        flex-direction: column;
+    }   
+    .boxTextAndImage div{
+        width: 100%;
+    }
+    .boxTextAndImage ul{
+        width: 95%;
+        margin-bottom: 50px;
+    } 
+    .boxTextAndImage ul li{
+        margin: 10px;
+    }   
+    .boxTextAndImage ul li p{
+        margin: 2px;
+    }   
+}
