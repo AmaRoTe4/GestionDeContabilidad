@@ -3,6 +3,7 @@ import { useState } from 'react'
 import GestorDeVentanas from './interfaces/GestorDeVentanas'
 import CargaDeProductos from './interfaces/CargaDeProductos'
 import SeleccionDeCliente from './interfaces/SeleccionDeCliente'
+import TipoDeVenta from './interfaces/TipoDeVenta'
 
 export default function Ventas(){
     const [idCliente , setIdCliente] = useState<number>(0)
@@ -16,8 +17,9 @@ export default function Ventas(){
                 setVentana={setVentana}                                        
             />
 
-            {idCliente === 0 && <CargaDeProductos id={ventana}/>}
             {idCliente !== 0 && <SeleccionDeCliente id={ventana} />}
+            {idCliente !== 0 && <CargaDeProductos id={ventana} />}
+            {idCliente === 0 && <TipoDeVenta id={ventana} />}
         </>
     )
 }

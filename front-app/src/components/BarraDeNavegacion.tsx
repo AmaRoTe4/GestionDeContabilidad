@@ -42,6 +42,15 @@ export function BarraDeNavegacion(){
                                 onClick={e => setBtnEstado(false)}
                             >Productos</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link 
+                                to="/Clientes" 
+                                className="nav-link active" 
+                                aria-current="page"
+                                style={{color: `${location[1] === 'Clientes' ? "red" : ""}`}} 
+                                onClick={e => setBtnEstado(false)}
+                            >Clientes</Link>
+                        </li>
                         <li className={`nav-item` }>
                             <Link 
                                 to="/Ventas" 
@@ -63,15 +72,6 @@ export function BarraDeNavegacion(){
                                     : ""}`}}
                                 onClick={e => setBtnEstado(false)}
                                 >Totales</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link 
-                                to="/Clientes" 
-                                className="nav-link active" 
-                                aria-current="page"
-                                style={{color: `${location[1] === 'Clientes' ? "red" : ""}`}} 
-                                onClick={e => setBtnEstado(false)}
-                            >Clientes</Link>
                         </li>
                         <li className="nav-item">
                             <Link 

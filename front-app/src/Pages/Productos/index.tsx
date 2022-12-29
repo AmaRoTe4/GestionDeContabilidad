@@ -33,7 +33,7 @@ export default function Productos(){
 
     return (
         <>
-            <div className="container d-flex flex-column">
+            <div className="container d-flex flex-column" style={{maxHeight: '90vh'}}>
                 <form className="formularioProductos">
                     <div>
                         <label>Productos</label>

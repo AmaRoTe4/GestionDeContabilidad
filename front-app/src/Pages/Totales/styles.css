@@ -1,9 +1,8 @@
 .btn-Links-totales{
-    height:20%;
+    height:80%;
     width:70%;
     border:solid 1px black;
     border-radius:10px;
-    margin:30px;
     background-color:chartreuse;
     text-decoration: none;
     cursor:pointer;
@@ -27,8 +26,9 @@
 
 .box-links-totales{
     margin:0px;
+    margin-top:20px;
     padding:0px;
-    height:40vh;
+    height:10vh;
     width:100vw;
 }
 
@@ -79,6 +79,15 @@
 
 .individual{
     height:71.8vh;
+}
+
+.box-buscador-cliente{
+    min-height:50vh;
+    width:100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border:solid 1px black;
 }
 
 @media (max-width: 768px){

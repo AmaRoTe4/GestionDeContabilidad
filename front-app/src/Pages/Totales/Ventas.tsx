@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import { InterVentas } from '../../../interface';
 import './styles.css'
 import { cargaVentas } from '../../functions/data/ventas/index';
 
 export default function TotalVentas(){
     const navigate = useNavigate()
+    const nombre:number = parseInt(useLocation().pathname.split('/')[3])
     const [ventas , setVentas] = useState<InterVentas[]>([])
     const [precioTotal , setPrecioTotal] = useState<number>(0)
     const [cantidadTotal , setCantidadTotal] = useState<number>(0)
@@ -14,6 +15,10 @@ export default function TotalVentas(){
     useEffect(() =>{
         cargaVentas(setVentas , setPrecioTotal , setCantidadTotal)
     },[])
+
+    //usar este como filtro y chau
+    if(nombre !== undefined) 
+    return (<div>{nombre}</div>)
 
     return (
         <div className="containt100"> 

@@ -11,11 +11,42 @@ export default function SeleccionDeCliente({id}:Props){
         "primeroaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "segundo",
         "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+        "tercero",
+    ])
+    const [categorias] = useState<string[]>([
+        "",
+        "Malabrigo",
+        "Reconquista",
+        "Vera",
     ])
 
     return (
         <div className="boxSeleccionDeCliente">
             <h3>Seleccion al cliente</h3>
+            <div className="centrado">
+                <label>Localidades</label>
+                <select
+                    name="select" 
+                    onChange={(e) => {e.preventDefault();}}>
+                        {categorias.map((n , i) => 
+                        <option key={i} value={n}>
+                            {n}
+                        </option>
+                    )}
+                </select>
+            </div>
             <input />
             <ul>
                 {clientes.map((n , i) => 

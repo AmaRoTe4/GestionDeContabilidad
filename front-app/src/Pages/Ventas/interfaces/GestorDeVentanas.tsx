@@ -22,9 +22,9 @@ export default function GestorDeVentanas({ventana, setVentana}:Props){
     }
 
     const borrar = (id:number) => {
-        let newVentanas = ventanas
+        let newVentanas = ventanas.map(n => n)
         if(ventana === id && ventanas.indexOf(id) > 1) setVentana(ventanas[ventanas.indexOf(id) - 1])
-        else if(ventana === ventanas[0]) setVentana(ventanas[1])
+        else if(id === ventanas[0]) setVentana(ventanas[1])
         else if(ventana === id) setVentana(ventanas[0])
         setVentanas(newVentanas.filter((n , i) => n !== id))
     }
