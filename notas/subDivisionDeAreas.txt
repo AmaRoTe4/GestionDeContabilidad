@@ -9,10 +9,8 @@ productos
         -> y la opcion de eliminar o editar
 
 nueva venta...
-    -> idea ventas multiples
     -> cach de memoria
     -> buscador de cliente
-    -> selecion de este
     -> y despues la interface que tenemos con sus modificaciones
         -> un buscador de productos
         -> editor de carga
@@ -26,6 +24,7 @@ totales:
         -> por cliente
         -> por fecha
         -> etc
+    -> total de hoy...
 
 clientes / compradores:
     buscador:

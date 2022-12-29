@@ -27,7 +27,7 @@ export function BarraDeNavegacion(){
                             <Link to="/" 
                                 className="nav-link active" 
                                 aria-current="page"
-                                style={{color: `${location[0].length === 1 ? "red" : ""}`}} 
+                                style={{color: `${location[1] === "" ? "red" : ""}`}} 
                                 onClick={e => setBtnEstado(false)}
                             >Main</Link>
                         </li>
