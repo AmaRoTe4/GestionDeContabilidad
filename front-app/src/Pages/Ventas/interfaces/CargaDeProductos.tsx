@@ -10,9 +10,10 @@ import BuscadorProductos from '../../../components/buscadorProductos';
 
 interface Props{
     id:number
+    setId: React.Dispatch<React.SetStateAction<number>>
 }
 
-export default function CargaDeProductos({id}:Props){
+export default function CargaDeProductos({id , setId}:Props){
     const [cantidad , setCantidad] = useState<number>(1)
     const [total , setTotal] = useState<number[]>([0,0])
     const [prtsPorVender , setPrtsPorVender] = useState<InterProductos[]>([
@@ -173,7 +174,7 @@ export default function CargaDeProductos({id}:Props){
                         toast.success("Venta Realizada" , {
                             position: toast.POSITION.TOP_CENTER,
                             transition: Bounce
-                        })
+                        }); setId(2)
                 }}>
                         Realizar Venta
                 </button>

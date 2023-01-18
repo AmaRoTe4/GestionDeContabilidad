@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {InterProductos} from '../../../interface'
 import './styles.css'
 import { cargaVenta } from '../../functions/https';
@@ -8,6 +8,7 @@ import { cargaVenta } from '../../functions/https';
 
 export default function TotalVentasIndividual(){
     const id:number = parseInt(useLocation().pathname.split('/')[3])
+    const navigate = useNavigate();
     const [venta , setVenta] = useState<InterProductos[]>([])
     const [precioTotal , setPrecioTotal] = useState<number>(0)
     const [cantidadTotal , setCantidadTotal] = useState<number>(0)

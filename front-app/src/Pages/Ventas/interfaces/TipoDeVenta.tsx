@@ -3,9 +3,10 @@ import "../styles.css"
 
 interface Props{
     id:number
+    setId: React.Dispatch<React.SetStateAction<number>>
 }
 
-export default function RealizarVenta({id}:Props){
+export default function RealizarVenta({id , setId}:Props){
     const [seleccionado , setSeleccionado] = useState<string>("")
     const [cantidad , setCantidad] = useState<number>(0)
 
@@ -47,7 +48,8 @@ export default function RealizarVenta({id}:Props){
                     disabled={(
                         seleccionado === "" 
                         || (seleccionado === "parcial" && cantidad === 0 )) 
-                    }>
+                    }
+                    onClick={e => {e.preventDefault() ; setId(0)}}>
                     Finlizar Venta
                 </button>
             </div>

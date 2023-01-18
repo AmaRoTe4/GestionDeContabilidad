@@ -68,7 +68,7 @@ export default function Productos(){
                 <div className="formularioAgregar">
                     <div>
                         <p>Agregar Cliente</p>
-                        <Link to="/Clientes/cliente/0">
+                        <Link to="/Clientes/acciones/0">
                             <img src={Mas} height="30%" />
                         </Link>
                     </div>

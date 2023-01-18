@@ -3,9 +3,11 @@ import '../styles.css'
 
 interface Props{
     id:number
+    setId: React.Dispatch<React.SetStateAction<number>>
 }
 
-export default function SeleccionDeCliente({id}:Props){
+export default function SeleccionDeCliente({id , setId}:Props){
+    const [text , setText] = useState<string>("")
     const [cliente , setCliente] = useState<string>("")
     const [clientes] = useState<string[]>([
         "primeroaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -47,9 +49,9 @@ export default function SeleccionDeCliente({id}:Props){
                     )}
                 </select>
             </div>
-            <input />
+            <input value={text} onChange={e => setText(e.target.value)} />
             <ul>
-                {clientes.map((n , i) => 
+                {text !== "" && clientes.map((n , i) => 
                     <li 
                         key={i} 
                         style={{
@@ -65,7 +67,7 @@ export default function SeleccionDeCliente({id}:Props){
                 )}
             </ul>
             <button 
-                onClick={(e) => {e.preventDefault();}}
+                onClick={(e) => {e.preventDefault(); setId(1)}}
             >
                 Aceptar
             </button>

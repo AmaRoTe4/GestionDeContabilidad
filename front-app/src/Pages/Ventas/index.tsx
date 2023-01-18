@@ -17,9 +17,10 @@ export default function Ventas(){
                 setVentana={setVentana}                                        
             />
 
-            {idCliente !== 0 && <SeleccionDeCliente id={ventana} />}
-            {idCliente !== 0 && <CargaDeProductos id={ventana} />}
-            {idCliente === 0 && <TipoDeVenta id={ventana} />}
+            {/* esto es temporal para usar la interaccion de las interfaces */}
+            {idCliente === 0 && <SeleccionDeCliente setId={setIdCliente} id={ventana} />}
+            {idCliente === 1 && <CargaDeProductos setId={setIdCliente} id={ventana} />}
+            {idCliente === 2 && <TipoDeVenta setId={setIdCliente} id={ventana} />}
         </>
     )
 }

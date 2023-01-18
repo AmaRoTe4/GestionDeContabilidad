@@ -1,55 +1,55 @@
 import { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
-import {useLocation, useNavigate} from 'react-router-dom';
-import { InterVentas } from '../../../interface';
+import { useLocation, useNavigate } from 'react-router-dom';
+import {InterProductos} from '../../../interface'
+import Data from './data.json'
 import './styles.css'
-import { cargaVentas } from '../../functions/data/ventas/index';
+import { cargaVenta } from '../../functions/https';
 
-export default function TotalVentas(){
+
+export default function TotalVentasIndividual(){
+    const id:number = parseInt(useLocation().pathname.split('/')[3])
     const navigate = useNavigate()
-    const nombre:number = parseInt(useLocation().pathname.split('/')[3])
-    const [ventas , setVentas] = useState<InterVentas[]>([])
+    const [venta , setVenta] = useState<InterProductos[]>(Data)
     const [precioTotal , setPrecioTotal] = useState<number>(0)
     const [cantidadTotal , setCantidadTotal] = useState<number>(0)
 
     useEffect(() =>{
-        cargaVentas(setVentas , setPrecioTotal , setCantidadTotal)
+        cargaVenta(id , setVenta , setPrecioTotal , setCantidadTotal)
     },[])
-
-    //usar este como filtro y chau
-    if(nombre !== undefined) 
-    return (<div>{nombre}</div>)
 
     return (
         <div className="containt100"> 
-            <div className="box-table-totales">
-                <Table striped bordered hover>
-                    <thead>
-                        <tr className='table-dark'>
-                            <th>N°</th>
-                            <th className="text-end">Cantid Prodct. V.</th>
-                            <th className="text-end">Valor Venta</th>
-                        </tr>
-                    </thead>
+            <h1 className="centrado" style={{height:"10vh"}}>Todas las Ventas</h1>
+            <div className="barra-totales-ventas" style={{backgroundColor: "black" , color: 'white'}}>
+                <div className='table-total-ventas' style={{width:'20%'}}>N°</div>
+                <div className='table-valor-ventas text-end' style={{width:'40%'}}>Nombre</div>
+                <div className='table-valor-ventas text-end' style={{width:'20%'}}>Cantidad</div>
+                <div className='table-valor-ventas text-end' style={{width:'20%'}}>Valor</div>
+            </div>
+            <div className="box-table-totales individual">
+                <Table striped bordered hover >
                     <tbody>
-                        {ventas.length > 0 && 
-                        ventas.map((n , i) =>  
+                        {venta !== undefined && venta.map((n , i) =>  
                             <tr 
                                 className="unidad-de-tabla-total-ventas" 
                                 key={i} 
-                                onClick={(e) => {e.preventDefault(); navigate(`${n.id}`)}}>
-                                <td>{n.id}</td>
-                                <td className='text-end'>{n.cantidad}</td>
-                                <td className='text-end'>${n.precio}</td>
+                                onClick={(e) => {e.preventDefault(); navigate(`/Totales/Ventas/${i + 1}`)}}
+                            >
+                                <td style={{width:'20%'}}>{i+1}</td>
+                                <td style={{width:'40%'}} className='text-end'>{n.nombre}</td>
+                                <td style={{width:'20%'}} className='text-end'>{n.vendidos}</td>
+                                <td style={{width:'20%'}} className='text-end'>${n.precio * n.vendidos}</td>
                             </tr>
                         )}
                     </tbody>
                 </Table>
             </div>
             <div className="barra-totales-ventas">
-                <div className='table-total-ventas' style={{width:'10%'}}>Totales</div>
-                <div className='table-valor-ventas' style={{width:'52%'}}>{cantidadTotal}</div>
-                <div className='table-valor-ventas' style={{width:'38%'}}>${precioTotal}</div>
+                <div className='table-total-ventas' style={{width:'20%'}}>Totales</div>
+                <div className='table-total-ventas' style={{width:'40%' , content:""}}></div>
+                <div className='table-valor-ventas text-end' style={{width:'20%'}}>{cantidadTotal}</div>
+                <div className='table-valor-ventas text-end' style={{width:'20%'}}>${precioTotal}</div>
             </div>
         </div>
     )

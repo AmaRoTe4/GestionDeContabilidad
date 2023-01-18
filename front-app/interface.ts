@@ -15,7 +15,8 @@ export interface InterVentas{
     precio?:number
     cantidad?:number
     venta:string
-    productos?:ProductoVendido[] 
+    productos?:ProductoVendido[]
+    pagado?: boolean
 }
 
 export interface Producto {

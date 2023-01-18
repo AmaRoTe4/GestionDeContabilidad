@@ -86,7 +86,7 @@ export default function Cliente(){
                 >
                     {id === 0 ? 'Crear' : "Editar"}
                 </button>
-                <Link className="centrado" to='/Clientes'
+                <Link className="centrado" to={id === 0 ? `/Clientes` : `/Clientes/Cliente/${id}`}
                     style={{backgroundColor:"rgb(255 60 60)"}}
                 >
                     <button className="btn">

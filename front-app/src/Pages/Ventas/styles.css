@@ -176,7 +176,7 @@
 }
 
 .boxSeleccionDeCliente ul{
-    border:solid 1px black;
+    /*border:solid 1px black;*/
     list-style: none;
     padding: 0;
     margin: 0;
