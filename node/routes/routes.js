@@ -1,17 +1,37 @@
-import {getAllProductos , getProductos , updateProductos , createProductos , deletProductos , getAllVentas , getVentas, createVentas , deletVentas} from '../controllers/controllers.js'
+import {getAllCategorias,getCategorias,updateCategorias,createCategorias,deletCategorias} from '../controllers/categorias.js'
+import {getAllVentas,getVentas,updateVentas,createVentas} from '../controllers/ventas.js'
+import {getAllProductos,getProductos,updateProductos,createProductos} from '../controllers/productos.js'
+import {getAllLocalidades,getLocalidades,updateLocalidades,createLocalidades,deletLocalidades} from '../controllers/localidades.js'
+import {getAllClientes,getClientes,updateClientes,createClientes} from '../controllers/clientes.js'
 import express from 'express'
 
-export const router1 = express.Router()
-export const router2 = express.Router()
-export const routerClean = express.Router()
+const router = express.Router()
 
-router1.get('/', getAllVentas);
-router1.get('/:id', getVentas);
-router1.post('/', createVentas);
-router1.delete('/:id', deletVentas);
+router.get('/categorias/', getAllCategorias);
+router.get('/categorias/:id', getCategorias);
+router.post('/categorias/', createCategorias);
+router.delete('/categorias/:id', deletCategorias);
+router.put('/categorias/:id', updateCategorias);
 
-router2.get('/', getAllProductos);
-router2.get('/:id', getProductos);
-router2.post('/', createProductos);
-router2.delete('/:id', deletProductos);
-router2.put('/:id', updateProductos);
+router.get('/clientes/', getAllClientes);
+router.get('/clientes/:id', getClientes);
+router.post('/clientes/', createClientes);
+router.put('/clientes/:id', updateClientes);
+
+router.get('/ventas/', getAllVentas);
+router.get('/ventas/:id', getVentas);
+router.post('/ventas/', createVentas);
+router.put('/ventas/:id', updateVentas);
+
+router.get('/localidades/', getAllLocalidades);
+router.get('/localidades/:id', getLocalidades);
+router.post('/localidades/', createLocalidades);
+router.delete('/localidades/:id', deletLocalidades);
+router.put('/localidades/:id', updateLocalidades);
+
+router.get('/productos/', getAllProductos);
+router.get('/productos/:id', getProductos);
+router.post('/productos/', createProductos);
+router.put('/productos/:id', updateProductos);
+
+export default router;

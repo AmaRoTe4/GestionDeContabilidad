@@ -1,33 +1,29 @@
 import './styles.css'
-import Basura from "../../../public/icons/basura.svg"
-import Mas from "../../../public/icons/mas.svg"
+import Basura from "../../icons/basura.svg"
+import Mas from "../../icons/mas.svg"
 import {useState,useEffect} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { InterProductos } from '../../../interface'
-import {mostrarTodosLosProductos } from '../../functions/https/Productos/index'
-import { funcionesDeProcutos } from '../../functions/data/Productos'
+import { Categoria, Producto } from '../../../interface'
 import BuscadorProductos from '../../components/buscadorProductos'
 import { Tabla } from '../../components/productos/table'
+import { getAllLCategorias } from '../../api/categorias'
 
 export default function Productos(){
     const navigate = useNavigate()
     const [producto, setProducto] = useState<string>("")
-    const [productos, setProductos] = useState<string[]>([
-        "",
-        "primero",
-        "segundo",
-        "tercero",
-    ])
     const [categoria, setCategoria] = useState<string>("")
-    const [categorias, setCategorias] = useState<string[]>([
-        "",
-        "primero",
-        "segundo",
-        "tercero",
-    ])
+    const [categorias, setCategorias] = useState<Categoria[]>([])
+
+    useEffect(() => {
+        allData()
+    },[])
+
+    const allData = async () => {
+        const data:Categoria[] | undefined = await getAllLCategorias()
+        if(data !== undefined) setCategorias(data)
+    }
 
     const clear = () => {
-        setCategoria("")
         setProducto("")
     }
 
@@ -37,17 +33,11 @@ export default function Productos(){
                 <form className="formularioProductos">
                     <div>
                         <label>Productos</label>
-                        {/*<BuscadorProductos />*/}
-                        <select
+                        <input
+                            type="text"
                             value={producto}
-                            name="select" 
-                            onChange={(e) => {e.preventDefault(); setProducto(e.target.value)}}>
-                                {categorias.map((n , i) => 
-                                <option key={i} value={n}>
-                                    {n}
-                                </option>
-                            )}
-                        </select>
+                            onChange={(e) => {setProducto(e.target.value)}}
+                        />
                     </div>
                     <div>
                         <label>Categorias</label>
@@ -56,8 +46,8 @@ export default function Productos(){
                             name="select" 
                             onChange={(e) => {e.preventDefault(); setCategoria(e.target.value)}}>
                                 {categorias.map((n , i) => 
-                                <option key={i} value={n}>
-                                    {n}
+                                <option key={i} value={n.nombre}>
+                                    {n.nombre}
                                 </option>
                             )}
                         </select>
@@ -83,7 +73,8 @@ export default function Productos(){
             {!(categoria === "" && producto === "") && 
                 <Tabla 
                     data={producto} 
-                    categoria={categoria} 
+                    //@ts-ignore
+                    categoria={categoria.length !== 0 ? categorias.filter((n) => n.nombre === categoria)[0].id : 0}
                 />
             }
         </>

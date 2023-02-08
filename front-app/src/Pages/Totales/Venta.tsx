@@ -3,8 +3,6 @@ import { Table } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {InterProductos} from '../../../interface'
 import './styles.css'
-import { cargaVenta } from '../../functions/https';
-
 
 export default function TotalVentasIndividual(){
     const id:number = parseInt(useLocation().pathname.split('/')[3])
@@ -14,7 +12,7 @@ export default function TotalVentasIndividual(){
     const [cantidadTotal , setCantidadTotal] = useState<number>(0)
 
     useEffect(() =>{
-        cargaVenta(id , setVenta , setPrecioTotal , setCantidadTotal)
+
     },[])
 
     return (

@@ -1,7 +1,7 @@
 import './styles.css'
 //import { Link } from "react-router-dom";
-import imagenMain from "../../../public/images/imagenMain.jpg";
-import whatsapp from "../../../public/icons/whatsapp.svg";
+import imagenMain from "../../images/imagenMain.jpg";
+import whatsapp from "../../icons/whatsapp.svg";
 
 export default function Main(){
     return (

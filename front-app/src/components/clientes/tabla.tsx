@@ -1,50 +1,31 @@
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap"
-import { Producto } from "../../../interface"
+import { Cliente } from "../../../interface"
 import { useNavigate } from "react-router-dom";
+import { getAllClientes } from "../../api/clientes"
+import { filtroNombre } from "../../functions/clientes/obtenerClientes";
 
 interface Props{
-    categoria:string;
     data:string;
+    localidad:number;
 }
 
-export const Tabla = ({data , categoria}:Props) => {
+export const Tabla = ({data , localidad}:Props) => {
     const navigate = useNavigate();
-    const [clientes] = useState<Producto[]>([
-        {
-            id:3,
-            nombre: "persona",
-            categoria: "animales",
-            descripcion: "es un persona para animales en general",
-            cantidad: 1000,
-            precio: 100,
-            codigo: 1
-        },
-        {
-            id:1,
-            nombre: "persona",
-            categoria: "animales",
-            descripcion: "es un persona para animales en general",
-            cantidad: 1000,
-            precio: 100,
-            codigo: 1
-        },
-        {
-            id:2,
-            nombre: "persona",
-            categoria: "animales",
-            descripcion: "es un persona para animales en general",
-            cantidad: 1000,
-            precio: 100,
-            codigo: 1
-        }
-    ])
+    const [clientes, setClientes] = useState<Cliente[]>([])
+    const [clientesVer, setClientesVer] = useState<Cliente[]>([])
     
     useEffect(() => {
-        console.log(data)
-        console.log(categoria)
-    }, [])
-    
+        if(clientes.length === 0) cargaDeClietes()
+        setClientesVer(filtroNombre(data , localidad , clientes))
+    }, [data , localidad , clientes])
+
+    const cargaDeClietes = async () => {
+        //@ts-ignore
+        const data:Clientes[] | undefined = await getAllClientes()
+        if(data !== undefined) setClientes(data)
+    }
+
     return (
         <div style={{width: '100vw'}}>
             <Table striped bordered hover>
@@ -53,16 +34,16 @@ export const Tabla = ({data , categoria}:Props) => {
                         <th>N°</th>
                         <th>Nombre</th>
                         <th className="text-end">Localidad</th>
-                        <th className="text-end">Venta Realizadas</th>
+                        <th className="text-end">Debe</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {clientes.map((n ,i ) => 
+                <tbody> 
+                    {clientesVer.map((n ,i) => 
                         <tr key={i} onClick={(e) => {e.preventDefault(); navigate(`/Clientes/cliente/${n.id}`)}}>
                             <td>{i+1}</td>
                             <td>{n.nombre}</td>
-                            <td className='text-end'>{n.categoria}</td>
-                            <td className='text-end'>${n.precio}</td>
+                            <td className='text-end'>{n.localidad}</td>
+                            <td className='text-end'>{n.debe}</td>
                         </tr>
                     )}
                 </tbody>

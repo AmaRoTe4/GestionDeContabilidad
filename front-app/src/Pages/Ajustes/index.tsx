@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom'
-import { ResetDataBase } from '../../functions/https/index'
 import { useState } from 'react'
 import './styles.css'
 import Swal from 'sweetalert2'
@@ -30,7 +29,8 @@ export default function Ajustes(){
                 <button 
                     disabled={contrasenia !== clave} 
                     className="btn btn-danger btn-reset"
-                    onClick={e => {e.preventDefault();ResetDataBase(); Swal.fire({
+                    onClick={e => {e.preventDefault();
+                        Swal.fire({
                         title: 'Elinada con Exito!',
                         icon: 'success',
                         confirmButtonText: 'Ok',

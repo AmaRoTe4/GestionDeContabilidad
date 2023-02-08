@@ -1,30 +1,17 @@
-
-//aca  lo que se hace es mandar las ventas que nos deben, al agregar un monto de le resta a la factura mas vieja y si sobre se le resta a la siguiente
-
 import { Table } from "react-bootstrap";
-import { InterVentas } from "../../../../interface";
+import { Venta } from "../../../../interface";
 import { useEffect, useState } from "react";
-import Data from "../dataPrueba.json"
+import { useLocation } from "react-router-dom";
 
-//esto es individual al cliente
 export default function CargarPago(){
-    const [ventas , setVentas] = useState<InterVentas[]>(Data.filter(n => !n.pagado ))
+    const id:string = useLocation().pathname.split('/')[3]
+    const [ventas , setVentas] = useState<Venta[]>([])
     const [valorVentasTotal , setValorVentasTotal] = useState<number>(0);
     const [pago , setPago] = useState<number>(0);
 
-
     useEffect(() =>{
-        //cargaVentas(setVentas , setPrecioTotal , setCantidadTotal)
-        if(valorVentasTotal === 0) cargaTotales()
+        
     },[])
-
-    const cargaTotales = () => { 
-        if(ventas.length === 0) return 
-        ventas.map(n => {
-            //@ts-ignore
-            setValorVentasTotal(m => m + n.precio);
-        })
-    }
 
     return (
         <div style={{width: '100vw'}}>
@@ -40,7 +27,7 @@ export default function CargarPago(){
                         width: '100px',
                         marginLeft: '10px',
                     }}>
-                    nombre
+                    {id}
                 </div>
             </div>
             <div className="centrado flex-column" style={{marginBottom: '5vh', marginTop: '5vh', width: '100vw'}}>
@@ -60,7 +47,7 @@ export default function CargarPago(){
                             >
                                 <td style={{width:'40%'}}>{n.id}</td>
                                 <td style={{width:'20%'}} className='text-end'>{n.id}</td>
-                                <td style={{width:'40%'}} className='text-end'>${n.precio}</td>
+                                <td style={{width:'40%'}} className='text-end'>${n.valor_total}</td>
                             </tr> 
                         )}
                     </tbody>

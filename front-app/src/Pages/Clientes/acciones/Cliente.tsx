@@ -1,27 +1,73 @@
-import { useState } from "react";
-import { useLocation} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate} from "react-router-dom";
 import { Link } from "react-router-dom";
-import Basura from "../../../../public/icons/basura.svg"
-//import './styles.css'
+import Basura from "../../../icons/basura.svg"
+import './styles.css'
+import { Localidad , Cliente} from "../../../../interface";
+import { getAllLocalidades } from "../../../api/localidades";
+import { createCliente, getCliente, updateCliente } from "../../../api/clientes";
 
-export default function Cliente(){
+export default function Acciones(){
+    const navigate = useNavigate()
     const id:number = parseInt(useLocation().pathname.split('/')[3])
     const [nombre , setNombre] = useState<string>('')
     const [apellido , setApellido] = useState<string>('')
+    const [telefono , setTelefono] = useState<string>("")
     const [localidad , setLocalidad] = useState<string>('')
-    const [telefono , setTelefono] = useState<number>(0)
-    const [localidades] = useState<string[]>([
-        "",
-        "primero",
-        "segundo",
-        "tercero",
-    ])
+    const [localidades , setLocalidades] = useState<Localidad[]>([])
+
+    useEffect(() => {
+        allData()
+    },[localidades])
+
+    const allData = async () => {
+        if(localidades.length === 0){
+            let data:Localidad[] | undefined = await getAllLocalidades()
+            if(data !== undefined) {
+                setLocalidades(data)
+            }
+        }
+        if(id !== 0 && localidades.length > 0) {
+            const data:Cliente | undefined = await getCliente(id)
+            if(data === undefined) return
+            setNombre(data.nombre)
+            setApellido(data.apellido)
+            setTelefono(data.telefono)
+            setLocalidad(localidades.filter(n => n.id === data.localidad)[0].nombre)
+        }
+    } 
+
+    const crearCliente = async () => {
+        //hacer notificacion
+        const resultado = await createCliente({
+            nombre:nombre,
+            apellido:apellido,
+            //@ts-ignore
+            localidad: localidades.filter(n => n.nombre === localidad)[0].id ,
+            telefono:telefono,
+            debe:0,
+        })
+        navigate("/Clientes")
+    }
+
+    const editarCliente = async () =>{
+        //hacer notificacion
+        const resultado = await updateCliente(id , {
+            nombre:nombre,
+            apellido:apellido,
+            //@ts-ignore
+            localidad: localidades.filter(n => n.nombre === localidad)[0].id ,
+            telefono:telefono,
+            debe:0,
+        })
+        navigate("/Clientes/cliente/" + id)
+    }
 
     const clear = () => {
         setNombre('')
         setApellido('')
         setLocalidad('')
-        setTelefono(0)
+        setTelefono("")
     }
 
     return (
@@ -53,8 +99,8 @@ export default function Cliente(){
                         name="select" 
                         onChange={(e) => {e.preventDefault(); setLocalidad(e.target.value)}}>
                             {localidades.map((n , i) => 
-                            <option key={i} value={n}>
-                                {n}
+                            <option key={i} value={n.nombre}>
+                                {n.nombre}
                             </option>
                         )}
                     </select>
@@ -63,8 +109,8 @@ export default function Cliente(){
                     <label>Telefono</label>
                     <input 
                         value={telefono} 
-                        type="number"  
-                        onChange={e => {setTelefono(Number(e.target.value))}} 
+                        type="string"  
+                        onChange={e => {setTelefono(e.target.value)}} 
                     />
                 </div>
             </div>
@@ -77,13 +123,15 @@ export default function Cliente(){
             />
             <div className="box-buttom-productos centrado flex-column">
                 <button 
-                    disabled={!(nombre !== "")}
+                    disabled={!(nombre !== "" && apellido !== "" && localidad !== "")}
                     className="btn btnProductos" 
                     style={{backgroundColor:"rgb(100 100 255)"}}
                     onClick={e => {
-                        e.preventDefault() ;
+                        e.preventDefault(); 
+                        {id === 0 ? crearCliente() : editarCliente()}
                     }}
                 >
+                    {/* aca tenemos que comprobar */}
                     {id === 0 ? 'Crear' : "Editar"}
                 </button>
                 <Link className="centrado" to={id === 0 ? `/Clientes` : `/Clientes/Cliente/${id}`}
@@ -93,12 +141,12 @@ export default function Cliente(){
                         Volver
                     </button>
                 </Link>
-                {id !== 0 && 
+                {/*{id !== 0 && 
                 <Link style={{margin:0  , marginBottom:20 , backgroundColor:"rgb(255 60 60)"}} className="centrado" to='/Clientes'>
                     <button className="btn">
                         Eliminar
                     </button>
-                </Link>}
+                </Link>}*/}
             </div>
         </div>
     )

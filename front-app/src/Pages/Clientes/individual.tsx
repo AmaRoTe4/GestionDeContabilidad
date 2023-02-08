@@ -1,44 +1,44 @@
 import { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
-import { InterVentas } from '../../../interface';
-import Data from './dataPrueba.json';
+import { Venta , Cliente, DataFullCustomar } from '../../../interface';
 import './styles.css'
-import { cargaVentas, valoresAbsolutosPorVenta } from '../../functions/data/ventas/index';
+import { getCliente } from '../../api/clientes';
+import { DataOfTheCustomer } from '../../functions/clientes/obtenerDatosDeClientes';
 
-export default function Cliente(){
-    //data personal
-    const [apellido , setApellido] = useState<string>("")
-    const [localidad , setLocalidad] = useState<string>("")
-    const [telefono , setTelefono] = useState<string>("")
-    const [debe , setDebe] = useState<string>("")
-    const [cantidad_de_facturas_sin_pagar , setCantidad_de_facturas_sin_pagar] = useState<string>("")
-    const [debemos , setDebemos] = useState<string>("")
-    const [cantidad_de_compras , setCantidad_de_compras] = useState<string>("")
-    const nombre:number = parseInt(useLocation().pathname.split('/')[3])
+export default function ClienteInterface(){
+    const navigate = useNavigate()
+    const id:number = parseInt(useLocation().pathname.split('/')[3])
+    
+    const [cliente , setCliente] = useState<Cliente>()
+    
+    const [localiad , setLocalidad] = useState<string>("")
+    const [cantidad_de_facturas_sin_pagar , setCantidad_de_facturas_sin_pagar] = useState<number>(0)
+    const [cantidad_de_compras , setCantidad_de_compras] = useState<number>(0)
     const [valorVentasTotal , setValorVentasTotal] = useState<number>(0);
     const [cantidadPVT , setCantidadPVT] = useState<number>(0);
-
-    const navigate = useNavigate()
-    //ver bien como viene esto
-    const [ventas , setVentas] = useState<InterVentas[]>(Data)
-    //const [precioTotal , setPrecioTotal] = useState<number>(0)
-    //const [cantidadTotal , setCantidadTotal] = useState<number>(0)
+    const [ventas , setVentas] = useState<Venta[]>([])
 
     useEffect(() =>{
-        //cargaVentas(setVentas , setPrecioTotal , setCantidadTotal)
-        if(cantidadPVT === 0) cargaTotales()
-    },[])
+        if(cliente === undefined) obtenerCliente()
+    },[cliente])
 
-    const cargaTotales = () => { 
-        Data.map(n => {
-            setValorVentasTotal(m => m + n.precio);
-            setCantidadPVT(m => m + n.cantidad);
-        })
+    const obtenerCliente = async () => {
+        const data:Cliente | undefined = await getCliente(id)
+        if(data !== undefined) setCliente(data)
     }
 
-    //usar este como filtro y chau
-    if(nombre !== undefined) 
+    const calculos = async () => {
+        const data:DataFullCustomar = await DataOfTheCustomer(id)
+        setCantidad_de_facturas_sin_pagar(data.cantidad_de_facturas_sin_pagar)
+        setCantidad_de_compras(data.cantidad_de_compras)
+        setValorVentasTotal(data.valorVentasTotal)
+        setCantidadPVT(data.cantidadPVT)
+        setVentas(data.ventas)
+        setLocalidad(data.localidad)
+    }
+
+    if(cliente !== undefined) 
     return (
         <div>
             <div className="box-data-cliente-totales">
@@ -47,10 +47,10 @@ export default function Cliente(){
                         <h5>Datos Personales del Cliente</h5>
                     </span>
                     <ul>
-                        <li>nombre: {nombre}</li>
-                        <li>apellido: {apellido}</li>
-                        <li>localidad: {localidad}</li>
-                        <li>telefono: {telefono}</li>
+                        <li>nombre: {cliente.nombre}</li>
+                        <li>apellido: {cliente.apellido}</li>
+                        <li>localidad: {cliente.localidad}</li>
+                        <li>telefono: {cliente.telefono}</li>
                     </ul>
                 </div>
                 <div>
@@ -58,9 +58,9 @@ export default function Cliente(){
                         <h5>Estado del Cliente</h5>
                     </span>
                     <ul>
-                        <li>debe: {debe}</li>
+                        <li>debe: {cliente.debe}</li>
                         <li>cantidad de facturas sin pagar: {cantidad_de_facturas_sin_pagar}</li>
-                        <li>debemos: {debemos}</li>
+                        <li>debemos: {cliente.debe < 0 ? cliente.debe * -1 : 0}</li>
                         <li>cantidad de compras: {cantidad_de_compras}</li>
                     </ul>
                 </div>
@@ -68,7 +68,7 @@ export default function Cliente(){
 
             <div className="box-interaccion-directa-cliente">
                 <div>
-                    <Link to={`/Clientes/pagos/${nombre}`} className='btn'>
+                    <Link to={`/Clientes/pagos/${cliente.nombre}`} className='btn'>
                         Agregar Pago
                     </Link>
                 </div>
@@ -78,8 +78,8 @@ export default function Cliente(){
                     </Link>
                 </div>
                 <div>
-                    <Link to={`/Clientes/acciones/${nombre}`} className='btn'>
-                        Ediatar Datos del Cliente
+                    <Link to={`/Clientes/acciones/${id}`} className='btn'>
+                        Editar Datos del Cliente
                     </Link>
                 </div>
             </div>
@@ -96,13 +96,24 @@ export default function Cliente(){
                         {ventas.length > 0 && 
                         ventas.map((n , i) =>  
                             <tr 
-                                className={`unidad-de-tabla-total-ventas ${!n.pagado ? 'venta-no-pagado' : ""}`}
+                                className={`
+                                    unidad-de-tabla-total-ventas 
+                                    ${!(n.valor_abonado === n.valor_total) 
+                                    ? 'venta-no-pagado' 
+                                    : ""}`
+                                }
                                 key={i} 
                                 onClick={(e) => {e.preventDefault(); navigate(`/Totales/Ventas/${n.id}`)}}
                             >
                                 <td style={{width:'20%'}}>{n.id}</td>
-                                <td style={{width:'20%'}} className='text-end'>{n.cantidad}</td>
-                                <td style={{width:'40%'}} className='text-end'>${n.precio}</td>
+                                <td style={{width:'20%'}} className='text-end'>
+                                    {/*{n.cantidad}*/}
+                                    0
+                                </td>
+                                <td style={{width:'40%'}} className='text-end'>$
+                                    {/*{n.precio}*/}
+                                    0
+                                </td>
                                 <td style={{width:'20%'}} className='text-end'>{n.id}</td>
                             </tr>
                         )}

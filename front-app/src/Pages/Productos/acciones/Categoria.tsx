@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import edit from "../../../../public/icons/edit.svg";
+import edit from "../../../icons/edit.svg";
 import './styles.css'
 
 export default function AccionesProducto(){
@@ -33,11 +33,12 @@ export default function AccionesProducto(){
                     />
                 </div>
             </div>
-            {id === 0 && !vista && <img 
-                            src={edit} 
-                            height="50px" 
-                            className="editCategoria" 
-                            onClick={e => {e.preventDefault(); setVista(!vista)}}
+            {id === 0 && !vista && 
+            <img 
+                src={edit} 
+                height="50px" 
+                className="editCategoria" 
+                onClick={e => {e.preventDefault(); setVista(!vista)}}
             />}
             {id === 0 && vista && 
             <div 

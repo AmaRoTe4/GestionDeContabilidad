@@ -1,7 +1,6 @@
 import { Table } from 'react-bootstrap'
 import Swal from "sweetalert2"
 import { InterProductos } from "../../../interface"
-import { BorrarProducto } from '../../functions/data/ventas'
 
 interface Props{
     prtsPorVender:InterProductos[],   
@@ -35,7 +34,7 @@ export default function TablaVentas({prtsPorVender , total , setPrtsPorVender , 
                                 confirmButtonText:'Borrar',
                                 cancelButtonText:'Cancelar',
                             }).then((result) => {
-                                if(result.isConfirmed) BorrarProducto(i , prtsPorVender , setPrtsPorVender , setTotal)
+                                //if(result.isConfirmed) BorrarProducto(i , prtsPorVender , setPrtsPorVender , setTotal)
                             })
                         }}>
                             <td>{i+1}</td>

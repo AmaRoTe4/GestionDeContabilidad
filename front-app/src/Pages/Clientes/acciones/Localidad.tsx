@@ -1,25 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import edit from "../../../../public/icons/edit.svg";
-//import './styles.css'
+import { Localidad } from "../../../../interface";
+import edit from "../../../icons/edit.svg";
+import { createLocalidad, getAllLocalidades, getLocalidad, updateLocalidad } from "../../../api/localidades";
 
-export default function Localidad(){
+export default function LocalidadInterface(){
     const navigate = useNavigate();
     const id:number = parseInt(useLocation().pathname.split('/')[3])
     const [nombre , setNombre] = useState<string>('')
     const [vista , setVista] = useState<boolean>(false) 
-    const [categorias] = useState<string[]>([
-        "",
-        "primero",
-        "segundo",
-        "tercero",
-    ])
+    const [localidades , setLocalidades] = useState<Localidad[]>([])
+
+    useEffect(() => {
+        if(localidades.length === 0) cargarLocalidades()
+        if(id !== 0 && nombre === "") obtenerNombre()
+    },[localidades , nombre , id])
+
+    const obtenerNombre = async () =>{
+        const data:Localidad | undefined = await getLocalidad(id)
+        if(data !== undefined) setNombre(data.nombre)
+    }
+
+    const cargarLocalidades = async () =>{
+        const data:Localidad[] | undefined = await getAllLocalidades()
+        if(data !== undefined) setLocalidades(data)
+    }
+
+    const crearLocalidad = async () => {
+        const resultado = await createLocalidad({
+            nombre:nombre
+        })
+        setNombre("")
+        navigate("/Clientes")
+    }
+
+    const editarLocalidad = async () => {
+        const resultado = await updateLocalidad(id , {
+            nombre:nombre
+        })
+        setNombre("")
+        navigate("/Clientes")
+    }
 
     return (
         <div className="containt100 centrado flex-column">
             <div className="box-titulo-categoria centrado">
-                <h1>{id === 0 ? 'Agregar' : "Editar"}</h1>
+                <h1>{id === 0 ? 'Agregar Localidad' : "Editar Localidad"}</h1>
             </div>
             <div className="box-formulario-categoria centrado flex-column">
                 <div className="centrado">
@@ -45,14 +72,17 @@ export default function Localidad(){
                 className="centrado d-flex flex-column" 
                 style={{width: '50vw'}}
             >
-                <label style={{width: '50%' , textAlign:"start"}}>Categoria</label> 
+                <label style={{width: '50%' , textAlign:"start"}}>Localidad</label> 
                 <select
                     style={{width: '50%'}}
                     name="select" 
-                    onChange={(e) => {e.preventDefault(); navigate(`/Clientes/localidad/${e.target.value}`) }}>
-                        {categorias.map((n , i) => 
-                        <option key={i} value={n}>
-                            {n}
+                    onChange={(e) => {
+                        e.preventDefault(); 
+                        navigate(`/Clientes/localidad/${localidades.filter(n => n.nombre === e.target.value)[0].id}`) 
+                    }}>
+                        {localidades.map((n , i) => 
+                        <option key={i} value={n.nombre}>
+                            {n.nombre}
                         </option>
                     )}
                 </select>
@@ -63,8 +93,10 @@ export default function Localidad(){
                     className="btn btnProductos" 
                     style={{backgroundColor:"rgb(100 100 255)"}}
                     onClick={e => {
-                        e.preventDefault() ; 
+                        {e.preventDefault() ;
                         id === 0 
+                        ? crearLocalidad() 
+                        : editarLocalidad()}
                     }}
                 >
                     {id === 0 ? 'Crear' : "Editar"}

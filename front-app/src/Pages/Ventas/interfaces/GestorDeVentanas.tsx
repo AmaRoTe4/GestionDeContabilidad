@@ -1,6 +1,6 @@
 import '../styles.css'
-import DeleteRed from '../../../../public/icons/deleteRed.svg'
-import Mas from '../../../../public/icons/mas.svg'
+import DeleteRed from '../../../icons/deleteRed.svg'
+import Mas from '../../../icons/mas.svg'
 import { useState } from 'react'
 
 interface Props{

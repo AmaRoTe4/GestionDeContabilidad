@@ -1,8 +1,8 @@
-import wifiOn from '../../public/icons/wifiOn.svg'
-import wifiOff from '../../public/icons/wifiOff.svg'
+import wifiOn from '../icons/wifiOn.svg'
+import wifiOff from '../icons/wifiOff.svg'
 import { useEffect, useState } from 'react'
-import { Link, useLocation , useNavigate } from 'react-router-dom'
-import { Online } from '../functions/data/connection/index'
+import { Link, useLocation } from 'react-router-dom'
+import { Online } from '../functions/index'
 import './styles.css'
 
 export function BarraDeNavegacion(){

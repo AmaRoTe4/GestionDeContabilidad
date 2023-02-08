@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation} from "react-router-dom";
 import { Link } from "react-router-dom";
-import Basura from "../../../../public/icons/basura.svg"
+import Basura from "../../../icons/basura.svg"
 import './styles.css'
 
 export default function AccionesProducto(){
@@ -112,12 +112,12 @@ export default function AccionesProducto(){
                         Volver
                     </button>
                 </Link>
-                {id !== 0 && 
+                {/*{id !== 0 && 
                 <Link style={{margin:0  , marginBottom:20 , backgroundColor:"rgb(255 60 60)"}} className="centrado" to='/Productos'>
                     <button className="btn">
                         Eliminar
                     </button>
-                </Link>}
+                </Link>}*/}
             </div>
         </div>
     )
