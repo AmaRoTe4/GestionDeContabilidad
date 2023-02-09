@@ -26,6 +26,7 @@ export default function ClienteInterface(){
     const obtenerCliente = async () => {
         const data:Cliente | undefined = await getCliente(id)
         if(data !== undefined) setCliente(data)
+        calculos()
     }
 
     const calculos = async () => {

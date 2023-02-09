@@ -1,12 +1,9 @@
 import { useState } from "react";
 import "../styles.css"
+import { useNavigate } from "react-router-dom";
 
-interface Props{
-    id:number
-    setId: React.Dispatch<React.SetStateAction<number>>
-}
-
-export default function RealizarVenta({id , setId}:Props){
+export default function RealizarVenta(){
+    const navigate = useNavigate();
     const [seleccionado , setSeleccionado] = useState<string>("")
     const [cantidad , setCantidad] = useState<number>(0)
 
@@ -49,7 +46,7 @@ export default function RealizarVenta({id , setId}:Props){
                         seleccionado === "" 
                         || (seleccionado === "parcial" && cantidad === 0 )) 
                     }
-                    onClick={e => {e.preventDefault() ; setId(0)}}>
+                    onClick={e => {e.preventDefault() ; navigate("/Ventas")}}>
                     Finlizar Venta
                 </button>
             </div>

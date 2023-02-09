@@ -1,73 +1,73 @@
-import { useState } from 'react';
-import '../styles.css'
+import { useEffect, useState } from 'react';
+import './styles.css'
+import { Cliente, Localidad } from '../../../../interface';
+import { getAllLocalidades } from '../../../api/localidades';
+import Clientes from '../../../components/ventas/clientes';
+import { useNavigate } from 'react-router-dom';
 
-interface Props{
-    id:number
-    setId: React.Dispatch<React.SetStateAction<number>>
-}
-
-export default function SeleccionDeCliente({id , setId}:Props){
+export default function SeleccionDeCliente(){
+    const navigate = useNavigate()
     const [text , setText] = useState<string>("")
-    const [cliente , setCliente] = useState<string>("")
-    const [clientes] = useState<string[]>([
-        "primeroaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "segundo",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-        "tercero",
-    ])
-    const [categorias] = useState<string[]>([
-        "",
-        "Malabrigo",
-        "Reconquista",
-        "Vera",
-    ])
+    const [cliente , setCliente] = useState<Cliente>({
+        id:0,
+        nombre:"",
+        apellido:"",
+        localidad:0,
+        telefono:"",
+        debe:0,
+    })
+    const [localidad , setLocalidad] = useState<number>(0)
+    const [localidades , setLocalidades] = useState<Localidad[]>([])
+
+    useEffect(() => {
+        if(localidades.length === 0) allData()
+    },[])
+
+    const allData = async () => {
+        const data:Localidad[] | undefined = await getAllLocalidades()
+        if(data !== undefined) setLocalidades(data)
+    } 
+
+    const clear = () => {
+        setText("")
+    }
 
     return (
         <div className="boxSeleccionDeCliente">
             <h3>Seleccion al cliente</h3>
+            <div>
+                <label>Nombre</label>
+                <input 
+                    value={text} 
+                    placeholder="Nombre"
+                    onChange={e => setText(e.target.value)} 
+                />
+            </div>
             <div className="centrado">
                 <label>Localidades</label>
                 <select
                     name="select" 
-                    onChange={(e) => {e.preventDefault();}}>
-                        {categorias.map((n , i) => 
-                        <option key={i} value={n}>
-                            {n}
+                    onChange={(e) => {
+                        e.preventDefault(); 
+                        //@ts-ignore
+                        setLocalidad(localidades.filter(n => n.nombre === e.target.value)[0].id)
+                    }}>
+                        {localidades.map((n , i) => 
+                        <option key={i} value={n.nombre}>
+                            {n.nombre}
                         </option>
                     )}
                 </select>
             </div>
-            <input value={text} onChange={e => setText(e.target.value)} />
-            <ul>
-                {text !== "" && clientes.map((n , i) => 
-                    <li 
-                        key={i} 
-                        style={{
-                            border: `${cliente === n ? "red" : ""} solid 1px` , 
-                            backgroundColor: `${cliente === n ? "rgb(235 235 235)" : "rgb(255 255 255)"}`
-                        }}
-                        onClick={(e) => {e.preventDefault(); setCliente(n)}}
-                    >
-                        <p>
-                            {n}
-                        </p>
-                    </li>
-                )}
-            </ul>
+            <Clientes 
+                data={text}
+                localidad={localidad}
+                cliente={cliente}
+                setCliente={setCliente}
+            />
             <button 
-                onClick={(e) => {e.preventDefault(); setId(1)}}
+                disabled={cliente.id === 0}
+                onClick={(e) => {e.preventDefault(); navigate(`/Ventas/CargaProductos/${cliente.id}`)}}
             >
                 Aceptar
             </button>

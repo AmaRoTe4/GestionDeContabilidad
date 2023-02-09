@@ -25,6 +25,7 @@ export default function Productos(){
 
     const clear = () => {
         setProducto("")
+        setCategoria('')
     }
 
     return (

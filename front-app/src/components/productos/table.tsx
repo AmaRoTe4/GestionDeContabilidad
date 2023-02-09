@@ -38,7 +38,7 @@ export const Tabla = ({data , categoria}:Props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {productos.map((n ,i ) => 
+                    {productosVer.map((n ,i ) => 
                         <tr key={i} onClick={(e) => {e.preventDefault(); navigate(`/Productos/producto/${n.id}`)}}>
                             <td>{i+1}</td>
                             <td>{n.nombre}</td>

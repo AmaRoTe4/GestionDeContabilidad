@@ -113,7 +113,7 @@
 }   
 
 .box-formulario-productos div label{
-    width:60%;
+    width:30%;
     font-size: 20px;
 }   
 
@@ -122,7 +122,7 @@
     min-width:60%;
     height: 30px;
     font-size: 20px;
-    border:solid 1px black;
+    border:solid 1px rgb(0, 0, 0);
 }
 
 .box-formulario-productos div input{
@@ -163,6 +163,7 @@
     height: 100%;
     width: 100%;
 }
+npm run dev
 
 .editCategoria:hover{
     cursor: pointer;
@@ -170,15 +171,19 @@
 
 @media (min-width: 768px){
     .box-formulario-productos div label{
-        width:20%;
+        min-width:40%;
+        max-width:40%;
     }   
     
     .box-formulario-productos div select{
-        min-width:20%;
+        min-width:40%;
+        width:40%;
+        max-width:40%;
     }
     
     .box-formulario-productos div input{
-        width:20%;
+        min-width:40%;
+        max-width:40%;
     }  
     .box-formulario-productos div{
         margin:20px;

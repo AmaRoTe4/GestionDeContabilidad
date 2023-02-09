@@ -1,14 +1,22 @@
 import './styles.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import GestorDeVentanas from './interfaces/GestorDeVentanas'
 import CargaDeProductos from './interfaces/CargaDeProductos'
 import SeleccionDeCliente from './interfaces/SeleccionDeCliente'
 import TipoDeVenta from './interfaces/TipoDeVenta'
+import { useLocation } from 'react-router-dom'
 
 export default function Ventas(){
-    const [idCliente , setIdCliente] = useState<number>(0)
-    //hacer que esta como mucho tenga 11 de largo
+    const id = (useLocation().pathname.split('/'))
     const [ventana , setVentana] = useState<number>(0)
+
+    useEffect(() =>{
+        console.log(id)
+    },[])
+    
+// SC
+// CP
+// TP
 
     return (
         <>
@@ -18,9 +26,9 @@ export default function Ventas(){
             />
 
             {/* esto es temporal para usar la interaccion de las interfaces */}
-            {idCliente === 0 && <SeleccionDeCliente setId={setIdCliente} id={ventana} />}
-            {idCliente === 1 && <CargaDeProductos setId={setIdCliente} id={ventana} />}
-            {idCliente === 2 && <TipoDeVenta setId={setIdCliente} id={ventana} />}
+            {undefined === id[2] && <SeleccionDeCliente />}
+            {"CargaProductos" === id[2] && <CargaDeProductos />}
+            {"TipoDeVenta" === id[2] && <TipoDeVenta />}
         </>
     )
 }

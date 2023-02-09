@@ -1,25 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import edit from "../../../icons/edit.svg";
 import './styles.css'
+import { Categoria } from "../../../../interface";
+import { createCategoria, getAllLCategorias, getCategoria, updateCategoria } from "../../../api/categorias";
 
 export default function AccionesProducto(){
     const navigate = useNavigate();
     const id:number = parseInt(useLocation().pathname.split('/')[3])
     const [nombre , setNombre] = useState<string>('')
     const [vista , setVista] = useState<boolean>(false) 
-    const [categorias] = useState<string[]>([
-        "",
-        "primero",
-        "segundo",
-        "tercero",
-    ])
+    const [categorias , setCategorias] = useState<Categoria[]>([])
+
+    useEffect(() => {
+        if(id === 0) dataCategoria()
+        if(id !== 0) dataNombre()
+    },[vista , categorias])
+
+    const dataCategoria = async () => {
+        const aux:Categoria[] | undefined = await getAllLCategorias()
+        if(aux === undefined) return 
+        setCategorias(aux)
+    }
+
+    const dataNombre = async () => {
+        const categoria:Categoria | undefined = await getCategoria(id)
+        if(categoria === undefined ) return 
+        setNombre(categoria.nombre)
+    }
+
+    const crearCategoria = () => {
+        const respuesta:boolean = createCategoria({
+            nombre: nombre
+        })
+        
+        clear()
+    }
+
+    const editarCategoria = () => {
+        const respuesta:boolean = updateCategoria(id ,{
+            nombre: nombre,
+        })
+        
+        navigate("/Productos")
+    }
+
+    const clear = () => {
+        setNombre('')  
+    }
 
     return (
         <div className="containt100 centrado flex-column">
             <div className="box-titulo-categoria centrado">
-                <h1>{id === 0 ? 'Agregar' : "Editar"}</h1>
+                <h1>{id === 0 ? 'Agregar Categoria' : "Editar Categoria"}</h1>
             </div>
             <div className="box-formulario-categoria centrado flex-column">
                 <div className="centrado">
@@ -49,10 +83,13 @@ export default function AccionesProducto(){
                 <select
                     style={{width: '50%'}}
                     name="select" 
-                    onChange={(e) => {e.preventDefault(); navigate(`/Productos/categoria/${e.target.value}`) }}>
+                    onChange={(e) => {
+                        e.preventDefault(); 
+                        navigate(`/Productos/categoria/${categorias.filter(n => n.nombre === e.target.value)[0].id}`) 
+                    }}>
                         {categorias.map((n , i) => 
-                        <option key={i} value={n}>
-                            {n}
+                        <option key={i} value={n.nombre}>
+                            {n.nombre}
                         </option>
                     )}
                 </select>
@@ -64,7 +101,7 @@ export default function AccionesProducto(){
                     style={{backgroundColor:"rgb(100 100 255)"}}
                     onClick={e => {
                         e.preventDefault() ; 
-                        id === 0 
+                        id === 0 ? crearCategoria() : editarCategoria()
                     }}
                 >
                     {id === 0 ? 'Crear' : "Editar"}

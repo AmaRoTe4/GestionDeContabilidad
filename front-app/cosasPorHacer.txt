@@ -1,8 +1,8 @@
-revisar productos
-y terminarlo
+ventas seguimos en la parte de carga de productos y ver detalles en general...
 
 1-hacer filtro de nombre y en general de todo, tambein como comfirmaciones
 2-hacer responsivo la interface de cliente individual
 3-ponerle cartilito a cada actividad que hacemos 
 4-hacer el carga de pagos en el cleinte
 5-hacer el comerzar venta en el cliente (ver como podemos mejorar la parte de las ventas abajo)
+6-agregar generador de codigo... en los productos

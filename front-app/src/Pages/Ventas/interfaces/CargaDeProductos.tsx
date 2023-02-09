@@ -1,111 +1,19 @@
 import '../styles.css'
 import { useEffect, useState } from 'react'
-import { InterProductos , } from "../../../../interface"
+import { Producto , } from "../../../../interface"
 import TablaVentas from '../../../components/ventas/tabla';
 import { Bounce, toast } from 'react-toastify'
 import BuscadorProductos from '../../../components/buscadorProductos';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-interface Props{
-    id:number
-    setId: React.Dispatch<React.SetStateAction<number>>
-}
-
-export default function CargaDeProductos({id , setId}:Props){
+export default function CargaDeProductos(){
+    const navigate = useNavigate()
+    const id:number = parseInt(useLocation().pathname.split('/')[3])
     const [cantidad , setCantidad] = useState<number>(1)
     const [total , setTotal] = useState<number[]>([0,0])
-    const [prtsPorVender , setPrtsPorVender] = useState<InterProductos[]>([
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        },
-        {
-            id:0,
-            precio:0,
-            nombre:'amaro',
-            vendidos:0,
-        }
-    ])
-    const [elementos , setElementos] = useState<InterProductos[]>([])
-    const [eleSelc , setEleSelc] = useState<InterProductos>({
-        id:0,
-        nombre:'',
-        precio:0,
-        vendidos:0
-    })
+    const [prtsPorVender , setPrtsPorVender] = useState<Producto[]>([])
+    const [elementos , setElementos] = useState<Producto[]>([])
+    const [eleSelc , setEleSelc] = useState<Producto>()
     
     const limpiar = () => {
         setTotal([0,0])
@@ -148,7 +56,8 @@ export default function CargaDeProductos({id , setId}:Props){
                         toast.success("Venta Realizada" , {
                             position: toast.POSITION.TOP_CENTER,
                             transition: Bounce
-                        }); setId(2)
+                        });
+                        navigate(`/Ventas/TipoDeVenta/${id}`)
                 }}>
                         Realizar Venta
                 </button>
