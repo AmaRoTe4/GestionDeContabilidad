@@ -3,7 +3,8 @@ import './styles.css'
 import imagenMain from "../../images/imagenMain.jpg";
 import whatsapp from "../../icons/whatsapp.svg";
 
-export default function Main(){
+
+export default function Main(){    
     return (
         <div className="containt100 d-flex flex-column">
             <div className="boxTitleMain">

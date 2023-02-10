@@ -17,6 +17,12 @@ export interface Cliente {
     debe:number,
 }
 
+export interface ProductoDeVentaVista {
+    nombre:string;
+    cantidad: number;
+    precio:number;
+}
+
 export interface ProductoDeVenta {
     id:number;
     cantidad: number;

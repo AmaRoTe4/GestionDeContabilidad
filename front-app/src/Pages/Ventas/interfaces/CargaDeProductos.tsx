@@ -1,52 +1,52 @@
 import '../styles.css'
 import { useEffect, useState } from 'react'
-import { Producto , } from "../../../../interface"
+import { Cliente, Producto , } from "../../../../interface"
 import TablaVentas from '../../../components/ventas/tabla';
 import { Bounce, toast } from 'react-toastify'
 import BuscadorProductos from '../../../components/buscadorProductos';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getAllProductos } from '../../../api/productos';
+import { getCliente } from '../../../api/clientes';
 
 export default function CargaDeProductos(){
     const navigate = useNavigate()
     const id:number = parseInt(useLocation().pathname.split('/')[3])
-    const [cantidad , setCantidad] = useState<number>(1)
-    const [total , setTotal] = useState<number[]>([0,0])
-    const [prtsPorVender , setPrtsPorVender] = useState<Producto[]>([])
-    const [elementos , setElementos] = useState<Producto[]>([])
-    const [eleSelc , setEleSelc] = useState<Producto>()
-    
-    const limpiar = () => {
-        setTotal([0,0])
-        setPrtsPorVender([])
+    const [actualization , setActualization] = useState<number>(0) 
+    const [productos , setProductos] = useState<Producto[]>([])
+    const [cliente , setCliente] = useState<Cliente>({
+        nombre:"",
+        apellido:"",
+        localidad:0,
+        telefono:"",
+        debe:0,
+    })
+
+    useEffect(() => {
+        if(productos.length === 0) ObtenerData()
+    }, [])
+
+    const ObtenerData = async () => {
+        const aux:undefined | Producto[] = await getAllProductos()
+        if(aux === undefined) return 
+        setProductos(aux)
+        const cliente:undefined | Cliente = await getCliente(id)
+        if(cliente === undefined) return 
+        setCliente(cliente)
     }
 
     return (
         <div className="containt100 d-flex flex-column align-items-center">
             <div className="box-nombre-cliente">
-                <h4>NombreDelCliente</h4>
+                <h4>{cliente.nombre}</h4>
             </div>
-            <BuscadorProductos />
-            <div className="box-cantidad-ventas">
-                <input 
-                    placeholder='cantidad'
-                    style={{textAlign: "end"}}
-                    value={cantidad} 
-                    type="number" 
-                    id="precio" 
-                    name="precio" 
-                    onChange={e => setCantidad(e.target.value !== "" ? parseInt(e.target.value) : 0)} 
-                />
-            </div>
-            <div className="box-agregar-ventas centrado">
-                <button type="button" onClick={e => {e.preventDefault(); }}>
-                    Agregar
-                </button>
-            </div>
+            <BuscadorProductos 
+                allProductos={productos}
+                setActualization={setActualization}
+            />
             <TablaVentas
-                total={total}
-                setTotal={setTotal}
-                prtsPorVender={prtsPorVender}
-                setPrtsPorVender={setPrtsPorVender}
+                productos={productos}
+                actualization={actualization}
+                setActualization={setActualization}
             />
             <div className="box-bottones-ventas">
                 <button 
@@ -63,7 +63,7 @@ export default function CargaDeProductos(){
                 </button>
                 <button 
                     className="btn btn-danger" 
-                    onClick={e => {e.preventDefault(); limpiar()}}>
+                    onClick={e => {e.preventDefault(); navigate('/Ventas')}}>
                         Cancelar
                 </button>
             </div>

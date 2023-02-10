@@ -1,5 +1,5 @@
 import { Cliente } from "../../../interface"
-import { getAllClientes } from "../../api/clientes"
+import { getAllClientes, getCliente } from "../../api/clientes"
 
 //funcion de filtro de buscador
 export const filtroNombre = (data:string , localidad:number , clientes:Cliente[]):Cliente[] => {    

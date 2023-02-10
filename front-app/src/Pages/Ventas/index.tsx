@@ -10,14 +10,6 @@ export default function Ventas(){
     const id = (useLocation().pathname.split('/'))
     const [ventana , setVentana] = useState<number>(0)
 
-    useEffect(() =>{
-        console.log(id)
-    },[])
-    
-// SC
-// CP
-// TP
-
     return (
         <>
             <GestorDeVentanas

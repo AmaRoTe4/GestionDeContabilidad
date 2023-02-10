@@ -1,4 +1,5 @@
-ventas seguimos en la parte de carga de productos y ver detalles en general...
+estamos en finalizar venta , ver bien todo que ande y agregar un resumen de la venta , en teoria la venta es posible...
+
 
 1-hacer filtro de nombre y en general de todo, tambein como comfirmaciones
 2-hacer responsivo la interface de cliente individual

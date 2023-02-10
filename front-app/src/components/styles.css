@@ -42,4 +42,27 @@
     width:100%;
     min-height: 5vh;
     max-height: 5vh;
+    display:flex;
+}
+
+.box-buscador-productos ul li:hover{
+    background-color: rgb(205, 205, 205);
+    cursor: pointer;
+}
+
+.box-buscador-productos ul li p{
+    margin-left: 1%;
+    width:99%;
+    height:5vh;
+    display:flex;
+    align-items: center;
+}
+
+.selectProducto{
+    background-color: rgb(16, 180, 10) !important; 
+}
+
+.selectProducto:hover{
+    background-color: rgb(12, 121, 8) !important; 
+    cursor: pointer;
 }
