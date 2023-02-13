@@ -5,9 +5,12 @@ import edit from "../../../icons/edit.svg";
 import './styles.css'
 import { Categoria } from "../../../../interface";
 import { createCategoria, getAllLCategorias, getCategoria, updateCategoria } from "../../../api/categorias";
+import { fetchAllCategorias } from "../../../store/elements/categorias";
+import { useDispatch } from "react-redux";
 
 export default function AccionesProducto(){
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const id:number = parseInt(useLocation().pathname.split('/')[3])
     const [nombre , setNombre] = useState<string>('')
     const [vista , setVista] = useState<boolean>(false) 
@@ -30,20 +33,23 @@ export default function AccionesProducto(){
         setNombre(categoria.nombre)
     }
 
-    const crearCategoria = () => {
-        const respuesta:boolean = createCategoria({
+    const crearCategoria = async () => {
+        const respuesta:boolean = await createCategoria({
             nombre: nombre
         })
-        
         clear()
+        //@ts-ignore
+        await dispatch(fetchAllCategorias())
     }
 
-    const editarCategoria = () => {
-        const respuesta:boolean = updateCategoria(id ,{
+    const editarCategoria = async () => {
+        const respuesta:boolean = await updateCategoria(id ,{
             nombre: nombre,
         })
         
         navigate("/Productos")
+        //@ts-ignore
+        await dispatch(fetchAllCategorias())
     }
 
     const clear = () => {

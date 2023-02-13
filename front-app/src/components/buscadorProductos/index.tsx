@@ -74,6 +74,9 @@ const BuscadorProductos = ({setActualization , allProductos}:Props) => {
                             <p>
                                 {nombreProductoId(n.id !== undefined ? n.id : 0 , productos)}
                             </p>
+                            <p style={{justifyContent: "end"}}>
+                                {n.cantidad}
+                            </p>
                         </li>
                     )}
                 </ul>

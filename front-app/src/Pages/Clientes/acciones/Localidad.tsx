@@ -4,9 +4,12 @@ import { Link } from "react-router-dom";
 import { Localidad } from "../../../../interface";
 import edit from "../../../icons/edit.svg";
 import { createLocalidad, getAllLocalidades, getLocalidad, updateLocalidad } from "../../../api/localidades";
+import { fetchAllLocalidades } from "../../../store/elements/localidades";
+import { useDispatch } from "react-redux";
 
 export default function LocalidadInterface(){
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const id:number = parseInt(useLocation().pathname.split('/')[3])
     const [nombre , setNombre] = useState<string>('')
     const [vista , setVista] = useState<boolean>(false) 
@@ -32,6 +35,8 @@ export default function LocalidadInterface(){
             nombre:nombre
         })
         setNombre("")
+        //@ts-ignore
+        await dispatch(fetchAllLocalidades())
         navigate("/Clientes")
     }
 
@@ -40,6 +45,8 @@ export default function LocalidadInterface(){
             nombre:nombre
         })
         setNombre("")
+        //@ts-ignore
+        await dispatch(fetchAllLocalidades())
         navigate("/Clientes")
     }
 

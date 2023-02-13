@@ -43,6 +43,7 @@
     min-height: 5vh;
     max-height: 5vh;
     display:flex;
+    justify-content:space-between;
 }
 
 .box-buscador-productos ul li:hover{
@@ -52,7 +53,8 @@
 
 .box-buscador-productos ul li p{
     margin-left: 1%;
-    width:99%;
+    margin-right: 1%;
+    width:49%;
     height:5vh;
     display:flex;
     align-items: center;

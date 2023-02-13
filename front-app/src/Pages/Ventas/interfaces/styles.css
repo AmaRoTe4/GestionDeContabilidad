@@ -71,3 +71,98 @@
     width:30vw;
     height: 4vw;
 }
+
+/* boxTipoDeVenta */
+
+.boxTipoDeVenta{
+    width:100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.boxTipoDeVenta h3{
+    margin-top: 2vh;
+}
+
+.boxTipoDeVenta div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70vw;
+}
+
+.boxTipoDeVenta div label{
+    margin-top: 3vh;
+    margin-bottom: 1vh;
+    text-align: left;
+    width: 100%;
+}
+
+.boxTipoDeVenta div select{
+    width: 100%;
+}
+
+.boxTipoDeVenta input{
+    margin-top: 3vh;
+    width: 70vw;
+}
+
+.boxButtomTipoDeVenta{
+    margin-top: 15vh;
+    width: 50vw;
+}
+
+.boxButtomTipoDeVenta button{
+    border:solid 1px black;
+    border-radius:5px;
+    width:100%;
+    margin: 10px 0px;
+}
+
+.boxResumenDeVenta{
+    margin-top: 30px;;
+    width: 100%;
+    display: flex;
+}
+
+.boxResumenDeVenta ul{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.boxResumenDeVenta ul p{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.boxResumenDeVenta ul div{
+    margin: 0;
+    padding: 0;
+    background-color:rgb(230, 230, 230);
+    border-top:1px solid rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.boxResumenDeVenta ul div li{
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding: 5px 0px 5px 15px;
+    border-bottom: solid 1px rgb(205 205 205);
+    width: 100%;
+}
+
+.boxResumenDeVenta ul div li p{
+    width: 200px;
+    margin: 0;
+    padding: 0;
+}

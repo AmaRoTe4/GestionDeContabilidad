@@ -6,9 +6,12 @@ import './styles.css'
 import { getAllLCategorias } from "../../../api/categorias";
 import { Categoria, Producto } from "../../../../interface";
 import { createProducto, getProducto, updateProducto } from "../../../api/productos";
+import { useDispatch } from "react-redux";
+import { fetchAllProductos } from "../../../store/elements/productos";
 
 export default function AccionesProducto(){
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const id:number = parseInt(useLocation().pathname.split('/')[3])
     const [nombre , setNombre] = useState<string>('')
     const [descripcion , setDescripcion] = useState<string>('')
@@ -37,8 +40,8 @@ export default function AccionesProducto(){
         setCodigo(producto.codigo)  
     }
 
-    const crearProducto = () => {
-        const respuesta:boolean = createProducto({
+    const crearProducto = async () => {
+        const respuesta:boolean = await createProducto({
             nombre: nombre,
             descripcion: descripcion,
             cantidad: cantidad,
@@ -49,10 +52,12 @@ export default function AccionesProducto(){
         })
         
         clear()
+        //@ts-ignore
+        await dispatch(fetchAllProductos())
     }
 
-    const editarProducto = () => {
-        const respuesta:boolean = updateProducto(id ,{
+    const editarProducto = async () => {
+        const respuesta:boolean = await updateProducto(id ,{
             nombre: nombre,
             descripcion: descripcion,
             cantidad: cantidad,
@@ -61,7 +66,8 @@ export default function AccionesProducto(){
             //@ts-ignore
             categoria: categorias.filter(n => n.nombre === categoria)[0].id ,
         })
-        
+        //@ts-ignore
+        await dispatch(fetchAllProductos())
         navigate("/Productos")
     }
 

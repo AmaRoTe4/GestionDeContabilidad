@@ -1,9 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit'
 import Sales from "./elements/sales"
+import Producto from "./elements/productos"
+import Localidad from "./elements/localidades"
+import Cliente from "./elements/clientes"
+import Categoria from "./elements/categorias"
 
 export const store = configureStore({
     reducer: {
         sales: Sales,
+        productos: Producto,
+        localidades: Localidad,
+        clientes: Cliente,
+        categorias: Categoria,
     },
 })
 

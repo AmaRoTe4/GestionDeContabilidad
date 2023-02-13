@@ -33,7 +33,7 @@ export interface Venta {
     id?:number;
     cliente: number
     articulos: ProductoDeVenta[]
-    tipo_de_venta: number
+    tipo_de_venta: string
     valor_total: number
     valor_abonado: number
 }

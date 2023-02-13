@@ -6,9 +6,12 @@ import './styles.css'
 import { Localidad , Cliente} from "../../../../interface";
 import { getAllLocalidades } from "../../../api/localidades";
 import { createCliente, getCliente, updateCliente } from "../../../api/clientes";
+import { fetchAllClientes } from "../../../store/elements/clientes";
+import { useDispatch } from "react-redux";
 
 export default function Acciones(){
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const id:number = parseInt(useLocation().pathname.split('/')[3])
     const [nombre , setNombre] = useState<string>('')
     const [apellido , setApellido] = useState<string>('')
@@ -47,6 +50,8 @@ export default function Acciones(){
             telefono:telefono,
             debe:0,
         })
+        //@ts-ignore
+        await dispatch(fetchAllClientes())
         navigate("/Clientes")
     }
 
@@ -60,6 +65,8 @@ export default function Acciones(){
             telefono:telefono,
             debe:0,
         })
+        //@ts-ignore
+        await dispatch(fetchAllClientes())
         navigate("/Clientes/cliente/" + id)
     }
 

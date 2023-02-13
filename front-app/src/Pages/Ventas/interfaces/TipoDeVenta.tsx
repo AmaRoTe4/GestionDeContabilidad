@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles.css"
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { ProductoDeVenta, Venta } from "../../../../interface";
+import { Cliente, ProductoDeVenta, Venta } from "../../../../interface";
 import { createVenta } from "../../../api/ventas";
 import { useDispatch } from "react-redux";
 import { clean } from "../../../store/elements/sales";
+import { getCliente } from "../../../api/clientes";
+import { realizarVenta } from "../../../functions/ventas/realizarVenta";
 
 export default function RealizarVenta(){
     const navigate = useNavigate();
@@ -13,35 +15,27 @@ export default function RealizarVenta(){
     const id:number = parseInt(useLocation().pathname.split('/')[3])
     //@ts-ignore
     const sales:ProductoDeVenta[] = useSelector((state) => state.sales)
+    //@ts-ignore
+    const clientes:Cliente[] = useSelector((state) => state.clientes)
+    const [cliente , setCliente] = useState<Cliente>()
+
     const [seleccionado , setSeleccionado] = useState<string>("")
     const [cantidad , setCantidad] = useState<number>(0)
+    const [valorTotalVenta , setValorTotalVenta] = useState<number>(0)
 
-    const realizarVenta = async () => {
+    useEffect(() => {
+        data()
+    }, [])
+    
+    const data = () => {
         let valorTotal:number = 0
-        
         sales.map(n => valorTotal += n.precio * n.cantidad)
-        
-        const venta:Venta = {
-            cliente: id,
-            articulos: sales,
-            tipo_de_venta: 
-            seleccionado === "completo" 
-            ? 1 
-            : seleccionado === "parcial"
-            ? 2
-            : seleccionado === "deber" 
-            ? 3 
-            : 0,
-            valor_total: valorTotal,
-            valor_abonado: 
-            seleccionado === "completo" 
-            ? valorTotal
-            : seleccionado === "parcial"
-            ? cantidad
-            : 0
-        } 
-        
-        await createVenta(venta)
+        setValorTotalVenta(valorTotal)
+        setCliente(clientes.filter(n => n.id === id)[0])
+    }
+
+    const Venta = async () => {
+        await realizarVenta(id, seleccionado, valorTotalVenta, cantidad , sales)
         dispatch(clean())
         navigate("/Ventas")
     }
@@ -77,6 +71,52 @@ export default function RealizarVenta(){
                     onChange={e => {e.preventDefault(); setCantidad(Number(e.target.value))}} 
                 />
             }
+            <div className="boxResumenDeVenta">
+                <ul>
+                    <p>Resumen</p>
+                    <div>
+                        <li>
+                            <p>
+                                Nombre: 
+                            </p>
+                            <p>
+                                {cliente !== undefined && cliente.nombre}
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Apellido: 
+                            </p>
+                            <p>
+                                {cliente !== undefined && cliente.apellido}
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Valor Total de Venta: 
+                            </p>
+                            <p>
+                                ${valorTotalVenta}
+                            </p>
+                        </li>
+                    </div>
+                </ul>
+                {/*<ul>
+                    {sales.map(n => 
+                        <li>
+                            <p>
+                                {id}
+                            </p>
+                            <p>
+                                {n.cantidad}
+                            </p>
+                            <p>
+                                {n.precio}
+                            </p>
+                        </li>
+                    )}
+                </ul>*/}
+            </div>
             <div className="boxButtomTipoDeVenta">
                 <button>
                     Volver
@@ -86,7 +126,7 @@ export default function RealizarVenta(){
                         seleccionado === "" 
                         || (seleccionado === "parcial" && cantidad === 0 )) 
                     }
-                    onClick={e => {e.preventDefault() ; realizarVenta()}}>
+                    onClick={e => {e.preventDefault() ; Venta()}}>
                     Finlizar Venta
                 </button>
             </div>
