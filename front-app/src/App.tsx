@@ -61,9 +61,9 @@ function App() {
 				<Route path="/Productos/" element={<Productos />} />
 				<Route path="/Productos/producto/:id" element={<Producto />} />
 				<Route path="/Productos/categoria/:id" element={<Categoria />} />
-				<Route path="/Ventas" element={<Ventas />} />
-				<Route path="/Ventas/CargaProductos/:id" element={<Ventas />} />
-				<Route path="/Ventas/TipoDeVenta/:id" element={<Ventas />} />
+				<Route path="/Ventas/:id" element={<Ventas />} />
+				<Route path="/Ventas/:id/CargaProductos/:id" element={<Ventas />} />
+				<Route path="/Ventas/:id/TipoDeVenta/:id" element={<Ventas />} />
 				<Route path="/Ajustes" element={<Ajustes />} />
 				<Route path="/Clientes" element={<Clientes />} />
 				{/* @ts-ignore */}

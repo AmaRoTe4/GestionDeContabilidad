@@ -7,10 +7,14 @@ import BuscadorProductos from '../../../components/buscadorProductos';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAllProductos } from '../../../api/productos';
 import { getCliente } from '../../../api/clientes';
+import { modPath } from '../../../store/elements/sales';
+import { useDispatch } from 'react-redux';
 
 export default function CargaDeProductos(){
     const navigate = useNavigate()
-    const id:number = parseInt(useLocation().pathname.split('/')[3])
+    const dispatch = useDispatch()
+    const ventana = parseInt(useLocation().pathname.split('/')[2])
+    const id:number = parseInt(useLocation().pathname.split('/')[4])
     const [actualization , setActualization] = useState<number>(0) 
     const [productos , setProductos] = useState<Producto[]>([])
     const [cliente , setCliente] = useState<Cliente>({
@@ -23,15 +27,35 @@ export default function CargaDeProductos(){
 
     useEffect(() => {
         if(productos.length === 0) ObtenerData()
-    }, [])
+        dataCliente()
+    }, [ventana])
 
     const ObtenerData = async () => {
         const aux:undefined | Producto[] = await getAllProductos()
         if(aux === undefined) return 
         setProductos(aux)
+    }
+
+    const dataCliente = async () => {
         const cliente:undefined | Cliente = await getCliente(id)
         if(cliente === undefined) return 
         setCliente(cliente)
+    }
+
+    const realizarVenta = () => {
+        dispatch(modPath({
+            id:ventana,
+            newPath:`/Ventas/${ventana}/TipoDeVenta/${id}`
+        }))
+        navigate(`/Ventas/${ventana}/TipoDeVenta/${id}`)
+    }
+
+    const volver = () => {
+        dispatch(modPath({
+            id:ventana,
+            newPath:`/Ventas/${volver}/`
+        }))
+        navigate(`/Ventas/${volver}/`)
     }
 
     return (
@@ -57,13 +81,13 @@ export default function CargaDeProductos(){
                             position: toast.POSITION.TOP_CENTER,
                             transition: Bounce
                         });
-                        navigate(`/Ventas/TipoDeVenta/${id}`)
+                        realizarVenta();
                 }}>
                         Realizar Venta
                 </button>
                 <button 
                     className="btn btn-danger" 
-                    onClick={e => {e.preventDefault(); navigate('/Ventas')}}>
+                    onClick={e => {e.preventDefault(); volver()}}>
                         Cancelar
                 </button>
             </div>

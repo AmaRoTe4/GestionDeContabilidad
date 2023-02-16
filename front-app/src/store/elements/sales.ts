@@ -1,34 +1,86 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
-import { ProductoDeVenta } from '../../../interface'
+import { ProductoDeVenta, VentanaDeVenta } from '../../../interface'
 
-const initialState: ProductoDeVenta[] = []
+const initialState:VentanaDeVenta[] = [
+    {
+        id:0,
+        id_cliente:-1,
+        path:"/Ventas/0",
+        productos: [],
+    }
+]
 
 export const userSales = createSlice({
     name: 'sales',
     initialState,
     reducers: {
+        //action:
+        //id
+        //newPath
+        modPath: (state , action) => {
+            const map = state.map(n => n.id)
+            const id = map.indexOf(action.payload.id)
+            state[id].path = action.payload.newPath
+        },
+        addSales: (state , action) => {
+            state.push({
+                id:action.payload,
+                id_cliente:-1,
+                path:`/Ventas/${action.payload}`,
+                productos: [],
+            })
+        },
+        removeSales: (state , action) => {
+            const newState:VentanaDeVenta[] = state.filter(n => n.id !== action.payload)
+            while(state.length > 0) state.shift()
+            while(newState.length > 0) {
+                let aux = newState.shift()
+                if(aux === undefined) return
+                state.push(aux)
+            }
+        },
+        //ver que se creo como el objeto payload
+        //id
+        //productos{
+        //  id
+        //  cantidad
+        //  precio
+        //}
         addProducts: (state , action) => {
-            const ids:number[] = state.map(n => n.id)
-            if(!(ids.includes(action.payload.id))) state.push(action.payload)
+            const map = state.map(n => n.id)
+            const id = map.indexOf(action.payload.id)
+            const ids:number[] = state[id].productos.map(n => n.id)
+
+            if(!(ids.includes(action.payload.productos.id))) {
+                state[id].productos.push(action.payload.productos)
+            }
             else {
-                const id = ids.indexOf(action.payload.id)
-                state[id].cantidad += action.payload.cantidad
+                const id = ids.indexOf(action.payload.productos.id)
+                state[id].productos[id].cantidad += action.payload.productos.cantidad
             }
         },
+        //id
+        //id_producto
         removeProducts: (state , action) => {
-            const newState:ProductoDeVenta[] = state.filter(n => n.id !== action.payload); 
-            while(state.length > 0) state.shift();
-            newState.map(n => state.push(n))
+            const map = state.map(n => n.id)
+            const id = map.indexOf(action.payload.id)
+
+            const newState:ProductoDeVenta[] = state[id].productos.filter(n => n.id !== action.payload.id_producto); 
+            
+            while(state[action.payload.id].productos.length > 0) state[action.payload.id].productos.shift();
+            
+            newState.map(n => state[action.payload.id].productos.push(n))
         },
-        clean: (state) => {
-            while(state.length > 0){
-                state.shift()
-            }
+        clean: (state , action) => {
+            const map = state.map(n => n.id)
+            const id = map.indexOf(action.payload.id)
+            while(state[id].productos.length > 0) state[id].productos.shift() 
+            state[id].path = `/Ventas/${action.payload.id}`
         }
     },
 })
 
-export const { addProducts, removeProducts, clean } = userSales.actions
+export const { modPath , addSales , removeSales , addProducts, removeProducts, clean } = userSales.actions
 export default userSales.reducer

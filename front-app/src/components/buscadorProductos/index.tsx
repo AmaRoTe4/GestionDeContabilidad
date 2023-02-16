@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Producto, ProductoDeVenta } from "../../../interface";
 import { getAllProductos } from "../../api/productos";
 import { filtroNombre, nombreProductoId } from "../../functions/productos/obtenerProductos";
+import { useLocation } from "react-router-dom";
 
 interface Props{
     setActualization: React.Dispatch<React.SetStateAction<number>>
@@ -22,6 +23,7 @@ const proAux:Producto = {
 
 const BuscadorProductos = ({setActualization , allProductos}:Props) => {
     const dispatch = useDispatch()
+    const ventana:number = parseInt(useLocation().pathname.split('/')[2])
     //@ts-ignore
     const [data , setData] = useState<string>("")
     const [cantidad , setCantidad] = useState<number>(0)
@@ -30,7 +32,7 @@ const BuscadorProductos = ({setActualization , allProductos}:Props) => {
     
     useEffect(() => {
         SetProductos()
-    },[data])
+    },[data , ventana])
     
     const SetProductos = () => {
         const aux:Producto[] = filtroNombre(data , 0 , allProductos)
@@ -38,11 +40,13 @@ const BuscadorProductos = ({setActualization , allProductos}:Props) => {
     }
     
     const Agregar = () => {
-        dispatch(addProducts(
-        {
-            id:productoAdd.id,
-            precio:productoAdd.precio,
-            cantidad:cantidad
+        dispatch(addProducts({
+            id:ventana,
+            productos:{
+                id:productoAdd.id,
+                precio:productoAdd.precio,
+                cantidad:cantidad
+            }
         }))
         clear()
         setActualization(n => n + 1)
@@ -63,6 +67,14 @@ const BuscadorProductos = ({setActualization , allProductos}:Props) => {
                     onChange={e => {e.preventDefault() ; setData(e.target.value)}}
                 />
                 <ul>
+                    <li style={{backgroundColor: "rgb(100 100 100)" , color: "white"}}>
+                        <p>
+                            Nombre
+                        </p>
+                        <p style={{justifyContent: "end"}}>
+                            Cantidad
+                        </p>
+                    </li>
                     {productos.map((n , i) => 
                         <li 
                             key={i} 

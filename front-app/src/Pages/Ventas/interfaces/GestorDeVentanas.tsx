@@ -2,36 +2,40 @@ import '../styles.css'
 import DeleteRed from '../../../icons/deleteRed.svg'
 import Mas from '../../../icons/mas.svg'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { addSales, removeSales } from '../../../store/elements/sales'
+import { VentanaDeVenta } from '../../../../interface'
 
 interface Props{
     ventana:number
     setVentana:React.Dispatch<React.SetStateAction<number>>
+    sales:VentanaDeVenta[]
 }
 
-export default function GestorDeVentanas({ventana, setVentana}:Props){
-    const [ventanas , setVentanas] = useState<number[]>([0])
+export default function GestorDeVentanas({ventana, setVentana , sales}:Props){
+    const isSales:number[] = sales.map(n => n.id)
+    const dispatch = useDispatch()
 
     const agregar = () => {
-        if(ventanas.length === 9) return 
-        let id = ventanas[ventanas.length - 1]
+        if(isSales.length === 9) return 
+        let id = isSales[isSales.length - 1]
         if(id === undefined) {
-            setVentanas([0])
+            dispatch(addSales(0))
             setVentana(0)
         }
-        else setVentanas(n => [...n , id + 1])
+        else dispatch(addSales(isSales[isSales.length - 1] + 1))
     }
 
     const borrar = (id:number) => {
-        let newVentanas = ventanas.map(n => n)
-        if(ventana === id && ventanas.indexOf(id) > 1) setVentana(ventanas[ventanas.indexOf(id) - 1])
-        else if(id === ventanas[0]) setVentana(ventanas[1])
-        else if(ventana === id) setVentana(ventanas[0])
-        setVentanas(newVentanas.filter((n , i) => n !== id))
+        if(ventana === id && isSales.indexOf(id) > 1) setVentana(isSales[isSales.indexOf(id) - 1])
+        else if(id === isSales[0]) setVentana(isSales[1])
+        else if(ventana === id) setVentana(isSales[0]) 
+        dispatch(removeSales(id))
     }
 
     return (
         <div className="box-ventanas">
-            {ventanas.length !== 0 && ventanas.map((n , i) => 
+            {isSales.length !== 0 && isSales.map((n , i) => 
                 <span key={i}
                     style={{ 
                         border: `${ventana === n ? 'red' : ""} 1px solid`,
@@ -42,7 +46,7 @@ export default function GestorDeVentanas({ventana, setVentana}:Props){
                         onClick={e => {e.preventDefault() ; setVentana(n)}}
                     >
                         <p>
-                            {n}
+                            {n !== -1 ? n : n}
                         </p>
                     </div>
                     <button 
@@ -52,7 +56,11 @@ export default function GestorDeVentanas({ventana, setVentana}:Props){
                     </button>
                 </span>
             )}
-            <button disabled={ventanas.length === 9} className="btnAgregarNuevaVenta" onClick={e => {e.preventDefault() ; agregar()}}>
+            <button 
+                disabled={isSales.length === 9} 
+                className="btnAgregarNuevaVenta" 
+                onClick={e => {e.preventDefault() ; agregar()}}
+            >
                 <img src={Mas} />
             </button>
         </div>

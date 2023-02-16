@@ -3,10 +3,15 @@ import './styles.css'
 import { Cliente, Localidad } from '../../../../interface';
 import { getAllLocalidades } from '../../../api/localidades';
 import Clientes from '../../../components/ventas/clientes';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { modPath } from '../../../store/elements/sales';
 
 export default function SeleccionDeCliente(){
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const location = useLocation().pathname
+    const id_ventana:number = parseInt(useLocation().pathname.split('/')[2])
     const [text , setText] = useState<string>("")
     const [cliente , setCliente] = useState<Cliente>({
         id:0,
@@ -28,8 +33,12 @@ export default function SeleccionDeCliente(){
         if(data !== undefined) setLocalidades(data)
     } 
 
-    const clear = () => {
-        setText("")
+    const aceptar = () => {
+        dispatch(modPath({
+            id:id_ventana,
+            newPath:`${location}/CargaProductos/${cliente.id}`
+        }))
+        navigate(`${location}/CargaProductos/${cliente.id}`)
     }
 
     return (
@@ -67,7 +76,7 @@ export default function SeleccionDeCliente(){
             />
             <button 
                 disabled={cliente.id === 0}
-                onClick={(e) => {e.preventDefault(); navigate(`/Ventas/CargaProductos/${cliente.id}`)}}
+                onClick={(e) => {e.preventDefault(); aceptar()}}
             >
                 Aceptar
             </button>

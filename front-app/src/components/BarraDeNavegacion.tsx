@@ -53,7 +53,7 @@ export function BarraDeNavegacion(){
                         </li>
                         <li className={`nav-item` }>
                             <Link 
-                                to="/Ventas" 
+                                to="/Ventas/0" 
                                 className="nav-link active" 
                                 aria-current="page"
                                 style={{color: `${location[1] === 'Ventas' ? 'red' : ''}`}} 

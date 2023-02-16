@@ -29,6 +29,13 @@ export interface ProductoDeVenta {
     precio:number;
 }
 
+export interface VentanaDeVenta {
+    id:number;
+    id_cliente:number;
+    path:string;
+    productos:ProductoDeVenta[];
+}
+
 export interface Venta {
     id?:number;
     cliente: number

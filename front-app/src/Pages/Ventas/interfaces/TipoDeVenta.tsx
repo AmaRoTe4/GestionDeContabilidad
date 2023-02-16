@@ -3,18 +3,18 @@ import "../styles.css"
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Cliente, ProductoDeVenta, Venta } from "../../../../interface";
-import { createVenta } from "../../../api/ventas";
 import { useDispatch } from "react-redux";
 import { clean } from "../../../store/elements/sales";
-import { getCliente } from "../../../api/clientes";
 import { realizarVenta } from "../../../functions/ventas/realizarVenta";
+import { modPath } from "../../../store/elements/sales";
 
 export default function RealizarVenta(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const id:number = parseInt(useLocation().pathname.split('/')[3])
+    const ventana = parseInt(useLocation().pathname.split('/')[2])
+    const id:number = parseInt(useLocation().pathname.split('/')[4])
     //@ts-ignore
-    const sales:ProductoDeVenta[] = useSelector((state) => state.sales)
+    const sales:VentanaDeVenta[] = useSelector((state) => state.sales)
     //@ts-ignore
     const clientes:Cliente[] = useSelector((state) => state.clientes)
     const [cliente , setCliente] = useState<Cliente>()
@@ -25,21 +25,30 @@ export default function RealizarVenta(){
 
     useEffect(() => {
         data()
-    }, [])
+    }, [ventana])
     
     const data = () => {
         let valorTotal:number = 0
-        sales.map(n => valorTotal += n.precio * n.cantidad)
+        const salesUnit:ProductoDeVenta[] = sales.filter(n => n.id === ventana)[0].productos
+        salesUnit.map(n => valorTotal += n.precio * n.cantidad)
         setValorTotalVenta(valorTotal)
         setCliente(clientes.filter(n => n.id === id)[0])
     }
 
     const Venta = async () => {
-        await realizarVenta(id, seleccionado, valorTotalVenta, cantidad , sales)
-        dispatch(clean())
-        navigate("/Ventas")
+        await realizarVenta(id, seleccionado, valorTotalVenta, cantidad , sales[ventana].productos)
+        dispatch(clean({id:ventana}))
+        navigate(`/Ventas/${ventana}`)
     }
         
+    const volver = () => {
+        dispatch(modPath({
+            id:ventana,
+            newPath:`/Ventas/${ventana}/CargaProductos/${id}/`
+        }))
+        navigate(`/Ventas/${ventana}/CargaProductos/${id}/`)
+    }
+
     return (
         <div className="boxTipoDeVenta">
             <h3>Finalizae venta</h3>
@@ -101,24 +110,9 @@ export default function RealizarVenta(){
                         </li>
                     </div>
                 </ul>
-                {/*<ul>
-                    {sales.map(n => 
-                        <li>
-                            <p>
-                                {id}
-                            </p>
-                            <p>
-                                {n.cantidad}
-                            </p>
-                            <p>
-                                {n.precio}
-                            </p>
-                        </li>
-                    )}
-                </ul>*/}
             </div>
             <div className="boxButtomTipoDeVenta">
-                <button>
+                <button onClick={e => {e.preventDefault() ; volver()}}>
                     Volver
                 </button>
                 <button 

@@ -1,11 +1,12 @@
 import { Table } from 'react-bootstrap'
 import Swal from "sweetalert2"
-import { Producto, ProductoDeVenta, ProductoDeVentaVista } from "../../../interface"
+import { Producto, ProductoDeVenta, ProductoDeVentaVista, VentanaDeVenta } from "../../../interface"
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { nombreProductoId , nombreProductoNombre } from '../../functions/productos/obtenerProductos'
 import { getAllProductos } from '../../api/productos'
 import { removeProducts } from '../../store/elements/sales'
+import { useLocation } from 'react-router-dom'
 
 interface Props{
     actualization:number;
@@ -15,14 +16,19 @@ interface Props{
 
 export default function TablaVentas({actualization , setActualization , productos}:Props){
     const dispatch = useDispatch()
+    const id:number = parseInt(useLocation().pathname.split('/')[2])
     //@ts-ignore
-    const sales:ProductoDeVenta[] = useSelector((state) => state.sales)
+    const sales:VentanaDeVenta[] = useSelector((state) => state.sales)
     const [productosVista , setProductosVista] = useState<ProductoDeVentaVista[]>([])
     const [cantidadTotal , setCantidadTotal] = useState<number>(0)
     const [precioTotal , setPrecioTotal] = useState<number>(0)
 
     useEffect(() => {
-        const aux:ProductoDeVentaVista[] = sales.map(n => 
+        const pSales:VentanaDeVenta = sales.filter(n => n.id === id)[0]
+        
+        if(pSales === undefined) return
+
+        const aux:ProductoDeVentaVista[] = pSales.productos.map(n => 
             {
                 return {
                     nombre: nombreProductoId(n.id !== undefined ? n.id : 0 , productos),
@@ -33,7 +39,7 @@ export default function TablaVentas({actualization , setActualization , producto
         )
         setProductosVista(aux)
         CargaDeValores(aux)
-    },[actualization])
+    },[actualization , id])
 
     const CargaDeValores = (aux:ProductoDeVentaVista[]) => {
         let cantidad:number = 0
@@ -46,8 +52,13 @@ export default function TablaVentas({actualization , setActualization , producto
         setCantidadTotal(cantidad)
     }
 
-    const Eliminar = (id:number) => {
-        dispatch(removeProducts(id))
+    //id
+    //id_producto
+    const Eliminar = (id_producto:number) => {
+        dispatch(removeProducts({
+            id:id,
+            id_producto: id_producto
+        }))
         setActualization(n => n + 1)
     }
 
