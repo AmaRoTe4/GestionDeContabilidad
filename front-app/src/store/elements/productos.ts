@@ -15,11 +15,28 @@ export const userProductos = createSlice({
             for(let i = 0 ; i < action.payload.length; i++) {
                 state.push(action.payload[i]);
             }
+        },
+        //action:
+        //id
+        //cantidad
+        modCantidad: (state , action) => {
+            let producto:Producto = state.filter(n => n.id === action.payload.id)[0]
+            let productos:Producto[] = state.filter(n => n.id !== action.payload.id)
+            
+            producto.cantidad += action.payload.cantidad;
+            productos.push(producto);
+
+            while(state.length > 0) {
+                state.shift();
+            }
+            for(let i = 0 ; i < productos.length; i++) {
+                state.push(productos[i]);
+            }
         }
     },
 })
 
-export const { reload } = userProductos.actions
+export const { reload , modCantidad} = userProductos.actions
 export default userProductos.reducer
 
 //@ts-ignore

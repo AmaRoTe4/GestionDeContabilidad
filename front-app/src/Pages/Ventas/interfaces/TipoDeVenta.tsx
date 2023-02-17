@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Bounce, toast } from 'react-toastify'
 import "../styles.css"
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -120,7 +121,13 @@ export default function RealizarVenta(){
                         seleccionado === "" 
                         || (seleccionado === "parcial" && cantidad === 0 )) 
                     }
-                    onClick={e => {e.preventDefault() ; Venta()}}>
+                    onClick={e => {
+                        e.preventDefault() ; 
+                        toast.success("Venta Realizada" , {
+                            position: toast.POSITION.TOP_CENTER,
+                            transition: Bounce
+                        });
+                        Venta()}}>
                     Finlizar Venta
                 </button>
             </div>

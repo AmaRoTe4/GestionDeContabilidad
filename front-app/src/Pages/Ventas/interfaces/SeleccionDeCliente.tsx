@@ -4,8 +4,8 @@ import { Cliente, Localidad } from '../../../../interface';
 import { getAllLocalidades } from '../../../api/localidades';
 import Clientes from '../../../components/ventas/clientes';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { modPath } from '../../../store/elements/sales';
+import { useDispatch, useSelector } from 'react-redux';
+import { modIdCliente, modPath } from '../../../store/elements/sales';
 
 export default function SeleccionDeCliente(){
     const navigate = useNavigate()
@@ -22,21 +22,17 @@ export default function SeleccionDeCliente(){
         debe:0,
     })
     const [localidad , setLocalidad] = useState<number>(0)
-    const [localidades , setLocalidades] = useState<Localidad[]>([])
-
-    useEffect(() => {
-        if(localidades.length === 0) allData()
-    },[])
-
-    const allData = async () => {
-        const data:Localidad[] | undefined = await getAllLocalidades()
-        if(data !== undefined) setLocalidades(data)
-    } 
+    //@ts-ignore
+    const localidades:Localidad[] = useSelector((state) => state.localidades)
 
     const aceptar = () => {
         dispatch(modPath({
             id:id_ventana,
             newPath:`${location}/CargaProductos/${cliente.id}`
+        }))
+        dispatch(modIdCliente({
+            id:id_ventana,
+            newId_cliente:cliente.id
         }))
         navigate(`${location}/CargaProductos/${cliente.id}`)
     }

@@ -2,9 +2,10 @@ import '../styles.css'
 import DeleteRed from '../../../icons/deleteRed.svg'
 import Mas from '../../../icons/mas.svg'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addSales, removeSales } from '../../../store/elements/sales'
-import { VentanaDeVenta } from '../../../../interface'
+import { Cliente, VentanaDeVenta } from '../../../../interface'
+import { nombreClienteId } from '../../../functions/clientes/obtenerNombre'
 
 interface Props{
     ventana:number
@@ -15,6 +16,8 @@ interface Props{
 export default function GestorDeVentanas({ventana, setVentana , sales}:Props){
     const isSales:number[] = sales.map(n => n.id)
     const dispatch = useDispatch()
+    //@ts-ignore
+    const clientes:Cliente[] = useSelector((state) => state.clientes)
 
     const agregar = () => {
         if(isSales.length === 9) return 
@@ -35,22 +38,22 @@ export default function GestorDeVentanas({ventana, setVentana , sales}:Props){
 
     return (
         <div className="box-ventanas">
-            {isSales.length !== 0 && isSales.map((n , i) => 
+            {sales.length !== 0 && sales.map((n , i) => 
                 <span key={i}
                     style={{ 
-                        border: `${ventana === n ? 'red' : ""} 1px solid`,
-                        margin: `${ventana === n ? '4.8px 2px 5px 5px' : "0px 2px 5px 5px"} ` 
+                        border: `${ventana === n.id ? 'red' : ""} 1px solid`,
+                        margin: `${ventana === n.id ? '4.8px 2px 5px 5px' : "0px 2px 5px 5px"} ` 
                     }}    
                 >
                     <div
-                        onClick={e => {e.preventDefault() ; setVentana(n)}}
+                        onClick={e => {e.preventDefault() ; setVentana(n.id)}}
                     >
                         <p>
-                            {n !== -1 ? n : n}
+                            {n.id_cliente === -1 ? n.id : nombreClienteId(n.id_cliente , clientes)}
                         </p>
                     </div>
                     <button 
-                        onClick={e => {e.preventDefault() ; borrar(n)}}    
+                        onClick={e => {e.preventDefault() ; borrar(n.id)}}    
                     >
                         <img src={DeleteRed} />
                     </button>

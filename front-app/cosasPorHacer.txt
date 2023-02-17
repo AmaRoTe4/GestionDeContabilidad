@@ -7,3 +7,6 @@ comprobar el gestor de ventanas y ver bien todo el tema de las ventanas
 4-hacer el carga de pagos en el cleinte
 5-hacer el comerzar venta en el cliente (ver como podemos mejorar la parte de las ventas abajo)
 6-agregar generador de codigo... en los productos
+
+tener en cuanta en el algoritmo de productos:
+    poner los productos sin stock ultimos

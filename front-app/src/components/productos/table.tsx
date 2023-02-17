@@ -33,15 +33,20 @@ export const Tabla = ({data , categoria}:Props) => {
                     <tr className='table-dark'>
                         <th>N°</th>
                         <th>Producto</th>
+                        <th className='text-end'>Codigo</th>
                         <th className="text-end">Cantidad</th>
                         <th className="text-end">Precio</th>
                     </tr>
                 </thead>
                 <tbody>
                     {productosVer.map((n ,i ) => 
-                        <tr key={i} onClick={(e) => {e.preventDefault(); navigate(`/Productos/producto/${n.id}`)}}>
+                        <tr 
+                            className="hoverPointer"
+                            key={i} 
+                            onClick={(e) => {e.preventDefault(); navigate(`/Productos/producto/${n.id}`)}}>
                             <td>{i+1}</td>
                             <td>{n.nombre}</td>
+                            <td className='text-end'>{n.codigo}</td>
                             <td className='text-end'>{n.cantidad}</td>
                             <td className='text-end'>${n.precio}</td>
                         </tr>

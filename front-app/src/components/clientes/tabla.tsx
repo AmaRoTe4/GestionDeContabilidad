@@ -33,6 +33,7 @@ export const Tabla = ({data , localidad}:Props) => {
                     <tr className='table-dark'>
                         <th>N°</th>
                         <th>Nombre</th>
+                        <th>Apellido</th>
                         <th className="text-end">Localidad</th>
                         <th className="text-end">Debe</th>
                     </tr>
@@ -42,6 +43,7 @@ export const Tabla = ({data , localidad}:Props) => {
                         <tr key={i} onClick={(e) => {e.preventDefault(); navigate(`/Clientes/cliente/${n.id}`)}}>
                             <td>{i+1}</td>
                             <td>{n.nombre}</td>
+                            <td>{n.apellido}</td>
                             <td className='text-end'>{n.localidad}</td>
                             <td className='text-end'>{n.debe}</td>
                         </tr>

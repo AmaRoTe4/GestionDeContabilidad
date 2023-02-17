@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Cliente } from "../../../interface";
+import { Cliente, VentanaDeVenta } from "../../../interface";
 import { getAllClientes } from "../../api/clientes";
 import { filtroNombre } from "../../functions/clientes/obtenerClientes";
 import '../../Pages/Ventas/interfaces/styles.css'
+import { useSelector } from "react-redux";
 
 interface Props {
     data:string,
@@ -14,15 +15,29 @@ interface Props {
 
 export default function Clientes({data , localidad , cliente , setCliente}: Props){
     const [clientes , setClientes] = useState<Cliente[]>([])
+    //@ts-ignore
+    const id_clientes_usados:number[] = useSelector((state) => state.sales).map(n => n.id_cliente)
+    //@ts-ignore
+    const allClientes:Cliente[] = useSelector((state) => state.clientes)
     
     useEffect(() => {
         allData()
-    },[localidad , data])
+    },[localidad , data , allClientes])
 
     const allData = async () => {
-        let cliente:Cliente[] | undefined = await getAllClientes()
-        if(cliente === undefined) return 
-        setClientes(filtroNombre(data , localidad , cliente))
+        setClientes(
+            filtroNombre(
+                data , 
+                localidad , 
+                allClientes.filter(n => 
+                    !(id_clientes_usados.includes(
+                        n.id !== undefined 
+                        ? n.id 
+                        : 0)
+                    )
+                )
+            )
+        );
     } 
 
     return (

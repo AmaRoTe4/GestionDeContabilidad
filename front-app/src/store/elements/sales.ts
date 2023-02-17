@@ -18,6 +18,14 @@ export const userSales = createSlice({
     reducers: {
         //action:
         //id
+        //newId_cliente
+        modIdCliente: (state , action) => {
+            const map = state.map(n => n.id)
+            const id = map.indexOf(action.payload.id)
+            state[id].id_cliente = action.payload.newId_cliente
+        },
+        //action:
+        //id
         //newPath
         modPath: (state , action) => {
             const map = state.map(n => n.id)
@@ -82,5 +90,6 @@ export const userSales = createSlice({
     },
 })
 
-export const { modPath , addSales , removeSales , addProducts, removeProducts, clean } = userSales.actions
+        
+export const { modPath , addSales , removeSales , addProducts, removeProducts, clean , modIdCliente} = userSales.actions
 export default userSales.reducer

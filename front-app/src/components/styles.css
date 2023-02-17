@@ -68,3 +68,13 @@
     background-color: rgb(12, 121, 8) !important; 
     cursor: pointer;
 }
+
+.noValidos{
+    background-color:  rgb(192, 0, 0) !important;
+    color:rgb(192, 192, 192)
+}
+
+.noValidos:hover{
+    opacity: 1;
+    cursor: auto !important;
+}
