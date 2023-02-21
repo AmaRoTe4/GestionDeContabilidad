@@ -6,7 +6,7 @@ import BuscadorProductos from '../../../components/buscadorProductos';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAllProductos } from '../../../api/productos';
 import { getCliente } from '../../../api/clientes';
-import { modPath } from '../../../store/elements/sales';
+import { clean, modPath } from '../../../store/elements/sales';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function CargaDeProductos(){
@@ -44,9 +44,10 @@ export default function CargaDeProductos(){
     const volver = () => {
         dispatch(modPath({
             id:id_ventana,
-            newPath:`/Ventas/${volver}/`
+            newPath:`/Ventas/0`
         }))
-        navigate(`/Ventas/${volver}/`)
+        dispatch(clean({id:id_ventana}))
+        navigate(`/Ventas/0`)
     }
 
     return (

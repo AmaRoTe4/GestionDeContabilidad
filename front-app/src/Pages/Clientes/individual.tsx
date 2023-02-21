@@ -5,41 +5,32 @@ import { Venta , Cliente, DataFullCustomar } from '../../../interface';
 import './styles.css'
 import { getCliente } from '../../api/clientes';
 import { DataOfTheCustomer } from '../../functions/clientes/obtenerDatosDeClientes';
+import { useSelector } from 'react-redux';
 
 export default function ClienteInterface(){
     const navigate = useNavigate()
     const id:number = parseInt(useLocation().pathname.split('/')[3])
-    
+    //@ts-ignore
+    const clientes:Cliente[] = useSelector((state) => state.clientes)
     const [cliente , setCliente] = useState<Cliente>()
-    
-    const [localiad , setLocalidad] = useState<string>("")
-    const [cantidad_de_facturas_sin_pagar , setCantidad_de_facturas_sin_pagar] = useState<number>(0)
-    const [cantidad_de_compras , setCantidad_de_compras] = useState<number>(0)
-    const [valorVentasTotal , setValorVentasTotal] = useState<number>(0);
-    const [cantidadPVT , setCantidadPVT] = useState<number>(0);
-    const [ventas , setVentas] = useState<Venta[]>([])
+    const [fullCliente , setFullCliente] = useState<DataFullCustomar>() 
 
     useEffect(() =>{
+        if(fullCliente === undefined) calculos()
         if(cliente === undefined) obtenerCliente()
-    },[cliente])
+    },[fullCliente , cliente , clientes])
 
-    const obtenerCliente = async () => {
-        const data:Cliente | undefined = await getCliente(id)
-        if(data !== undefined) setCliente(data)
-        calculos()
+    const obtenerCliente = () => {
+        setCliente(clientes.filter(n => n.id === id)[0])
     }
 
     const calculos = async () => {
         const data:DataFullCustomar = await DataOfTheCustomer(id)
-        setCantidad_de_facturas_sin_pagar(data.cantidad_de_facturas_sin_pagar)
-        setCantidad_de_compras(data.cantidad_de_compras)
-        setValorVentasTotal(data.valorVentasTotal)
-        setCantidadPVT(data.cantidadPVT)
-        setVentas(data.ventas)
-        setLocalidad(data.localidad)
+        setFullCliente(data)
     }
 
-    if(cliente !== undefined) 
+    if(cliente === undefined || fullCliente === undefined) return (<></>) 
+    
     return (
         <div>
             <div className="box-data-cliente-totales">
@@ -50,7 +41,7 @@ export default function ClienteInterface(){
                     <ul>
                         <li>nombre: {cliente.nombre}</li>
                         <li>apellido: {cliente.apellido}</li>
-                        <li>localidad: {cliente.localidad}</li>
+                        <li>localidad: {fullCliente.localidad}</li>
                         <li>telefono: {cliente.telefono}</li>
                     </ul>
                 </div>
@@ -60,9 +51,9 @@ export default function ClienteInterface(){
                     </span>
                     <ul>
                         <li>debe: {cliente.debe}</li>
-                        <li>cantidad de facturas sin pagar: {cantidad_de_facturas_sin_pagar}</li>
+                        <li>cantidad de facturas sin pagar: {fullCliente.cantidad_de_facturas_sin_pagar}</li>
                         <li>debemos: {cliente.debe < 0 ? cliente.debe * -1 : 0}</li>
-                        <li>cantidad de compras: {cantidad_de_compras}</li>
+                        <li>cantidad de compras: {fullCliente.cantidad_de_compras}</li>
                     </ul>
                 </div>
             </div>
@@ -94,8 +85,8 @@ export default function ClienteInterface(){
             <div className="box-table-totales" style={{height:'46vh'}}>
                 <Table striped bordered hover>
                     <tbody>
-                        {ventas.length > 0 && 
-                        ventas.map((n , i) =>  
+                        {fullCliente.ventas.length > 0 && 
+                        fullCliente.ventas.map((n , i) =>  
                             <tr 
                                 className={`
                                     unidad-de-tabla-total-ventas 
@@ -122,9 +113,9 @@ export default function ClienteInterface(){
                 </Table>
             </div>
             <div className="barra-totales-ventas">
-                <div className='table-total-ventas' style={{width:'20%'}}>{ventas.length}</div>
-                <div className='table-valor-ventas' style={{width:'20%'}}>{cantidadPVT / 2}</div>
-                <div className='table-valor-ventas' style={{width:'40%'}}>${valorVentasTotal / 2}</div>
+                <div className='table-total-ventas' style={{width:'20%'}}>{fullCliente.ventas.length}</div>
+                <div className='table-valor-ventas' style={{width:'20%'}}>0</div>
+                <div className='table-valor-ventas' style={{width:'40%'}}>${fullCliente.valorVentasTotal / 2}</div>
                 <div className='table-valor-ventas' style={{width:'20%'}}>under</div>
             </div>
 

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 import { ProductoDeVenta, VentanaDeVenta } from '../../../interface'
+import { useDispatch } from 'react-redux'
 
 const initialState:VentanaDeVenta[] = [
     {
@@ -42,6 +43,7 @@ export const userSales = createSlice({
         },
         removeSales: (state , action) => {
             const newState:VentanaDeVenta[] = state.filter(n => n.id !== action.payload)
+
             while(state.length > 0) state.shift()
             while(newState.length > 0) {
                 let aux = newState.shift()
@@ -86,6 +88,7 @@ export const userSales = createSlice({
             const id = map.indexOf(action.payload.id)
             while(state[id].productos.length > 0) state[id].productos.shift() 
             state[id].path = `/Ventas/${action.payload.id}`
+            state[id].id_cliente = -1
         }
     },
 })

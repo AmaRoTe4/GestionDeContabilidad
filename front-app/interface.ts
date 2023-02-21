@@ -59,7 +59,6 @@ export interface DataFullCustomar {
     cantidad_de_facturas_sin_pagar:number
     cantidad_de_compras:number
     valorVentasTotal:number
-    cantidadPVT:number
     ventas:Venta[]
     localidad:string
 }

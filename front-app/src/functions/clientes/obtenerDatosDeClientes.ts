@@ -8,22 +8,15 @@ export const DataOfTheCustomer = async (id:number):DataFullCustomar => {
         cantidad_de_facturas_sin_pagar:0,
         cantidad_de_compras:0,
         valorVentasTotal:0,
-        cantidadPVT:0,
         ventas:[],
         localidad: ""
     }
 
-    const localidad:Localidad | undefined = await getLocalidad(id)
-    if(localidad === undefined) return retorno 
-    retorno.localidad = localidad.nombre
-
-
     const aux:Venta[] | undefined = await getAllVentas()
-    if(aux === undefined) return retorno 
-    let data:Venta[] = aux.filter(n => n.id === id)
 
-    //esta funcion la tendremos que hacer con un traductos de string a data venta
-    //por eso lo vamos adejar pra mas adelante (cantidadPVT:0) -> problema 
+    if(aux === undefined) return retorno 
+    let data:Venta[] = aux.filter(n => n.cliente === id)
+
     data.map(n => {
         retorno.ventas.push(n)
         retorno.cantidad_de_compras += 1

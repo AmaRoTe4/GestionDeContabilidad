@@ -1,12 +1,12 @@
-comprobar el gestor de ventanas y ver bien todo el tema de las ventanas
-
 0-rever todo el tema de las peticiones ya que tenemos la data en local...
-1-hacer filtro de nombre y en general de todo, tambein como comfirmaciones
-2-hacer responsivo la interface de cliente individual
-3-ponerle cartilito a cada actividad que hacemos 
-4-hacer el carga de pagos en el cleinte
-5-hacer el comerzar venta en el cliente (ver como podemos mejorar la parte de las ventas abajo)
-6-agregar generador de codigo... en los productos
+    y ver si se cumple en todo los  casos (retest...)
+1-hacer responsivo la interface de cliente individual
+2-ponerle cartilito a cada actividad que hacemos 
+3-hacer el carga de pagos en el cleinte
+4-hacer el comerzar venta en el cliente (ver como podemos mejorar la parte de las ventas abajo (interface de cliente indivividual))
+5-agregar generador de codigo... en los productos
+6-hacer que los controles se pueda usar con las teclas...
+7-ver como guardar la data automaticamente en la nube
+8-control de gestor de ventana sin ninguna ventana en ejecucion, tirre error...
 
-tener en cuanta en el algoritmo de productos:
-    poner los productos sin stock ultimos
+el tipo de venta es indiferente... en las ventas?

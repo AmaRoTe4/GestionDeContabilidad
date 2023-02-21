@@ -125,12 +125,15 @@ const BuscadorProductos = ({
                     max={productoAdd.cantidad} 
                     id="precio" 
                     name="precio" 
-                    onChange={e => setCantidad(
-                        e.target.value !== "" 
-                        ? parseInt(e.target.value) > productoAdd.cantidad 
+                    onChange={e =>
+                        //@ts-ignore 
+                        e.nativeEvent.data !== undefined 
+                        ? setCantidad(
+                            parseInt(e.target.value) > productoAdd.cantidad 
                             ? productoAdd.cantidad 
-                            : parseInt(e.target.value)
-                        : 0)} 
+                            : parseInt(e.target.value))
+                        : ""
+                    } 
                 />
             </div>
             <div className="box-agregar-ventas centrado">

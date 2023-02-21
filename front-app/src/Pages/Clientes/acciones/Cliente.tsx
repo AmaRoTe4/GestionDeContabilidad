@@ -116,7 +116,7 @@ export default function Acciones(){
                     <label>Telefono</label>
                     <input 
                         value={telefono} 
-                        type="string"  
+                        type="text"  
                         onChange={e => {setTelefono(e.target.value)}} 
                     />
                 </div>
@@ -148,12 +148,6 @@ export default function Acciones(){
                         Volver
                     </button>
                 </Link>
-                {/*{id !== 0 && 
-                <Link style={{margin:0  , marginBottom:20 , backgroundColor:"rgb(255 60 60)"}} className="centrado" to='/Clientes'>
-                    <button className="btn">
-                        Eliminar
-                    </button>
-                </Link>}*/}
             </div>
         </div>
     )

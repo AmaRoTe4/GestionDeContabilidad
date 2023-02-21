@@ -3,23 +3,34 @@ import Basura from "../../icons/basura.svg"
 import Mas from "../../icons/mas.svg"
 import {useState,useEffect} from 'react'
 import { Link } from 'react-router-dom'
-import { Localidad } from '../../../interface'
+import { Cliente, Localidad } from '../../../interface'
 import { Tabla } from '../../components/clientes/tabla'
 import { getAllLocalidades } from "../../api/localidades"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchAllClientes } from "../../store/elements/clientes"
+import { fetchAllLocalidades } from "../../store/elements/localidades"
 
 export default function Productos(){
     const [cliente, setCliente] = useState<string>("")
     const [localidad, setLocalidad] = useState<string>("")
-    const [localidades, setLocalidades] = useState<Localidad[]>([])
+    //@ts-ignore
+    const localidades:Localidad[] = useSelector((state) => state.localidades)
+    //@ts-ignore
+    const clientes:Cliente[] = useSelector((state) => state.clientes)
+    const dispatch = useDispatch()
+	const [intentos , setIntentos] = useState<number>(0)
 
-    useEffect(() => {
-        allData()
-    },[])
-
-    const allData = async () => {
-        const data:Localidad[] | undefined = await getAllLocalidades()
-        if(data !== undefined) setLocalidades(data)
-    } 
+	useEffect(() => {
+        if(intentos < 10) dataRedux()
+    },[localidades , clientes ])
+	
+    const dataRedux = async () => {
+        setIntentos(intentos + 1)
+        //@ts-ignore
+        await dispatch(fetchAllLocalidades())
+        //@ts-ignore
+        await dispatch(fetchAllClientes())
+    }
 
     const clear = () => {
         setLocalidad("")

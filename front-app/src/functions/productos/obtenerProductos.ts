@@ -12,9 +12,9 @@ export const filtroNombre = (data:string , categoria:number , producto:Producto[
         producto.map(n => aux.push(n))
     }
 
-    if(!isNaN(Number(data))) return filtroNumeros(Number(data) , aux)
-    if(data === "") return aux
-    return filtroLetras(data, aux)
+    if(!isNaN(Number(data))) return filtroDeStock(filtroNumeros(Number(data) , aux))
+    if(data === "") return filtroDeStock(aux)
+    return filtroDeStock(filtroLetras(data, aux))
 }
 
 const filtroNumeros = (data:number, producto:Producto[]):Producto[] => {
@@ -78,6 +78,15 @@ const filtroLetras = (data:string, producto:Producto[]):Producto[] => {
     }
 
     return retorno;
+}
+
+const filtroDeStock = (producto:Producto[]):Producto[] => {
+    const productosSinStock:Producto[] = producto.filter(n => n.cantidad === 0)
+    const productosConStock:Producto[] = producto.filter(n => n.cantidad !== 0)
+
+    productosSinStock.map(n => productosConStock.push(n))
+
+    return productosConStock
 }
 
 export const nombreProductoId = (id:number , producto:Producto[]):string => {    

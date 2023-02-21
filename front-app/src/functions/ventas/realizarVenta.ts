@@ -1,4 +1,5 @@
-import { Producto, ProductoDeVenta, Venta } from "../../../interface"
+import { getCliente, updateCliente } from './../../api/clientes';
+import { Cliente, Producto, ProductoDeVenta, Venta } from "../../../interface"
 import { getProducto, updateProducto } from "../../api/productos"
 import { createVenta } from "../../api/ventas"
 
@@ -13,6 +14,9 @@ export const realizarVenta = async (
     for(let i = 0 ; i < sales.length ; i++) {
         await adaptarDatosDeStock(sales[i].id , sales[i].cantidad)
     }
+
+    if(seleccionado === "parcial") await agregarDueda(id  , valorTotalVenta - cantidad)
+    else if(seleccionado !== "completo") await agregarDueda(id  , valorTotalVenta)
 
     const venta:Venta = {
         cliente: id,
@@ -37,5 +41,14 @@ const adaptarDatosDeStock = async (id:number , cantidadMenos:number):boolean => 
     if(producto === undefined) return false
     producto.cantidad -= cantidadMenos 
     const resultado:boolean = await updateProducto(id , producto)
+    return resultado;
+}
+
+//@ts-ignore
+const agregarDueda = async (id:number , cantidad:number):boolean => {
+    let cliente:Cliente | undefined = await getCliente(id)
+    if(cliente === undefined) return false
+    cliente.debe += cantidad 
+    const resultado:boolean = await updateCliente(id , cliente)
     return resultado;
 }

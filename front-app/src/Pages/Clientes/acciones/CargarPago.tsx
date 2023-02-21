@@ -63,7 +63,12 @@ export default function CargarPago(){
                     type="number" 
                     style={{width: '30%' , textAlign:'end'}} 
                     value={pago}
-                    onChange={e => setPago(Number(e.target.value))}
+                    onChange={e => 
+                        //@ts-ignore
+                        e.nativeEvent.data !== undefined 
+                        ? setPago(Number(e.target.value))
+                        : ""
+                    }
                 />
                 <button 
                     disabled={pago === 0} 

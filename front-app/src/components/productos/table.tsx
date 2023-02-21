@@ -4,6 +4,7 @@ import { Producto } from "../../../interface"
 import { useNavigate } from "react-router-dom";
 import { filtroNombre } from "../../functions/productos/obtenerProductos";
 import { getAllProductos } from "../../api/productos";
+import { useSelector } from "react-redux";
 
 interface Props{
     categoria:number;
@@ -12,19 +13,13 @@ interface Props{
 
 export const Tabla = ({data , categoria}:Props) => {
     const navigate = useNavigate();
-    const [productos , setProductos] = useState<Producto[]>([])
+    //@ts-ignore
+    const productos:Producto[] = useSelector((state) => state.productos)
     const [productosVer, setProductosVer] = useState<Producto[]>([])
     
     useEffect(() => {
-        if(productos.length === 0) cargaDeProductos()
         setProductosVer(filtroNombre(data , categoria , productos))
     }, [data , categoria , productos])
-
-    const cargaDeProductos = async () => {
-        //@ts-ignore
-        const data:Productos[] | undefined = await getAllProductos()
-        if(data !== undefined) setProductos(data)
-    }
     
     return (
         <div style={{width: '100vw'}}>

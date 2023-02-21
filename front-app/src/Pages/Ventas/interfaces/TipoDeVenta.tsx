@@ -12,7 +12,7 @@ import { modPath } from "../../../store/elements/sales";
 export default function RealizarVenta(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const ventana = parseInt(useLocation().pathname.split('/')[2])
+    const id_ventana = parseInt(useLocation().pathname.split('/')[2])
     const id:number = parseInt(useLocation().pathname.split('/')[4])
     //@ts-ignore
     const sales:VentanaDeVenta[] = useSelector((state) => state.sales)
@@ -26,28 +26,28 @@ export default function RealizarVenta(){
 
     useEffect(() => {
         data()
-    }, [ventana])
+    }, [id_ventana])
     
     const data = () => {
         let valorTotal:number = 0
-        const salesUnit:ProductoDeVenta[] = sales.filter(n => n.id === ventana)[0].productos
+        const salesUnit:ProductoDeVenta[] = sales.filter(n => n.id === id_ventana)[0].productos
         salesUnit.map(n => valorTotal += n.precio * n.cantidad)
         setValorTotalVenta(valorTotal)
         setCliente(clientes.filter(n => n.id === id)[0])
     }
 
     const Venta = async () => {
-        await realizarVenta(id, seleccionado, valorTotalVenta, cantidad , sales[ventana].productos)
-        dispatch(clean({id:ventana}))
-        navigate(`/Ventas/${ventana}`)
+        await realizarVenta(id, seleccionado, valorTotalVenta, cantidad , sales[id_ventana].productos)
+        dispatch(clean({id:id_ventana}))
+        navigate(`/Ventas/${id_ventana}`)
     }
         
     const volver = () => {
         dispatch(modPath({
-            id:ventana,
-            newPath:`/Ventas/${ventana}/CargaProductos/${id}/`
+            id:id_ventana,
+            newPath:`/Ventas/${id_ventana}/CargaProductos/${id}/`
         }))
-        navigate(`/Ventas/${ventana}/CargaProductos/${id}/`)
+        navigate(`/Ventas/${id_ventana}/CargaProductos/${id}/`)
     }
 
     return (
@@ -75,10 +75,23 @@ export default function RealizarVenta(){
             </div>
             {seleccionado === 'parcial' && 
                 <input
-                    value={cantidad}
+                    value={cantidad > valorTotalVenta ? valorTotalVenta : cantidad}
+                    max={valorTotalVenta}
+                    min={0}
                     type="number" 
-                    placeholder="monto del pago"
-                    onChange={e => {e.preventDefault(); setCantidad(Number(e.target.value))}} 
+                    placeholder="Monto del pago"
+                    onChange={e => {e.preventDefault(); {
+                        //@ts-ignore
+                        e.nativeEvent.data !== undefined 
+                        ? setCantidad(
+                            Number(e.target.value) > valorTotalVenta 
+                            ? valorTotalVenta 
+                            : Number(e.target.value) < 0
+                            ? 0 
+                            : Number(e.target.value)
+                        )
+                        : ""
+                    }}} 
                 />
             }
             <div className="boxResumenDeVenta">
@@ -117,6 +130,10 @@ export default function RealizarVenta(){
                     Volver
                 </button>
                 <button 
+                    style={{backgroundColor: `${
+                        !(seleccionado === "" || (seleccionado === "parcial" && cantidad === 0 )) 
+                        ? "green" 
+                        : "red"}`}}
                     disabled={(
                         seleccionado === "" 
                         || (seleccionado === "parcial" && cantidad === 0 )) 

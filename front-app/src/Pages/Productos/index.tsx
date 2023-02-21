@@ -4,23 +4,31 @@ import Mas from "../../icons/mas.svg"
 import {useState,useEffect} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Categoria, Producto } from '../../../interface'
-import BuscadorProductos from '../../components/buscadorProductos'
 import { Tabla } from '../../components/productos/table'
-import { getAllLCategorias } from '../../api/categorias'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAllProductos } from '../../store/elements/productos'
+import { fetchAllCategorias } from '../../store/elements/categorias'
 
 export default function Productos(){
-    const navigate = useNavigate()
     const [producto, setProducto] = useState<string>("")
     const [categoria, setCategoria] = useState<string>("")
-    const [categorias, setCategorias] = useState<Categoria[]>([])
+    //@ts-ignore
+    const categorias:Categoria[] = useSelector((state) => state.categorias)
+    //@ts-ignore
+    const productos:Producto[] = useSelector((state) => state.productos)
+    const dispatch = useDispatch()
+    const [intentos , setIntentos] = useState<number>(0)
 
     useEffect(() => {
-        allData()
-    },[])
-
-    const allData = async () => {
-        const data:Categoria[] | undefined = await getAllLCategorias()
-        if(data !== undefined) setCategorias(data)
+        if(intentos < 10) dataRedux()
+    },[productos , categorias])
+    
+    const dataRedux = async () => {
+        setIntentos(intentos + 1)
+        //@ts-ignore
+        await dispatch(fetchAllProductos())
+        //@ts-ignore
+        await dispatch(fetchAllCategorias())
     }
 
     const clear = () => {

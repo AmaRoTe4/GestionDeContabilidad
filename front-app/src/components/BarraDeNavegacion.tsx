@@ -73,7 +73,7 @@ export function BarraDeNavegacion(){
                                 onClick={e => setBtnEstado(false)}
                                 >Totales</Link>
                         </li>
-                        <li className="nav-item">
+                        {/*<li className="nav-item">
                             <Link 
                                 to="/Ajustes" 
                                 className="nav-link active" 
@@ -81,7 +81,7 @@ export function BarraDeNavegacion(){
                                 style={{color: `${location[1] === 'Ajustes' ? "red" : ""}`}} 
                                 onClick={e => setBtnEstado(false)}
                             >Ajustes</Link>
-                        </li>
+                        </li>*/}
                     </ul>
                 </div>
                 <img src={connection ? wifiOn : wifiOff} />

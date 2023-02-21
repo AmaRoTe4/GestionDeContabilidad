@@ -2,8 +2,6 @@ import './App.css'
 import {Route , BrowserRouter , Routes} from 'react-router-dom'
 import Main from './Pages/Main/Main'
 import Totales from './Pages/Totales/index'
-//import VentaNumerada from './Pages/Totales/Venta'
-//import TodasVentas from './Pages/Totales/Ventas'
 import Ventas from './Pages/Ventas/index'
 import Ajustes from './Pages/Ajustes/index'
 import Productos from './Pages/Productos/index'
@@ -56,15 +54,13 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Main />} />
 				<Route path="/Totales/" element={<Totales />} />
-				{/*<Route path="/Totales/Ventas" element={<TodasVentas />} />*/}
-				{/*<Route path="/Totales/Ventas/:id" element={<VentaNumerada />} />*/}
 				<Route path="/Productos/" element={<Productos />} />
 				<Route path="/Productos/producto/:id" element={<Producto />} />
 				<Route path="/Productos/categoria/:id" element={<Categoria />} />
 				<Route path="/Ventas/:id" element={<Ventas />} />
 				<Route path="/Ventas/:id/CargaProductos/:id" element={<Ventas />} />
 				<Route path="/Ventas/:id/TipoDeVenta/:id" element={<Ventas />} />
-				<Route path="/Ajustes" element={<Ajustes />} />
+				{/*<Route path="/Ajustes" element={<Ajustes />} />*/}
 				<Route path="/Clientes" element={<Clientes />} />
 				{/* @ts-ignore */}
 				<Route path="/Clientes/cliente/:id" element={<Cliente />} />

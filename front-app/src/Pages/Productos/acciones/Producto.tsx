@@ -121,7 +121,12 @@ export default function AccionesProducto(){
                         style={{textAlign: "end"}}
                         value={cantidad} 
                         type="number"  
-                        onChange={e => {setCantidad(Number(e.target.value))}} 
+                        onChange={e => {
+                            //@ts-ignore
+                            e.nativeEvent.data !== undefined 
+                            ? setCantidad(Number(e.target.value))
+                            : ""
+                        }} 
                     />
                 </div>
                 <div className="centrado">
@@ -130,7 +135,12 @@ export default function AccionesProducto(){
                         style={{textAlign: "end"}}
                         value={precio} 
                         type="number"  
-                        onChange={e => {setPrecio(Number(e.target.value))}} 
+                        onChange={e => {
+                            //@ts-ignore
+                            e.nativeEvent.data !== undefined 
+                            ? setPrecio(Number(e.target.value))
+                            : ""
+                        }} 
                     />
                 </div>
                 <div className="centrado">
@@ -139,7 +149,12 @@ export default function AccionesProducto(){
                         style={{textAlign: "end"}}
                         value={codigo} 
                         type="number"  
-                        onChange={e => {setCodigo(Number(e.target.value))}} 
+                        onChange={e => {
+                            //@ts-ignore
+                            e.nativeEvent.data !== undefined 
+                            ? setCodigo(Number(e.target.value))
+                            : ""
+                        }} 
                     />
                 </div>
             </div>
@@ -168,12 +183,6 @@ export default function AccionesProducto(){
                         Volver
                     </button>
                 </Link>
-                {/*{id !== 0 && 
-                <Link style={{margin:0  , marginBottom:20 , backgroundColor:"rgb(255 60 60)"}} className="centrado" to='/Productos'>
-                    <button className="btn">
-                        Eliminar
-                    </button>
-                </Link>}*/}
             </div>
         </div>
     )

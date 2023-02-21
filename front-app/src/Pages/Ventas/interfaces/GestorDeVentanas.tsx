@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addSales, removeSales } from '../../../store/elements/sales'
 import { Cliente, VentanaDeVenta } from '../../../../interface'
 import { nombreClienteId } from '../../../functions/clientes/obtenerNombre'
+import { modCantidad } from '../../../store/elements/productos'
 
 interface Props{
     ventana:number
@@ -34,6 +35,18 @@ export default function GestorDeVentanas({ventana, setVentana , sales}:Props){
         else if(id === isSales[0]) setVentana(isSales[1])
         else if(ventana === id) setVentana(isSales[0]) 
         dispatch(removeSales(id))
+
+        const removeState:VentanaDeVenta = sales.filter(n => n.id === id)[0]
+
+        
+        for(let i = 0; i < removeState.productos.length; i++){
+            dispatch(modCantidad(
+                { 
+                    id:removeState.productos[i].id , 
+                    cantidad:removeState.productos[i].cantidad
+                }
+            ))
+        }
     }
 
     return (

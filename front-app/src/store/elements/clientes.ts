@@ -16,29 +16,6 @@ export const userCliente = createSlice({
                 state.push(action.payload[i]);
             }
         }
-        //,
-        ////action
-        ////id
-        //removeCliente: (state , action) => {
-        //    const newState = state.filter(n => n.id !== action.payload.id)
-        //    while(state.length > 0) {
-        //        state.shift();
-        //    }
-        //    for(let i = 0 ; i < newState.length; i++) {
-        //        state.push(newState[i]);
-        //    }
-        //},
-        ////action
-        ////id
-        //addCliente: (state , action) => {
-        //    const newState = state.filter(n => n.id !== action.payload.id)
-        //    while(state.length > 0) {
-        //        state.shift();
-        //    }
-        //    for(let i = 0 ; i < newState.length; i++) {
-        //        state.push(newState[i]);
-        //    }
-        //}
     },
 })
 

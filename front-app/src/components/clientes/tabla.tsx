@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap"
-import { Cliente } from "../../../interface"
+import { Cliente, Localidad } from "../../../interface"
 import { useNavigate } from "react-router-dom";
 import { getAllClientes } from "../../api/clientes"
 import { filtroNombre } from "../../functions/clientes/obtenerClientes";
+import { nombreLocalidadId } from "../../functions/localidad/obtenerLocalidad";
+import { useSelector } from "react-redux";
 
 interface Props{
     data:string;
@@ -12,19 +14,15 @@ interface Props{
 
 export const Tabla = ({data , localidad}:Props) => {
     const navigate = useNavigate();
-    const [clientes, setClientes] = useState<Cliente[]>([])
+    //@ts-ignore
+    const localidades:Localidad[] = useSelector((state) => state.localidades)
+    //@ts-ignore
+    const clientes:Cliente[] = useSelector((state) => state.clientes)
     const [clientesVer, setClientesVer] = useState<Cliente[]>([])
     
     useEffect(() => {
-        if(clientes.length === 0) cargaDeClietes()
         setClientesVer(filtroNombre(data , localidad , clientes))
     }, [data , localidad , clientes])
-
-    const cargaDeClietes = async () => {
-        //@ts-ignore
-        const data:Clientes[] | undefined = await getAllClientes()
-        if(data !== undefined) setClientes(data)
-    }
 
     return (
         <div style={{width: '100vw'}}>
@@ -44,7 +42,7 @@ export const Tabla = ({data , localidad}:Props) => {
                             <td>{i+1}</td>
                             <td>{n.nombre}</td>
                             <td>{n.apellido}</td>
-                            <td className='text-end'>{n.localidad}</td>
+                            <td className='text-end'>{nombreLocalidadId(n.localidad , localidades)}</td>
                             <td className='text-end'>{n.debe}</td>
                         </tr>
                     )}
