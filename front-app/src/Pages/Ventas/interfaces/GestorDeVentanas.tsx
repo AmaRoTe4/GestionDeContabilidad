@@ -31,14 +31,8 @@ export default function GestorDeVentanas({ventana, setVentana , sales}:Props){
     }
 
     const borrar = (id:number) => {
-        if(ventana === id && isSales.indexOf(id) > 1) setVentana(isSales[isSales.indexOf(id) - 1])
-        else if(id === isSales[0]) setVentana(isSales[1])
-        else if(ventana === id) setVentana(isSales[0]) 
-        dispatch(removeSales(id))
-
         const removeState:VentanaDeVenta = sales.filter(n => n.id === id)[0]
 
-        
         for(let i = 0; i < removeState.productos.length; i++){
             dispatch(modCantidad(
                 { 
@@ -47,6 +41,11 @@ export default function GestorDeVentanas({ventana, setVentana , sales}:Props){
                 }
             ))
         }
+
+        if(ventana === id && isSales.indexOf(id) > 1) setVentana(isSales[isSales.indexOf(id) - 1])
+        else if(id === isSales[0]) setVentana(isSales.length > 1 ? isSales[1] : -1)
+        else if(ventana === id) setVentana(isSales[0]) 
+        dispatch(removeSales(id))
     }
 
     return (

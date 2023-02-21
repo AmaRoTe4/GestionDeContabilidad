@@ -4,15 +4,34 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Online } from '../functions/index'
 import './styles.css'
+import { comprobandoConexion } from '../api/comprobador'
+import { useSelector } from 'react-redux'
 
 export function BarraDeNavegacion(){
     const location = useLocation().pathname.split('/')
+    const [timer , setTimer] = useState<number>(0)
     const [btnEstado , setBtnEstado] = useState<boolean>(false)
-    const [connection , setConnection] = useState<boolean>(true)
+    const [dataBase , setDataBase] = useState<boolean>(false)
+    //@ts-ignore
+    const firstSale:VentanaDeVenta = useSelector((state) => state.sales)[0]
+    
+    //const [connection , setConnection] = useState<boolean>(true)
 
     useEffect(() => {
-        setConnection(Online())
-    }, [location])
+        //setConnection(Online())
+        comprobation()
+    }, [timer])
+
+    const estado = async () => {
+        setDataBase(await comprobandoConexion() === true)
+    }
+
+    const comprobation = async () => {
+        estado()
+        setTimeout(() => {
+            setTimer((n) => n + 1)
+        }, 5000)
+    }
 
     return (
         <nav className="navbar navbar-expand-lg bg-light box-barra-de-navegacion">
@@ -53,7 +72,13 @@ export function BarraDeNavegacion(){
                         </li>
                         <li className={`nav-item` }>
                             <Link 
-                                to="/Ventas/0" 
+                                to={`
+                                    ${location[1] !== "Venta" 
+                                    ? firstSale.id_cliente === -1 
+                                        ? `/Ventas/${firstSale.id}` 
+                                        : firstSale.path 
+                                    : useLocation().pathname}`
+                                } 
                                 className="nav-link active" 
                                 aria-current="page"
                                 style={{color: `${location[1] === 'Ventas' ? 'red' : ''}`}} 
@@ -84,7 +109,8 @@ export function BarraDeNavegacion(){
                         </li>*/}
                     </ul>
                 </div>
-                <img src={connection ? wifiOn : wifiOff} />
+                {/*<img src={connection ? wifiOn : wifiOff} />*/}
+                <img src={dataBase ? wifiOn : wifiOff} />
             </div>
         </nav>
     )

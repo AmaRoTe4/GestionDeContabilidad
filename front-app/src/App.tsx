@@ -28,13 +28,8 @@ function App() {
 	const [intentos , setIntentos] = useState<number>(0)
 
 	useEffect(() => {
-        if(
-			(productos.length === 0 ||
-			categorias.length === 0 ||
-			clientes.length === 0 ||
-			localidades.length === 0) && intentos < 300
-		) dataRedux()
-    },[localidades , productos , clientes , categorias])
+        if(intentos < 1) dataRedux()
+    },[])
 	
     const dataRedux = async () => {
         setIntentos(intentos + 1)

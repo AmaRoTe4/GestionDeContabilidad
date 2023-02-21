@@ -6,8 +6,11 @@ import './styles.css'
 import { getAllLCategorias } from "../../../api/categorias";
 import { Categoria, Producto } from "../../../../interface";
 import { createProducto, getProducto, updateProducto } from "../../../api/productos";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProductos } from "../../../store/elements/productos";
+import { comprobandoConexion } from "../../../api/comprobador";
+import { Bounce, toast } from "react-toastify";
+import { cartelError } from "../../../functions/carteles/cartelError";
 
 export default function AccionesProducto(){
     const navigate = useNavigate()
@@ -19,21 +22,21 @@ export default function AccionesProducto(){
     const [precio , setPrecio] = useState<number>(0)
     const [codigo , setCodigo] = useState<number>(0)
     const [categoria , setCategoria] = useState<string>('')
-    const [categorias , setCategorias] = useState<Categoria[]>([])
+    //@ts-ignore
+    const categorias:Categoria[] = useSelector((state) => state.categorias)
+    //@ts-ignore
+    const producto:Producto[] = useSelector((state) => state.productos)
 
     useEffect(() => {
         allData()
     },[])
 
     const allData = async () => {
-        const aux:Categoria[] | undefined = await getAllLCategorias()
-        if(aux === undefined) return 
-        setCategorias(aux)
         if(id === 0) return 
         const producto:Producto | undefined = await getProducto(id)
         if(producto === undefined ) return 
         setNombre(producto.nombre)
-        setCategoria(aux.filter(n => producto.categoria === n.id)[0].nombre)
+        setCategoria(categorias.filter(n => producto.categoria === n.id)[0].nombre)
         setDescripcion(producto.descripcion)
         setCantidad(producto.cantidad)
         setPrecio(producto.precio)    
@@ -41,6 +44,12 @@ export default function AccionesProducto(){
     }
 
     const crearProducto = async () => {
+        
+        if(!(await comprobandoConexion())) {
+            cartelError("Error De Conexion")
+            return
+        }
+
         const respuesta:boolean = await createProducto({
             nombre: nombre,
             descripcion: descripcion,
@@ -51,12 +60,22 @@ export default function AccionesProducto(){
             categoria: categorias.filter(n => n.nombre === categoria)[0].id ,
         })
         
+        if(!(respuesta)) {
+            cartelError("Error a la Hora De Crear")
+            return
+        } 
+        
         clear()
         //@ts-ignore
         await dispatch(fetchAllProductos())
     }
 
     const editarProducto = async () => {
+        if(!(await comprobandoConexion())) {
+            cartelError("Error De Conexion")
+            return
+        }
+
         const respuesta:boolean = await updateProducto(id ,{
             nombre: nombre,
             descripcion: descripcion,
@@ -66,6 +85,12 @@ export default function AccionesProducto(){
             //@ts-ignore
             categoria: categorias.filter(n => n.nombre === categoria)[0].id ,
         })
+
+        if(!(respuesta)) {
+            cartelError("Error a la Hora De Editar")
+            return
+        } 
+
         //@ts-ignore
         await dispatch(fetchAllProductos())
         navigate("/Productos")
@@ -78,6 +103,24 @@ export default function AccionesProducto(){
         setCantidad(0)
         setPrecio(0)    
         setCodigo(0)    
+    }
+
+    const codigoAuto = ():number => {
+        let aux:(number | undefined)[] = producto.map(n => n.codigo)
+        let minNum:number = aux[0] !== undefined ? aux[0] : 0
+
+        for(let i = 0; i < aux.length; i++) {
+            if(aux[i] === undefined) return -1
+            //@ts-ignore
+            if(aux[i] < minNum) minNum = aux[i]
+        }
+
+        let addNumero = 1
+
+        while(true){
+            if(!aux.includes(minNum + addNumero)) return minNum + addNumero
+            else addNumero++
+        }
     }
 
     return (
@@ -157,6 +200,13 @@ export default function AccionesProducto(){
                         }} 
                     />
                 </div>
+                {id === 0  && 
+                <button 
+                    className="btn btn-dark mt-3" 
+                    onClick={e => {e.preventDefault() ; setCodigo(codigoAuto())
+                }}>
+                    Generar Codigo Automatico
+                </button>}
             </div>
             <img 
                 className="basuraProductos" 

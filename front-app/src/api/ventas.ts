@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Venta } from "../../interface";
+import { darVueltaArray } from "../functions";
 
 const path:string = "http://localhost:7890/api/ventas/"
 
@@ -7,7 +8,9 @@ const path:string = "http://localhost:7890/api/ventas/"
 export const getAllVentas = async ():Venta[] | undefined => {
     try{
         const data = await axios.get(path)
-        return data.data
+        //@ts-ignore
+        return darVueltaArray(data.data)
+        //return data.data
     }catch(error){
         console.log(error)
         return undefined;

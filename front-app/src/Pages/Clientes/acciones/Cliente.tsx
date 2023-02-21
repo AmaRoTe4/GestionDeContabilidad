@@ -8,6 +8,8 @@ import { getAllLocalidades } from "../../../api/localidades";
 import { createCliente, getCliente, updateCliente } from "../../../api/clientes";
 import { fetchAllClientes } from "../../../store/elements/clientes";
 import { useDispatch } from "react-redux";
+import { cartelError } from "../../../functions/carteles/cartelError";
+import { comprobandoConexion } from "../../../api/comprobador";
 
 export default function Acciones(){
     const navigate = useNavigate()
@@ -41,7 +43,11 @@ export default function Acciones(){
     } 
 
     const crearCliente = async () => {
-        //hacer notificacion
+        if(!(await comprobandoConexion())) {
+            cartelError("Error De Conexion")
+            return
+        }
+
         const resultado = await createCliente({
             nombre:nombre,
             apellido:apellido,
@@ -50,13 +56,23 @@ export default function Acciones(){
             telefono:telefono,
             debe:0,
         })
+
+        if(!(resultado)) {
+            cartelError("Error a la Hora De Crear")
+            return
+        }
+
         //@ts-ignore
         await dispatch(fetchAllClientes())
         navigate("/Clientes")
     }
 
     const editarCliente = async () =>{
-        //hacer notificacion
+        if(!(await comprobandoConexion())) {
+            cartelError("Error De Conexion")
+            return
+        }
+
         const resultado = await updateCliente(id , {
             nombre:nombre,
             apellido:apellido,
@@ -65,6 +81,12 @@ export default function Acciones(){
             telefono:telefono,
             debe:0,
         })
+
+        if(!(resultado)) {
+            cartelError("Error a la Hora De Editar")
+            return
+        }
+
         //@ts-ignore
         await dispatch(fetchAllClientes())
         navigate("/Clientes/cliente/" + id)

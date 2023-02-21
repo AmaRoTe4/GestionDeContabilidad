@@ -78,3 +78,7 @@
     opacity: 1;
     cursor: auto !important;
 }
+
+.ColorRed td{
+    color:red !important;
+}

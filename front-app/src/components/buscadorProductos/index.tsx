@@ -82,6 +82,9 @@ const BuscadorProductos = ({
                         <p style={{justifyContent: "end"}}>
                             Cantidad
                         </p>
+                        <p style={{justifyContent: "end"}}>
+                            Precio
+                        </p>
                     </li>
                     {productos.map((n , i) => 
                         <li 
@@ -105,6 +108,9 @@ const BuscadorProductos = ({
                             </p>
                             <p style={{justifyContent: "end"}}>
                                 {n.cantidad}
+                            </p>
+                            <p style={{justifyContent: "end"}}>
+                                ${n.precio}
                             </p>
                         </li>
                     )}

@@ -8,6 +8,9 @@ import { useDispatch } from "react-redux";
 import { clean } from "../../../store/elements/sales";
 import { realizarVenta } from "../../../functions/ventas/realizarVenta";
 import { modPath } from "../../../store/elements/sales";
+import { cartelError } from "../../../functions/carteles/cartelError";
+import { comprobandoConexion } from "../../../api/comprobador";
+import { cartelOk } from "../../../functions/carteles/cartelesOkey";
 
 export default function RealizarVenta(){
     const navigate = useNavigate();
@@ -37,7 +40,19 @@ export default function RealizarVenta(){
     }
 
     const Venta = async () => {
-        await realizarVenta(id, seleccionado, valorTotalVenta, cantidad , sales[id_ventana].productos)
+        if(!(await comprobandoConexion())) {
+            cartelError("Error De Conexion")
+            return
+        }
+
+        const respuesta:boolean = await realizarVenta(id, seleccionado, valorTotalVenta, cantidad , sales[id_ventana].productos)
+        
+        if(!(respuesta)) {
+            cartelError("Error a la Hora De Editar")
+            return
+        }
+
+        cartelOk("Venta Realizada con Exito")
         dispatch(clean({id:id_ventana}))
         navigate(`/Ventas/${id_ventana}`)
     }
@@ -140,10 +155,6 @@ export default function RealizarVenta(){
                     }
                     onClick={e => {
                         e.preventDefault() ; 
-                        toast.success("Venta Realizada" , {
-                            position: toast.POSITION.TOP_CENTER,
-                            transition: Bounce
-                        });
                         Venta()}}>
                     Finlizar Venta
                 </button>

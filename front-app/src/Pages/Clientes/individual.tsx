@@ -6,12 +6,16 @@ import './styles.css'
 import { getCliente } from '../../api/clientes';
 import { DataOfTheCustomer } from '../../functions/clientes/obtenerDatosDeClientes';
 import { useSelector } from 'react-redux';
+import { nombreLocalidadId } from '../../functions/localidad/obtenerLocalidad';
+import { TablaDeVentas } from '../../components/clientes/tablaDeVentas';
 
 export default function ClienteInterface(){
     const navigate = useNavigate()
     const id:number = parseInt(useLocation().pathname.split('/')[3])
     //@ts-ignore
     const clientes:Cliente[] = useSelector((state) => state.clientes)
+    //@ts-ignore
+    const localidades:Cliente[] = useSelector((state) => state.localidades)
     const [cliente , setCliente] = useState<Cliente>()
     const [fullCliente , setFullCliente] = useState<DataFullCustomar>() 
 
@@ -41,7 +45,7 @@ export default function ClienteInterface(){
                     <ul>
                         <li>nombre: {cliente.nombre}</li>
                         <li>apellido: {cliente.apellido}</li>
-                        <li>localidad: {fullCliente.localidad}</li>
+                        <li>localidad: {nombreLocalidadId(cliente.localidad , localidades)}</li>
                         <li>telefono: {cliente.telefono}</li>
                     </ul>
                 </div>
@@ -50,74 +54,33 @@ export default function ClienteInterface(){
                         <h5>Estado del Cliente</h5>
                     </span>
                     <ul>
-                        <li>debe: {cliente.debe}</li>
-                        <li>cantidad de facturas sin pagar: {fullCliente.cantidad_de_facturas_sin_pagar}</li>
+                        <li>debe: ${cliente.debe}</li>
                         <li>debemos: {cliente.debe < 0 ? cliente.debe * -1 : 0}</li>
                         <li>cantidad de compras: {fullCliente.cantidad_de_compras}</li>
+                        <li>cantidad de facturas sin pagar: {fullCliente.cantidad_de_facturas_sin_pagar}</li>
                     </ul>
                 </div>
             </div>
 
             <div className="box-interaccion-directa-cliente">
                 <div>
-                    <Link to={`/Clientes/pagos/${cliente.nombre}`} className='btn'>
+                    <Link to={`/Clientes/pagos/${cliente.id}`} className='btn'>
                         Agregar Pago
                     </Link>
                 </div>
                 <div>
-                    <Link to="/Ventas" className='btn'>
+                    <Link to={`/Ventas/0/CargaProductos/${cliente.id}`} className='btn'>
                         Comenzar Venta
                     </Link>
                 </div>
                 <div>
-                    <Link to={`/Clientes/acciones/${id}`} className='btn'>
+                    <Link to={`/Clientes/acciones/${cliente.id}`} className='btn'>
                         Editar Datos del Cliente
                     </Link>
                 </div>
             </div>
 
-            <div className="barra-totales-ventas" style={{backgroundColor: "black" , color: 'white'}}>
-                <div className='table-total-ventas' style={{width:'20%'}}>N°</div>
-                <div className='table-valor-ventas' style={{width:'20%'}}>Cantid Prodct. V.</div>
-                <div className='table-valor-ventas' style={{width:'40%'}}>Valor Venta</div>
-                <div className='table-valor-ventas' style={{width:'20%'}}>Fecha</div>
-            </div>
-            <div className="box-table-totales" style={{height:'46vh'}}>
-                <Table striped bordered hover>
-                    <tbody>
-                        {fullCliente.ventas.length > 0 && 
-                        fullCliente.ventas.map((n , i) =>  
-                            <tr 
-                                className={`
-                                    unidad-de-tabla-total-ventas 
-                                    ${!(n.valor_abonado === n.valor_total) 
-                                    ? 'venta-no-pagado' 
-                                    : ""}`
-                                }
-                                key={i} 
-                                onClick={(e) => {e.preventDefault(); navigate(`/Totales/Ventas/${n.id}`)}}
-                            >
-                                <td style={{width:'20%'}}>{n.id}</td>
-                                <td style={{width:'20%'}} className='text-end'>
-                                    {/*{n.cantidad}*/}
-                                    0
-                                </td>
-                                <td style={{width:'40%'}} className='text-end'>$
-                                    {/*{n.precio}*/}
-                                    0
-                                </td>
-                                <td style={{width:'20%'}} className='text-end'>{n.id}</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </Table>
-            </div>
-            <div className="barra-totales-ventas">
-                <div className='table-total-ventas' style={{width:'20%'}}>{fullCliente.ventas.length}</div>
-                <div className='table-valor-ventas' style={{width:'20%'}}>0</div>
-                <div className='table-valor-ventas' style={{width:'40%'}}>${fullCliente.valorVentasTotal / 2}</div>
-                <div className='table-valor-ventas' style={{width:'20%'}}>under</div>
-            </div>
+            <TablaDeVentas data={fullCliente.ventas} />
 
             <div className="centrado" style={{height: '20vh'}}>
                 <Link to="/Clientes" className='btn btn-danger'>

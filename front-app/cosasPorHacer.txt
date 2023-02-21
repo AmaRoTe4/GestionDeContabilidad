@@ -1,12 +1,21 @@
-0-rever todo el tema de las peticiones ya que tenemos la data en local...
-    y ver si se cumple en todo los  casos (retest...)
-1-hacer responsivo la interface de cliente individual
-2-ponerle cartilito a cada actividad que hacemos 
-3-hacer el carga de pagos en el cleinte
-4-hacer el comerzar venta en el cliente (ver como podemos mejorar la parte de las ventas abajo (interface de cliente indivividual))
-5-agregar generador de codigo... en los productos
-6-hacer que los controles se pueda usar con las teclas...
-7-ver como guardar la data automaticamente en la nube
-8-control de gestor de ventana sin ninguna ventana en ejecucion, tirre error...
+estructura principales de la arquitectura:
+    0-rever todo el tema de las peticiones ya que tenemos la data en local...
+        y ver si se cumple en todo los  casos (retest...)
+    1-control de errores por tema de fallos de base de datos , mas que todo por el tema de duplicidad de datos
 
-el tipo de venta es indiferente... en las ventas?
+diseño:
+    0-hacer responsivo la interface de cliente individual
+    1-ponerle cartilito a cada actividad que hacemos 
+
+funciones:
+    0-hacer que los controles se pueda usar con las teclas...
+
+interfaces:
+    0-hacer el carga de pagos en el cleinte
+
+otros:
+    0-ver como guardar la data automaticamente en la nube
+
+ideas:
+    1-el tipo de venta es indiferente... en las ventas?
+    2-a las ventas guardarlas en el localstoraje dando una opcion para eso...

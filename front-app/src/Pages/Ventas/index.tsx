@@ -5,8 +5,10 @@ import CargaDeProductos from './interfaces/CargaDeProductos'
 import SeleccionDeCliente from './interfaces/SeleccionDeCliente'
 import TipoDeVenta from './interfaces/TipoDeVenta'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { VentanaDeVenta } from '../../../interface'
+import { useDispatch, useSelector } from 'react-redux'
+import { Cliente, VentanaDeVenta } from '../../../interface'
+import { fetchAllClientes } from '../../store/elements/clientes'
+import { fetchAllProductos } from '../../store/elements/productos'
 
 export default function Ventas(){
     const navigate = useNavigate()
@@ -15,11 +17,28 @@ export default function Ventas(){
     const [ventana , setVentana] = useState<number>(0)
     //@ts-ignore
     const sales:VentanaDeVenta[] = useSelector((state) => state.sales)
+    //@ts-ignore
+    const clientes:Cliente[] = useSelector((state) => state.clientes)
+    //@ts-ignore
+    const productos:Producto[] = useSelector((state) => state.productos)
+    const dispatch = useDispatch()
+    const [intentos , setIntentos] = useState<number>(0)
+
 
     useEffect(() => {
         let aux:VentanaDeVenta = sales.filter(n => n.id === ventana)[0]
+        if(aux === undefined) return
         navigate(aux.path)
-    },[ventana])
+        if(intentos < 1) dataRedux()
+    },[ventana , productos , clientes])
+    
+    const dataRedux = async () => {
+        setIntentos(intentos + 1)
+        //@ts-ignore
+        await dispatch(fetchAllProductos())
+        //@ts-ignore
+        await dispatch(fetchAllClientes())
+    }
 
     return (
         <>
@@ -29,9 +48,9 @@ export default function Ventas(){
                 sales={sales}                                        
             />
 
-            {undefined === id_estado && <SeleccionDeCliente />}
-            {"CargaProductos" === id_estado && <CargaDeProductos />}
-            {"TipoDeVenta" === id_estado && <TipoDeVenta />}
+            {ventana !== -1 && undefined === id_estado && <SeleccionDeCliente />}
+            {ventana !== -1 && "CargaProductos" === id_estado && <CargaDeProductos />}
+            {ventana !== -1 && "TipoDeVenta" === id_estado && <TipoDeVenta />}
         </>
     )
 }

@@ -21,8 +21,8 @@ export default function Productos(){
 	const [intentos , setIntentos] = useState<number>(0)
 
 	useEffect(() => {
-        if(intentos < 10) dataRedux()
-    },[localidades , clientes ])
+        if(intentos < 1) dataRedux()
+    },[])
 	
     const dataRedux = async () => {
         setIntentos(intentos + 1)

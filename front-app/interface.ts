@@ -38,6 +38,7 @@ export interface VentanaDeVenta {
 
 export interface Venta {
     id?:number;
+    createdAt?:string;
     cliente: number
     articulos: ProductoDeVenta[]
     tipo_de_venta: string

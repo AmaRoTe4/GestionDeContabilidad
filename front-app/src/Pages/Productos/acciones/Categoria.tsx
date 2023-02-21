@@ -7,6 +7,8 @@ import { Categoria } from "../../../../interface";
 import { createCategoria, getAllLCategorias, getCategoria, updateCategoria } from "../../../api/categorias";
 import { fetchAllCategorias } from "../../../store/elements/categorias";
 import { useDispatch } from "react-redux";
+import { cartelError } from "../../../functions/carteles/cartelError";
+import { comprobandoConexion } from "../../../api/comprobador";
 
 export default function AccionesProducto(){
     const navigate = useNavigate();
@@ -34,18 +36,40 @@ export default function AccionesProducto(){
     }
 
     const crearCategoria = async () => {
+        if(!(await comprobandoConexion())) {
+            cartelError("Error De Conexion")
+            return
+        }
+
         const respuesta:boolean = await createCategoria({
             nombre: nombre
         })
+
+        if(!(respuesta)) {
+            cartelError("Error a la Hora De Crear")
+            return
+        } 
+        
         clear()
         //@ts-ignore
         await dispatch(fetchAllCategorias())
     }
 
     const editarCategoria = async () => {
+        if(!(await comprobandoConexion())) {
+            cartelError("Error De Conexion")
+            return
+        }
+
         const respuesta:boolean = await updateCategoria(id ,{
             nombre: nombre,
         })
+
+        if(!(respuesta)) {
+            cartelError("Error a la Hora De Editar")
+            return
+        } 
+        
         
         navigate("/Productos")
         //@ts-ignore

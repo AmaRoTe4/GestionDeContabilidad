@@ -1,6 +1,6 @@
 import '../styles.css'
 import { useEffect, useState } from 'react'
-import { Cliente, Producto , } from "../../../../interface"
+import { Cliente } from "../../../../interface"
 import TablaVentas from '../../../components/ventas/tabla';
 import BuscadorProductos from '../../../components/buscadorProductos';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -12,8 +12,13 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function CargaDeProductos(){
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    
     const id_ventana = parseInt(useLocation().pathname.split('/')[2])
     const id:number = parseInt(useLocation().pathname.split('/')[4])
+    
+    //@ts-ignore
+    const cantidadDeArticulos:number = useSelector((state) => state.sales).filter(n => n.id === id_ventana)[0].productos.length
+    
     const [actualization , setActualization] = useState<number>(0)
     const [cliente , setCliente] = useState<Cliente>({
         nombre:"",
@@ -64,6 +69,7 @@ export default function CargaDeProductos(){
             />
             <div className="box-bottones-ventas">
                 <button 
+                    disabled={cantidadDeArticulos === 0}
                     className="btn btn-success" 
                     onClick={e => {
                         e.preventDefault(); 

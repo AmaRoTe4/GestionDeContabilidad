@@ -20,7 +20,7 @@ export default function Productos(){
     const [intentos , setIntentos] = useState<number>(0)
 
     useEffect(() => {
-        if(intentos < 10) dataRedux()
+        if(intentos < 1) dataRedux()
     },[productos , categorias])
     
     const dataRedux = async () => {

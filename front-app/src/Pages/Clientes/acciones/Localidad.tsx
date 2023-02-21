@@ -6,6 +6,8 @@ import edit from "../../../icons/edit.svg";
 import { createLocalidad, getAllLocalidades, getLocalidad, updateLocalidad } from "../../../api/localidades";
 import { fetchAllLocalidades } from "../../../store/elements/localidades";
 import { useDispatch } from "react-redux";
+import { comprobandoConexion } from "../../../api/comprobador";
+import { cartelError } from "../../../functions/carteles/cartelError";
 
 export default function LocalidadInterface(){
     const navigate = useNavigate();
@@ -31,9 +33,20 @@ export default function LocalidadInterface(){
     }
 
     const crearLocalidad = async () => {
+        if(!(await comprobandoConexion())) {
+            cartelError("Error De Conexion")
+            return
+        }
+
         const resultado = await createLocalidad({
             nombre:nombre
         })
+
+        if(!(resultado)) {
+            cartelError("Error a la Hora De Editar")
+            return
+        }
+
         setNombre("")
         //@ts-ignore
         await dispatch(fetchAllLocalidades())
@@ -41,9 +54,20 @@ export default function LocalidadInterface(){
     }
 
     const editarLocalidad = async () => {
+        if(!(await comprobandoConexion())) {
+            cartelError("Error De Conexion")
+            return
+        }
+
         const resultado = await updateLocalidad(id , {
             nombre:nombre
         })
+
+        if(!(resultado)) {
+            cartelError("Error a la Hora De Editar")
+            return
+        }
+
         setNombre("")
         //@ts-ignore
         await dispatch(fetchAllLocalidades())
