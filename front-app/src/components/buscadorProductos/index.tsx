@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import '../styles.css'
 import { addProducts, removeProducts} from "../../store/elements/sales"
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,8 @@ import { getAllProductos } from "../../api/productos";
 import { filtroNombre, nombreProductoId } from "../../functions/productos/obtenerProductos";
 import { useLocation } from "react-router-dom";
 import { modCantidad } from "../../store/elements/productos";
+import { cartelError } from "../../functions/carteles/cartelError";
+import InputPrecio from "./inputsModificacionDePrecio";
 
 interface Props{
     setActualization: React.Dispatch<React.SetStateAction<number>>
@@ -33,7 +35,38 @@ const BuscadorProductos = ({
     const [data , setData] = useState<string>("")
     const [cantidad , setCantidad] = useState<number>(0)
     const [productoAdd , setProductoAdd] = useState<Producto>(proAux)
+
+    //descuento  y recargos
+    const [descuento , setDescuento] = useState<number>(0)
+    const [cantDes , setCantDes] = useState<number>(0)
+    const [recargo , setRecargo] = useState<number>(0)
+    const [cantRec , setCantRec] = useState<number>(0)
+
+    const dataRef = useRef(null)
+    const cantidadRef = useRef(null)
+    const descuentoRef = useRef(null)
+    const recargoRef = useRef(null)
     
+    //document.addEventListener('keyup' , (e) =>{
+    //    e.preventDefault();
+    //    e.stopImmediatePropagation();
+
+    //    //@ts-ignore
+    //    let locationKey:string = e.target === null ? "under" : e.target.id.toString()
+
+    //    if(e.key !== "Enter") return
+    //    //@ts-ignore
+    //    if(location === "") dataRef.current.focus()
+    //    //@ts-ignore
+    //    if(locationKey === "under") cantidadRef.current.focus() 
+    //    //@ts-ignore
+    //    else if(locationKey === "cantidad") descuentoRef.current.focus()
+    //    //@ts-ignore
+    //    else if(locationKey === "Descuento") recargoRef.current.focus() 
+    //    else if(cantidad > 0 && productoAdd.id !== -1) Agregar()
+
+    //})
+
     useEffect(() => {
         SetProductos()
     },[data , ventana , allProductos])
@@ -49,8 +82,8 @@ const BuscadorProductos = ({
             id:ventana,
             productos:{
                 id:productoAdd.id,
-                precio:productoAdd.precio,
-                cantidad:cantidad
+                cantidad:cantidad,
+                precio: obtenerPrecio()
             }
         }))
         clear()
@@ -61,13 +94,35 @@ const BuscadorProductos = ({
         setProductoAdd(proAux)
         setCantidad(0)
         setData("")
+        setCantDes(0)
+        setCantRec(0)
+    }
+
+    //exportar...
+    const obtenerPrecio = ():number => {
+        if(cantDes === 0 && cantRec === 0) return productoAdd.precio 
+
+        if(cantDes !== 0 && cantRec !== 0) {
+            cartelError("El Descuento y el Recargo fueron invalidados...")
+            return productoAdd.precio 
+        }
+
+        if(cantDes !== 0 && descuento === 0) return productoAdd.precio - (productoAdd.precio * (cantDes / 100))
+        if(cantDes !== 0 && descuento !== 0) return productoAdd.precio - cantDes
+        if(cantRec !== 0 && recargo === 0) return productoAdd.precio + (productoAdd.precio * (cantRec / 100))
+        if(cantRec !== 0 && recargo !== 0) return productoAdd.precio + cantRec
+    
+        return 0;
     }
 
     return (
         <>
             <div className="box-buscador-productos">
                 <input 
+                    ref={dataRef}
                     placeholder="Productos" 
+                    name={"data"}
+                    id={'data'}
                     value={data}
                     onChange={e => {e.preventDefault() ; setData(e.target.value)}}
                 />
@@ -123,25 +178,51 @@ const BuscadorProductos = ({
                     Cantidad
                 </label>
                 <input
+                    ref={cantidadRef}
                     placeholder='Cantidad'
                     style={{textAlign: "end"}}
                     value={cantidad > productoAdd.cantidad ? productoAdd.cantidad : cantidad === 0 ? "" : cantidad} 
                     type="number"
                     min={0} 
                     max={productoAdd.cantidad} 
-                    id="precio" 
-                    name="precio" 
+                    id="cantidad" 
+                    name="cantidad" 
                     onChange={e =>
-                        //@ts-ignore 
-                        e.nativeEvent.data !== undefined 
-                        ? setCantidad(
-                            parseInt(e.target.value) > productoAdd.cantidad 
-                            ? productoAdd.cantidad 
-                            : parseInt(e.target.value))
-                        : ""
-                    } 
+                        {
+                            //@ts-ignore 
+                            e.nativeEvent.data !== undefined 
+                            ? setCantidad(
+                                parseInt(e.target.value) > productoAdd.cantidad 
+                                ? productoAdd.cantidad 
+                                : parseInt(e.target.value))
+                            : ""
+                        ;}
+                    }
                 />
             </div>
+
+            <InputPrecio 
+                cant={cantDes}
+                setCant={setCantDes}
+                mod={descuento}
+                setMod={setDescuento}
+                productoAdd={productoAdd}
+                text={"Descuento"}
+                max={true}
+                referencia={descuentoRef}
+            />
+
+            <InputPrecio 
+                cant={cantRec}
+                setCant={setCantRec}
+                mod={recargo}
+                setMod={setRecargo}
+                productoAdd={productoAdd}
+                text={"Recargo"}
+                max={false}
+                referencia={recargoRef}
+            />
+
             <div className="box-agregar-ventas centrado">
                 <button 
                     disabled={!(cantidad > 0 && productoAdd.id !== 0)}

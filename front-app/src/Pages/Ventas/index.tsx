@@ -14,7 +14,7 @@ export default function Ventas(){
     const navigate = useNavigate()
     const id_ventana:number = parseInt(useLocation().pathname.split('/')[2])
     const id_estado:string = useLocation().pathname.split('/')[3]
-    const [ventana , setVentana] = useState<number>(0)
+    const [ventana , setVentana] = useState<number>(-1)
     //@ts-ignore
     const sales:VentanaDeVenta[] = useSelector((state) => state.sales)
     //@ts-ignore

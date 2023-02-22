@@ -25,7 +25,21 @@ export default function SeleccionDeCliente(){
     //@ts-ignore
     const localidades:Localidad[] = useSelector((state) => state.localidades)
 
+    const [key , setKey] = useState<string>()
+
+    useEffect(() => {
+        if(key === "Enter") aceptar()
+    }, [key])
+    
+    document.addEventListener('keyup' , (e) =>{
+        //e.preventDefault();
+        //e.stopImmediatePropagation();
+        
+        setKey(e.key)
+    })
+    
     const aceptar = () => {
+        if(cliente.id === 0) return
         dispatch(modPath({
             id:id_ventana,
             newPath:`${location}/CargaProductos/${cliente.id}`
@@ -45,7 +59,7 @@ export default function SeleccionDeCliente(){
                 <input 
                     value={text} 
                     placeholder="Nombre"
-                    onChange={e => setText(e.target.value)} 
+                    onChange={e => {setText(e.target.value)}} 
                 />
             </div>
             <div className="centrado">

@@ -12,13 +12,8 @@ export function BarraDeNavegacion(){
     const [timer , setTimer] = useState<number>(0)
     const [btnEstado , setBtnEstado] = useState<boolean>(false)
     const [dataBase , setDataBase] = useState<boolean>(false)
-    //@ts-ignore
-    const firstSale:VentanaDeVenta = useSelector((state) => state.sales)[0]
     
-    //const [connection , setConnection] = useState<boolean>(true)
-
     useEffect(() => {
-        //setConnection(Online())
         comprobation()
     }, [timer])
 
@@ -72,13 +67,7 @@ export function BarraDeNavegacion(){
                         </li>
                         <li className={`nav-item` }>
                             <Link 
-                                to={`
-                                    ${location[1] !== "Venta" 
-                                    ? firstSale.id_cliente === -1 
-                                        ? `/Ventas/${firstSale.id}` 
-                                        : firstSale.path 
-                                    : useLocation().pathname}`
-                                } 
+                                to={`${location[2] !== "-1" && location[1] === "Ventas"  ? "" : "/Ventas/-1"}`} 
                                 className="nav-link active" 
                                 aria-current="page"
                                 style={{color: `${location[1] === 'Ventas' ? 'red' : ''}`}} 

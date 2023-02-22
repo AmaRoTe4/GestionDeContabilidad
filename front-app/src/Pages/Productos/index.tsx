@@ -19,10 +19,12 @@ export default function Productos(){
     const dispatch = useDispatch()
     const [intentos , setIntentos] = useState<number>(0)
 
+    const [general , setGeneral] = useState("")
+
     useEffect(() => {
         if(intentos < 1) dataRedux()
     },[productos , categorias])
-    
+
     const dataRedux = async () => {
         setIntentos(intentos + 1)
         //@ts-ignore
@@ -39,13 +41,13 @@ export default function Productos(){
     return (
         <>
             <div className="container d-flex flex-column" style={{maxHeight: '90vh'}}>
-                <form className="formularioProductos">
+                <form className="formularioProductos" onSubmit={e => e.preventDefault()}>
                     <div>
                         <label>Productos</label>
                         <input
                             type="text"
                             value={producto}
-                            onChange={(e) => {setProducto(e.target.value)}}
+                            onChange={(e) => {e.preventDefault(); setProducto(e.target.value)}}
                         />
                     </div>
                     <div>
