@@ -8,9 +8,12 @@ import { DataOfTheCustomer } from '../../functions/clientes/obtenerDatosDeClient
 import { useSelector } from 'react-redux';
 import { nombreLocalidadId } from '../../functions/localidad/obtenerLocalidad';
 import { TablaDeVentas } from '../../components/clientes/tablaDeVentas';
+import { useDispatch } from 'react-redux';
+import { fetchAllClientes } from '../../store/elements/clientes';
 
 export default function ClienteInterface(){
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const id:number = parseInt(useLocation().pathname.split('/')[3])
     //@ts-ignore
     const clientes:Cliente[] = useSelector((state) => state.clientes)
@@ -18,11 +21,19 @@ export default function ClienteInterface(){
     const localidades:Cliente[] = useSelector((state) => state.localidades)
     const [cliente , setCliente] = useState<Cliente>()
     const [fullCliente , setFullCliente] = useState<DataFullCustomar>() 
+    const [intentos , setIntentos] = useState<number>(0)
 
     useEffect(() =>{
-        if(fullCliente === undefined) calculos()
-        if(cliente === undefined) obtenerCliente()
-    },[fullCliente , cliente , clientes])
+        if(intentos < 1) dataRedux()
+        if(intentos === 1 && fullCliente === undefined) calculos()
+        if(intentos === 1 && cliente === undefined) obtenerCliente()
+    },[fullCliente , cliente , clientes , intentos])
+	
+    const dataRedux = async () => {
+        setIntentos(intentos + 1)
+        //@ts-ignore
+        await dispatch(fetchAllClientes())
+    }
 
     const obtenerCliente = () => {
         setCliente(clientes.filter(n => n.id === id)[0])
@@ -68,11 +79,11 @@ export default function ClienteInterface(){
                         Agregar Pago
                     </Link>
                 </div>
-                <div>
+                {/*<div>
                     <Link to={`/Ventas/0/CargaProductos/${cliente.id}`} className='btn'>
                         Comenzar Venta
                     </Link>
-                </div>
+                </div>*/}
                 <div>
                     <Link to={`/Clientes/acciones/${cliente.id}`} className='btn'>
                         Editar Datos del Cliente

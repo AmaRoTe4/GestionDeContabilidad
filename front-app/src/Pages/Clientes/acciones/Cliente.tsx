@@ -7,9 +7,12 @@ import { Localidad , Cliente} from "../../../../interface";
 import { getAllLocalidades } from "../../../api/localidades";
 import { createCliente, getCliente, updateCliente } from "../../../api/clientes";
 import { fetchAllClientes } from "../../../store/elements/clientes";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartelError } from "../../../functions/carteles/cartelError";
 import { comprobandoConexion } from "../../../api/comprobador";
+import { cartelOk } from "../../../functions/carteles/cartelesOkey";
+import { CrearCliente } from "../../../functions/clientes/crearCliente";
+import { EditarCliente } from "../../../functions/clientes/editarCliente";
 
 export default function Acciones(){
     const navigate = useNavigate()
@@ -19,21 +22,18 @@ export default function Acciones(){
     const [apellido , setApellido] = useState<string>('')
     const [telefono , setTelefono] = useState<string>("")
     const [localidad , setLocalidad] = useState<string>('')
-    const [localidades , setLocalidades] = useState<Localidad[]>([])
+    //@ts-ignore
+    const localidades:Localidad[] = useSelector((state) => state.localidades)
+    //@ts-ignore
+    const clientes:Cliente[] = useSelector((state) => state.clientes)
 
     useEffect(() => {
         allData()
-    },[localidades])
+    },[])
 
     const allData = async () => {
-        if(localidades.length === 0){
-            let data:Localidad[] | undefined = await getAllLocalidades()
-            if(data !== undefined) {
-                setLocalidades(data)
-            }
-        }
-        if(id !== 0 && localidades.length > 0) {
-            const data:Cliente | undefined = await getCliente(id)
+        if(id !== 0) {
+            const data:Cliente = clientes.filter(n => n.id === id)[0]
             if(data === undefined) return
             setNombre(data.nombre)
             setApellido(data.apellido)
@@ -43,52 +43,47 @@ export default function Acciones(){
     } 
 
     const crearCliente = async () => {
-        if(!(await comprobandoConexion())) {
-            cartelError("Error De Conexion")
-            return
-        }
+        let resultado:boolean = await CrearCliente(
+            {
+                nombre:nombre,
+                apellido:apellido,
+                //@ts-ignore
+                localidad: localidades.filter(n => n.nombre === localidad)[0].id ,
+                telefono:telefono,
+                debe:0,
+            },
+        )
 
-        const resultado = await createCliente({
-            nombre:nombre,
-            apellido:apellido,
-            //@ts-ignore
-            localidad: localidades.filter(n => n.nombre === localidad)[0].id ,
-            telefono:telefono,
-            debe:0,
-        })
-
-        if(!(resultado)) {
-            cartelError("Error a la Hora De Crear")
-            return
-        }
+        if(!resultado) return
 
         //@ts-ignore
         await dispatch(fetchAllClientes())
+        
+        cartelOk("Cliente Creado con Exito")
+
         navigate("/Clientes")
     }
 
     const editarCliente = async () =>{
-        if(!(await comprobandoConexion())) {
-            cartelError("Error De Conexion")
-            return
-        }
+        let estado:boolean = await EditarCliente(
+            {
+                nombre:nombre,
+                apellido:apellido,
+                //@ts-ignore
+                localidad: localidades.filter(n => n.nombre === localidad)[0].id ,
+                telefono:telefono,
+                debe:0,
+            },
+            id
+        )
 
-        const resultado = await updateCliente(id , {
-            nombre:nombre,
-            apellido:apellido,
-            //@ts-ignore
-            localidad: localidades.filter(n => n.nombre === localidad)[0].id ,
-            telefono:telefono,
-            debe:0,
-        })
-
-        if(!(resultado)) {
-            cartelError("Error a la Hora De Editar")
-            return
-        }
+        if(!estado) return
 
         //@ts-ignore
         await dispatch(fetchAllClientes())
+
+        cartelOk("Editado con Exito")
+
         navigate("/Clientes/cliente/" + id)
     }
 

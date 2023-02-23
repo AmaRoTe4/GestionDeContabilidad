@@ -16,7 +16,7 @@ export default function Productos(){
     //@ts-ignore
     const localidades:Localidad[] = useSelector((state) => state.localidades)
     //@ts-ignore
-    const clientes:Cliente[] = useSelector((state) => state.clientes)
+    //const clientes:Cliente[] = useSelector((state) => state.clientes)
     const dispatch = useDispatch()
 	const [intentos , setIntentos] = useState<number>(0)
 

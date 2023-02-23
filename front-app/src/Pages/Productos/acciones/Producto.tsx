@@ -11,6 +11,9 @@ import { fetchAllProductos } from "../../../store/elements/productos";
 import { comprobandoConexion } from "../../../api/comprobador";
 import { Bounce, toast } from "react-toastify";
 import { cartelError } from "../../../functions/carteles/cartelError";
+import { cartelOk } from "../../../functions/carteles/cartelesOkey";
+import { CrearProducto } from "../../../functions/productos/crearProducto";
+import { EditarProducto } from "../../../functions/productos/editarProducto";
 
 export default function AccionesProducto(){
     const navigate = useNavigate()
@@ -25,7 +28,7 @@ export default function AccionesProducto(){
     //@ts-ignore
     const categorias:Categoria[] = useSelector((state) => state.categorias)
     //@ts-ignore
-    const producto:Producto[] = useSelector((state) => state.productos)
+    const productos:Producto[] = useSelector((state) => state.productos)
 
     useEffect(() => {
         allData()
@@ -33,7 +36,7 @@ export default function AccionesProducto(){
 
     const allData = async () => {
         if(id === 0) return 
-        const producto:Producto | undefined = await getProducto(id)
+        const producto:Producto = productos.filter(n => n.id === id)[0]
         if(producto === undefined ) return 
         setNombre(producto.nombre)
         setCategoria(categorias.filter(n => producto.categoria === n.id)[0].nombre)
@@ -44,55 +47,50 @@ export default function AccionesProducto(){
     }
 
     const crearProducto = async () => {
+        let estado:boolean = await CrearProducto(
+            productos,
+            {
+                nombre: nombre,
+                descripcion: descripcion,
+                cantidad: cantidad,
+                precio: precio,
+                codigo: codigo,
+                //@ts-ignore
+                categoria: categorias.filter(n => n.nombre === categoria)[0].id ,
+            }
+        )
         
-        if(!(await comprobandoConexion())) {
-            cartelError("Error De Conexion")
-            return
-        }
+        if(!estado) return
 
-        const respuesta:boolean = await createProducto({
-            nombre: nombre,
-            descripcion: descripcion,
-            cantidad: cantidad,
-            precio: precio,
-            codigo: codigo,
-            //@ts-ignore
-            categoria: categorias.filter(n => n.nombre === categoria)[0].id ,
-        })
-        
-        if(!(respuesta)) {
-            cartelError("Error a la Hora De Crear")
-            return
-        } 
-        
         clear()
         //@ts-ignore
         await dispatch(fetchAllProductos())
+
+        cartelOk("Creado con Exito")
     }
 
-    const editarProducto = async () => {
-        if(!(await comprobandoConexion())) {
-            cartelError("Error De Conexion")
-            return
-        }
+    const editarProducto = async () => {        
+        let estado:boolean = await EditarProducto(
+            productos,
+            {
+                nombre: nombre,
+                descripcion: descripcion,
+                cantidad: cantidad,
+                precio: precio,
+                codigo: codigo,
+                //@ts-ignore
+                categoria: categorias.filter(n => n.nombre === categoria)[0].id ,
+            },
+            id
+        )
 
-        const respuesta:boolean = await updateProducto(id ,{
-            nombre: nombre,
-            descripcion: descripcion,
-            cantidad: cantidad,
-            precio: precio,
-            codigo: codigo,
-            //@ts-ignore
-            categoria: categorias.filter(n => n.nombre === categoria)[0].id ,
-        })
-
-        if(!(respuesta)) {
-            cartelError("Error a la Hora De Editar")
-            return
-        } 
+        if(!estado) return
 
         //@ts-ignore
         await dispatch(fetchAllProductos())
+
+        cartelOk("Editado con Exito")
+
         navigate("/Productos")
     }
 
@@ -106,7 +104,7 @@ export default function AccionesProducto(){
     }
 
     const codigoAuto = ():number => {
-        let aux:(number | undefined)[] = producto.map(n => n.codigo)
+        let aux:(number | undefined)[] = productos.map(n => n.codigo)
         let minNum:number = aux[0] !== undefined ? aux[0] : 0
 
         for(let i = 0; i < aux.length; i++) {
@@ -186,7 +184,7 @@ export default function AccionesProducto(){
                         }} 
                     />
                 </div>
-                <div className="centrado">
+                {id === 0 && <div className="centrado">
                     <label>Codigo</label>
                     <input
                         style={{textAlign: "end"}}
@@ -199,8 +197,7 @@ export default function AccionesProducto(){
                             : ""
                         }} 
                     />
-                </div>
-                {id === 0  && 
+                </div>}                {id === 0  && 
                 <button 
                     className="btn btn-dark mt-3" 
                     onClick={e => {e.preventDefault() ; setCodigo(codigoAuto())
