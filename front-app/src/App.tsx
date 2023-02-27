@@ -10,6 +10,7 @@ import Categoria from './Pages/Productos/acciones/Categoria'
 import Clientes from './Pages/Clientes/index'
 import Cliente from './Pages/Clientes/individual'
 import Pagos from './Pages/Clientes/acciones/CargarPago'
+import PagoFactura from './Pages/Clientes/acciones/CargaPagoFactura'
 import Editar from './Pages/Clientes/acciones/Cliente'
 import Localidad from './Pages/Clientes/acciones/Localidad'
 import { BarraDeNavegacion } from "./components/BarraDeNavegacion";
@@ -22,8 +23,6 @@ import { fetchAllClientes } from './store/elements/clientes'
 import { fetchAllCategorias } from './store/elements/categorias'
 
 function App() {
-	//@ts-ignore
-	const {productos , categorias , clientes , localidades} = useSelector((state) => state)
 	const dispatch = useDispatch()
 	const [intentos , setIntentos] = useState<number>(0)
 
@@ -53,12 +52,14 @@ function App() {
 				<Route path="/Productos/producto/:id" element={<Producto />} />
 				<Route path="/Productos/categoria/:id" element={<Categoria />} />
 				<Route path="/Ventas/:id" element={<Ventas />} />
+				<Route path="/Ventas/:id/PDF/:id" element={<Ventas />} />
 				<Route path="/Ventas/:id/CargaProductos/:id" element={<Ventas />} />
 				<Route path="/Ventas/:id/TipoDeVenta/:id" element={<Ventas />} />
 				{/*<Route path="/Ajustes" element={<Ajustes />} />*/}
 				<Route path="/Clientes" element={<Clientes />} />
 				{/* @ts-ignore */}
 				<Route path="/Clientes/cliente/:id" element={<Cliente />} />
+				<Route path="/Clientes/pagoFactura/:id" element={<PagoFactura />} />
 				<Route path="/Clientes/pagos/:id" element={<Pagos />} />
 				<Route path="/Clientes/acciones/:id" element={<Editar />} />
 				<Route path="/Clientes/localidad/:id" element={<Localidad />} />

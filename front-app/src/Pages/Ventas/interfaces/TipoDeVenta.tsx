@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Bounce, toast } from 'react-toastify'
 import "../styles.css"
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Cliente, ProductoDeVenta, Venta } from "../../../../interface";
 import { useDispatch } from "react-redux";
@@ -11,6 +10,8 @@ import { modPath } from "../../../store/elements/sales";
 import { cartelError } from "../../../functions/carteles/cartelError";
 import { comprobandoConexion } from "../../../api/comprobador";
 import { cartelOk } from "../../../functions/carteles/cartelesOkey";
+import Ver from "../../../icons/VerOjo.svg"
+import Dowload from "../../../icons/Download.svg"
 
 export default function RealizarVenta(){
     const navigate = useNavigate();
@@ -56,7 +57,15 @@ export default function RealizarVenta(){
         dispatch(clean({id:id_ventana}))
         navigate(`/Ventas/${id_ventana}`)
     }
-        
+
+    const verPdf = () => {
+        dispatch(modPath({
+            id:id_ventana,
+            newPath:`/Ventas/${id_ventana}/PDF/${id}/`
+        }))
+        navigate(`/Ventas/${id_ventana}/PDF/${id}/`)
+    }
+
     const volver = () => {
         dispatch(modPath({
             id:id_ventana,
@@ -139,6 +148,14 @@ export default function RealizarVenta(){
                         </li>
                     </div>
                 </ul>
+            </div>
+            <div className="d-flex flex-row" style={{alignItems:"center" , justifyContent:"start" ,  height: '5vh' , width:"70%" , marginTop:"5vh"}}>
+                <button className="btn">
+                    <img src={Dowload} height="30px" />
+                </button>
+                <button className="btn" onClick={e => {e.preventDefault(); verPdf()}}>
+                    <img src={Ver} height="30px" />
+                </button>
             </div>
             <div className="boxButtomTipoDeVenta">
                 <button onClick={e => {e.preventDefault() ; volver()}}>

@@ -8,9 +8,7 @@ diseño:
 funciones:
     0-hacer que los controles se pueda usar con las teclas...
     ir a comenzar compra... ver todo un tema
-
-interfaces:
-    0-hacer el carga de pagos en el cleinte
+    1-hacer que las ventas salgan por orden de no pagadas...
 
 ideas:
     0-ver como guardar la data automaticamente en la nube

@@ -22,6 +22,7 @@ export default function Acciones(){
     const [apellido , setApellido] = useState<string>('')
     const [telefono , setTelefono] = useState<string>("")
     const [localidad , setLocalidad] = useState<string>('')
+    const [debe , setDebe] = useState<number>(0)
     //@ts-ignore
     const localidades:Localidad[] = useSelector((state) => state.localidades)
     //@ts-ignore
@@ -39,6 +40,7 @@ export default function Acciones(){
             setApellido(data.apellido)
             setTelefono(data.telefono)
             setLocalidad(localidades.filter(n => n.id === data.localidad)[0].nombre)
+            setDebe(data.debe)
         }
     } 
 
@@ -72,7 +74,7 @@ export default function Acciones(){
                 //@ts-ignore
                 localidad: localidades.filter(n => n.nombre === localidad)[0].id ,
                 telefono:telefono,
-                debe:0,
+                debe:debe,
             },
             id
         )

@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import '../styles.css'
-import { addProducts, removeProducts} from "../../store/elements/sales"
+import { addProducts } from "../../store/elements/sales"
 import { useDispatch, useSelector } from "react-redux";
-import { Producto, ProductoDeVenta } from "../../../interface";
-import { getAllProductos } from "../../api/productos";
+import { Producto } from "../../../interface";
 import { filtroNombre, nombreProductoId } from "../../functions/productos/obtenerProductos";
 import { useLocation } from "react-router-dom";
 import { modCantidad } from "../../store/elements/productos";
-import { cartelError } from "../../functions/carteles/cartelError";
 import InputPrecio from "./inputsModificacionDePrecio";
+import { obtenerPrecio } from "../../functions/ventas/precio";
 
 interface Props{
     setActualization: React.Dispatch<React.SetStateAction<number>>
@@ -83,7 +82,13 @@ const BuscadorProductos = ({
             productos:{
                 id:productoAdd.id,
                 cantidad:cantidad,
-                precio: obtenerPrecio()
+                precio: obtenerPrecio(
+                    descuento,
+                    cantDes,
+                    recargo,
+                    cantRec,
+                    productoAdd.precio
+                )
             }
         }))
         clear()
@@ -96,23 +101,6 @@ const BuscadorProductos = ({
         setData("")
         setCantDes(0)
         setCantRec(0)
-    }
-
-    //exportar...
-    const obtenerPrecio = ():number => {
-        if(cantDes === 0 && cantRec === 0) return productoAdd.precio 
-
-        if(cantDes !== 0 && cantRec !== 0) {
-            cartelError("El Descuento y el Recargo fueron invalidados...")
-            return productoAdd.precio 
-        }
-
-        if(cantDes !== 0 && descuento === 0) return productoAdd.precio - (productoAdd.precio * (cantDes / 100))
-        if(cantDes !== 0 && descuento !== 0) return productoAdd.precio - cantDes
-        if(cantRec !== 0 && recargo === 0) return productoAdd.precio + (productoAdd.precio * (cantRec / 100))
-        if(cantRec !== 0 && recargo !== 0) return productoAdd.precio + cantRec
-    
-        return 0;
     }
 
     return (
@@ -128,7 +116,7 @@ const BuscadorProductos = ({
                 />
                 <ul>
                     <li style={{backgroundColor: "rgb(100 100 100)" , color: "white"}}>
-                        <p>
+                        <p style={{width: "100%"}}>
                             Nombre
                         </p>
                         <p style={{justifyContent: "end"}}>
@@ -155,7 +143,7 @@ const BuscadorProductos = ({
                                 ${n.cantidad <= 0 ? "noValidos" : ""}`
                             }
                         >
-                            <p>
+                            <p style={{width: "100%"}}>
                                 {nombreProductoId(n.id !== undefined ? n.id : 0 , productos)}
                             </p>
                             <p style={{justifyContent: "end"}}>

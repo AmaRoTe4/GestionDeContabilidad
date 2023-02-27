@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap"
-import { Cliente, Localidad, Venta } from "../../../interface"
+import { Venta } from "../../../interface"
 import { useNavigate } from "react-router-dom";
-import { getAllClientes } from "../../api/clientes"
-import { filtroNombre } from "../../functions/clientes/obtenerClientes";
-import { nombreLocalidadId } from "../../functions/localidad/obtenerLocalidad";
-import { useSelector } from "react-redux";
 
 interface Props{
     data:Venta[];
 }
 
 export const TablaDeVentas = ({data}:Props) => {
+    const navigate = useNavigate()
+
     return (
         <div style={{width: '100vw' , maxHeight: '30vh' , minHeight: '30vh' , overflowY: 'auto'}}>
             <Table striped bordered hover>
@@ -26,7 +23,14 @@ export const TablaDeVentas = ({data}:Props) => {
                 </thead>
                 <tbody> 
                     {data.map((n ,i) => 
-                        <tr 
+                        <tr onClick={e => 
+                            {
+                                e.preventDefault() ; 
+                                (n.valor_total - n.valor_abonado) !== 0 
+                                ? navigate(`/Clientes/pagoFactura/${n.id}`) 
+                                : ""
+                            }
+                        }
                             className={`${(n.valor_total - n.valor_abonado) !== 0 ? "ColorRed" : ""}`}
                             key={i}>
                             <td>{(i - data.length) * -1}</td>

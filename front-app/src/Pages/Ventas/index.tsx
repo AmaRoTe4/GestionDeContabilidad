@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Cliente, VentanaDeVenta } from '../../../interface'
 import { fetchAllClientes } from '../../store/elements/clientes'
 import { fetchAllProductos } from '../../store/elements/productos'
+import PDF from './interfaces/pdf'
 
 export default function Ventas(){
     const navigate = useNavigate()
@@ -50,6 +51,7 @@ export default function Ventas(){
 
             {ventana !== -1 && undefined === id_estado && <SeleccionDeCliente />}
             {ventana !== -1 && "CargaProductos" === id_estado && <CargaDeProductos />}
+            {ventana !== -1 && "PDF" === id_estado && <PDF />}
             {ventana !== -1 && "TipoDeVenta" === id_estado && <TipoDeVenta />}
         </>
     )
