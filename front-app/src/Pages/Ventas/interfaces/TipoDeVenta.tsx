@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "../styles.css"
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Cliente, ProductoDeVenta, Venta } from "../../../../interface";
+import { Cliente, Producto, ProductoDeVenta, Venta } from "../../../../interface";
 import { useDispatch } from "react-redux";
 import { clean } from "../../../store/elements/sales";
 import { realizarVenta } from "../../../functions/ventas/realizarVenta";
@@ -12,12 +12,16 @@ import { comprobandoConexion } from "../../../api/comprobador";
 import { cartelOk } from "../../../functions/carteles/cartelesOkey";
 import Ver from "../../../icons/VerOjo.svg"
 import Dowload from "../../../icons/Download.svg"
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Document from "./pdf/document"
 
 export default function RealizarVenta(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const id_ventana = parseInt(useLocation().pathname.split('/')[2])
     const id:number = parseInt(useLocation().pathname.split('/')[4])
+    //@ts-ignore
+    const productos:Producto[] = useSelector((state) => state.productos)
     //@ts-ignore
     const sales:VentanaDeVenta[] = useSelector((state) => state.sales)
     //@ts-ignore
@@ -26,6 +30,7 @@ export default function RealizarVenta(){
 
     const [seleccionado , setSeleccionado] = useState<string>("")
     const [cantidad , setCantidad] = useState<number>(0)
+    const [compra , setCompra] = useState<ProductoDeVenta[]>([])
     const [valorTotalVenta , setValorTotalVenta] = useState<number>(0)
 
     useEffect(() => {
@@ -35,6 +40,7 @@ export default function RealizarVenta(){
     const data = () => {
         let valorTotal:number = 0
         const salesUnit:ProductoDeVenta[] = sales.filter(n => n.id === id_ventana)[0].productos
+        setCompra(salesUnit)
         salesUnit.map(n => valorTotal += n.precio * n.cantidad)
         setValorTotalVenta(valorTotal)
         setCliente(clientes.filter(n => n.id === id)[0])
@@ -150,9 +156,37 @@ export default function RealizarVenta(){
                 </ul>
             </div>
             <div className="d-flex flex-row" style={{alignItems:"center" , justifyContent:"start" ,  height: '5vh' , width:"70%" , marginTop:"5vh"}}>
-                <button className="btn">
+                {cliente !== undefined && 
+                <PDFDownloadLink className="btn"
+                    document={
+                        <Document 
+                            Data={productos}
+                            Compra={compra}
+                            Total={valorTotalVenta}
+                            Cliente={{
+                                estado:true,
+                                tipoVenta:"Consumidor Final",  
+                                cliente:cliente,
+                                localidad:"Malabrigo",
+                                pago:"Contado",
+                                etc: ""
+                            }}
+                            Propietario={{
+                                duenio:"Amaro Cattrozzi",
+                                direccion:"rivadavia 1557",
+                                telefono:"3482650397",
+                                gmail:"amaro7@gmail.com",
+                                tipo:"C",
+                                numero:"0000000001",
+                                fecha:"09-12-18",
+                                origen:"Orignal",
+                                //imagen?:string
+                            }}
+                        />
+                    } fileName="Venta.pdf"
+                >
                     <img src={Dowload} height="30px" />
-                </button>
+                </PDFDownloadLink>}
                 <button className="btn" onClick={e => {e.preventDefault(); verPdf()}}>
                     <img src={Ver} height="30px" />
                 </button>

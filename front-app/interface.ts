@@ -27,6 +27,7 @@ export interface ProductoDeVenta {
     id:number;
     cantidad: number;
     precio:number;
+    nombre?:string;
 }
 
 export interface VentanaDeVenta {
@@ -62,4 +63,27 @@ export interface DataFullCustomar {
     valorVentasTotal:number
     ventas:Venta[]
     localidad:string
+}
+
+//ventas:
+
+export interface BoletaCliente {
+    estado:boolean,
+    tipoVenta:string  
+    cliente:Cliente,
+    localidad:string,
+    pago:string,
+    etc: string
+}
+
+export interface BoletaPropietario {
+    duenio:string
+    direccion:string
+    telefono:string
+    gmail:string
+    tipo:string
+    numero:string
+    fecha:string
+    origen:string
+    imagen?:string
 }

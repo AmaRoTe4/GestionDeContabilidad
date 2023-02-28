@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Cliente, VentanaDeVenta } from '../../../interface'
 import { fetchAllClientes } from '../../store/elements/clientes'
 import { fetchAllProductos } from '../../store/elements/productos'
-import PDF from './interfaces/pdf'
+import PDF from './interfaces/pdf/pdf'
 
 export default function Ventas(){
     const navigate = useNavigate()

@@ -10,6 +10,10 @@ funciones:
     ir a comenzar compra... ver todo un tema
     1-hacer que las ventas salgan por orden de no pagadas...
 
+al pdf:
+    agregarle al valor pero escrito...
+    y depespues las firentes opciones de compra en sus diferente tipo... buscar
+
 ideas:
     0-ver como guardar la data automaticamente en la nube
     1-el tipo de venta es indiferente... en las ventas?
