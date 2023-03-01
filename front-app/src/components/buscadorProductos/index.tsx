@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import '../styles.css'
 import { addProducts } from "../../store/elements/sales"
 import { useDispatch, useSelector } from "react-redux";
@@ -41,39 +41,50 @@ const BuscadorProductos = ({
     const [recargo , setRecargo] = useState<number>(0)
     const [cantRec , setCantRec] = useState<number>(0)
 
-    const dataRef = useRef(null)
-    const cantidadRef = useRef(null)
-    const descuentoRef = useRef(null)
-    const recargoRef = useRef(null)
+    const dataRef = useRef<HTMLInputElement>(null)
+    const cantidadRef = useRef<HTMLInputElement>(null)
+    const descuentoRef = useRef<HTMLInputElement>(null)
+    const recargoRef = useRef<HTMLInputElement>(null)
     
-    //document.addEventListener('keyup' , (e) =>{
-    //    e.preventDefault();
-    //    e.stopImmediatePropagation();
-
-    //    //@ts-ignore
-    //    let locationKey:string = e.target === null ? "under" : e.target.id.toString()
-
-    //    if(e.key !== "Enter") return
-    //    //@ts-ignore
-    //    if(location === "") dataRef.current.focus()
-    //    //@ts-ignore
-    //    if(locationKey === "under") cantidadRef.current.focus() 
-    //    //@ts-ignore
-    //    else if(locationKey === "cantidad") descuentoRef.current.focus()
-    //    //@ts-ignore
-    //    else if(locationKey === "Descuento") recargoRef.current.focus() 
-    //    else if(cantidad > 0 && productoAdd.id !== -1) Agregar()
-
-    //})
-
     useEffect(() => {
-        SetProductos()
-    },[data , ventana , allProductos])
-    
-    const SetProductos = () => {
         const aux:Producto[] = filtroNombre(data , 0 , allProductos)
         setProductos(aux)
-    }
+
+        //document.addEventListener('keyup' , (e)=>{ 
+        //    if(dataRef.current === null) return
+            
+        //    //@ts-ignore
+        //    if(e.target.id === "data" && e.key === "Enter" && aux.length > 0 && productoAdd.nombre === ""){
+        //        setProductoAdd(aux[0])
+        //        //@ts-ignore
+        //        cantidadRef.current.focus()
+        //    }
+
+        //    if(e.key === "ArrowDown" || e.key === "ArrowUp" && !(aux.length <= 0 || productoAdd.codigo === 0)){
+        //        let codigo:number[] = aux.filter(n => n.cantidad !== 0).map(n => n.codigo)  
+        //        let pos:number = codigo.indexOf(productoAdd.codigo)
+
+        //        if(e.key === "ArrowDown" && codigo.length - 1 !== pos) pos += 1
+        //        if(e.key === "ArrowUp" && pos !== 0) pos -= 1
+
+        //        setProductoAdd(aux.filter(n => n.codigo === codigo[pos])[0])
+        //    }
+
+        //    //@ts-ignore
+        //    if(e.target.id === "cantidad" && e.key === "Enter") descuentoRef.current.focus()
+            
+        //    //@ts-ignore
+        //    if(e.target.id === "Descuento" && e.key === "Enter") recargoRef.current.focus()
+            
+        //    //@ts-ignore
+        //    if(productoAdd.nombre !== "" && e.target.id === "Recargo" && e.key === "Enter"){
+        //        console.log(productoAdd)
+        //        dataRef.current.focus()
+        //        Agregar();
+        //    } 
+
+        //})
+    },[data , dataRef, cantidadRef, descuentoRef, recargoRef , productoAdd])
     
     const Agregar = () => {
         dispatch(modCantidad({id:productoAdd.id , cantidad:-cantidad}))
@@ -112,7 +123,7 @@ const BuscadorProductos = ({
                     name={"data"}
                     id={'data'}
                     value={data}
-                    onChange={e => {e.preventDefault() ; setData(e.target.value)}}
+                    onChange={e => {e.preventDefault() ;  setData(e.target.value)}}
                 />
                 <ul>
                     <li style={{backgroundColor: "rgb(100 100 100)" , color: "white"}}>
@@ -129,13 +140,13 @@ const BuscadorProductos = ({
                             Precio
                         </p>
                     </li>
-                    {productos.map((n , i) => 
+                    {productoAdd !== undefined && productos.map((n , i) => 
                         <li 
                             key={i} 
                             onClick={(e) => {e.preventDefault(); 
                                 {n.cantidad > 0 
                                 ? setProductoAdd(
-                                    e => e.id === n.id 
+                                    e => e.codigo === n.codigo 
                                     ? proAux
                                     : n) 
                                 : ""} }}
@@ -165,11 +176,11 @@ const BuscadorProductos = ({
                 >
                     Cantidad
                 </label>
-                <input
+                {productoAdd !== undefined && <input
                     ref={cantidadRef}
                     placeholder='Cantidad'
                     style={{textAlign: "end"}}
-                    value={cantidad > productoAdd.cantidad ? productoAdd.cantidad : cantidad === 0 ? "" : cantidad} 
+                    value={cantidad > productoAdd.cantidad ? productoAdd.cantidad : cantidad <= 0 ? 0 : cantidad} 
                     type="number"
                     min={0} 
                     max={productoAdd.cantidad} 
@@ -180,13 +191,15 @@ const BuscadorProductos = ({
                             //@ts-ignore 
                             e.nativeEvent.data !== undefined 
                             ? setCantidad(
-                                parseInt(e.target.value) > productoAdd.cantidad 
+                                Number(e.target.value) > productoAdd.cantidad 
                                 ? productoAdd.cantidad 
-                                : parseInt(e.target.value))
+                                : Number(e.target.value) <= 0 
+                                ? 0
+                                : Number(e.target.value))
                             : ""
                         ;}
                     }
-                />
+                />}
             </div>
 
             <InputPrecio 

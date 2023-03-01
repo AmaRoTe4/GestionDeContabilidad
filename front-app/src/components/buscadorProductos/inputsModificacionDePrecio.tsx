@@ -8,7 +8,7 @@ interface Props {
     productoAdd:Producto;
     text:string;
     max:boolean;
-    referencia:React.MutableRefObject<null>
+    referencia:React.RefObject<HTMLInputElement>
 }
 
 export default function InputPrecio(
