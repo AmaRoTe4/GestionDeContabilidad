@@ -2,6 +2,9 @@ import './App.css'
 import {Route , BrowserRouter , Routes} from 'react-router-dom'
 import Main from './Pages/Main/Main'
 import Totales from './Pages/Totales/index'
+import TotalesProductos from './Pages/Totales/windows/productos'
+import TotalesVentas from './Pages/Totales/windows/ventas'
+import TotalesClientes from './Pages/Totales/windows/clientes'
 import Ventas from './Pages/Ventas/index'
 import Ajustes from './Pages/Ajustes/index'
 import Productos from './Pages/Productos/index'
@@ -48,6 +51,9 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Main />} />
 				<Route path="/Totales/" element={<Totales />} />
+				<Route path="/Totales/Ventas" element={<TotalesVentas />} />
+				<Route path="/Totales/Productos" element={<TotalesProductos />} />
+				<Route path="/Totales/Clientes" element={<TotalesClientes />} />
 				<Route path="/Productos/" element={<Productos />} />
 				<Route path="/Productos/producto/:id" element={<Producto />} />
 				<Route path="/Productos/categoria/:id" element={<Categoria />} />

@@ -1,10 +1,3 @@
-estructura principales de la arquitectura:
-    0-rever todo el tema de las peticiones ya que tenemos la data en local...
-        y ver si se cumple en todo los  casos (retest...)
-
-diseño:
-    0-hacer responsivo la interface de cliente individual
-
 funciones:
     0-hacer que los controles se pueda usar con las teclas...
     ir a comenzar compra... ver todo un tema
@@ -19,3 +12,17 @@ ideas:
     1-el tipo de venta es indiferente... en las ventas?
     2-a las ventas guardarlas en el localstoraje dando una opcion para eso...
     3-imprecion de pdf...
+
+-----------------------------------
+total:
+    todas las ventas...
+        orden   -> tiempo
+                -> las que nos debe
+    
+    compradores:
+        order   -> los que nos deben
+                -> por nombre
+        
+    productos:
+        order   -> nombre
+                -> los faltantes 
