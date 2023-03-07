@@ -43,7 +43,7 @@ export const Tabla = ({data , localidad}:Props) => {
                             <td>{n.nombre}</td>
                             <td>{n.apellido}</td>
                             <td className='text-end'>{nombreLocalidadId(n.localidad , localidades)}</td>
-                            <td className='text-end'>{n.debe}</td>
+                            <td className='text-end'>${n.debe}</td>
                         </tr>
                     )}
                 </tbody>

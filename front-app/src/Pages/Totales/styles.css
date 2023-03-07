@@ -22,3 +22,11 @@
 .btn-totales:hover{
     opacity: 0.8;
 }
+
+.box-of-links-totales{
+    height: 70vh;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+}

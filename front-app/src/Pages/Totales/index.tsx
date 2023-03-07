@@ -7,21 +7,23 @@ export default function Totales(){
             
             <h1 className="mt-3 mb-3">Totales</h1>
 
-            <Link className="btn-totales" to="/Totales/ventas">
-                <p>
-                    Ventas
-                </p>
-            </Link>
-            <Link className="btn-totales" to="/Totales/clientes">
-                <p>
-                    Clientes
-                </p>
-            </Link>
-            <Link className="btn-totales" to="/Totales/productos">
-                <p>
-                    Productos
-                </p>
-            </Link>
+            <div className="box-of-links-totales">
+                <Link className="btn-totales" to="/Totales/ventas">
+                    <p>
+                        Ventas
+                    </p>
+                </Link>
+                <Link className="btn-totales" to="/Totales/clientes">
+                    <p>
+                        Clientes
+                    </p>
+                </Link>
+                <Link className="btn-totales" to="/Totales/productos">
+                    <p>
+                        Productos
+                    </p>
+                </Link>
+            </div>
 
         </div>
     )

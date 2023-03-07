@@ -40,52 +40,13 @@ const BuscadorProductos = ({
     const [cantDes , setCantDes] = useState<number>(0)
     const [recargo , setRecargo] = useState<number>(0)
     const [cantRec , setCantRec] = useState<number>(0)
-
-    const dataRef = useRef<HTMLInputElement>(null)
-    const cantidadRef = useRef<HTMLInputElement>(null)
-    const descuentoRef = useRef<HTMLInputElement>(null)
-    const recargoRef = useRef<HTMLInputElement>(null)
     
     useEffect(() => {
         const aux:Producto[] = filtroNombre(data , 0 , allProductos)
         setProductos(aux)
 
-        //document.addEventListener('keyup' , (e)=>{ 
-        //    if(dataRef.current === null) return
-            
-        //    //@ts-ignore
-        //    if(e.target.id === "data" && e.key === "Enter" && aux.length > 0 && productoAdd.nombre === ""){
-        //        setProductoAdd(aux[0])
-        //        //@ts-ignore
-        //        cantidadRef.current.focus()
-        //    }
+    },[data])
 
-        //    if(e.key === "ArrowDown" || e.key === "ArrowUp" && !(aux.length <= 0 || productoAdd.codigo === 0)){
-        //        let codigo:number[] = aux.filter(n => n.cantidad !== 0).map(n => n.codigo)  
-        //        let pos:number = codigo.indexOf(productoAdd.codigo)
-
-        //        if(e.key === "ArrowDown" && codigo.length - 1 !== pos) pos += 1
-        //        if(e.key === "ArrowUp" && pos !== 0) pos -= 1
-
-        //        setProductoAdd(aux.filter(n => n.codigo === codigo[pos])[0])
-        //    }
-
-        //    //@ts-ignore
-        //    if(e.target.id === "cantidad" && e.key === "Enter") descuentoRef.current.focus()
-            
-        //    //@ts-ignore
-        //    if(e.target.id === "Descuento" && e.key === "Enter") recargoRef.current.focus()
-            
-        //    //@ts-ignore
-        //    if(productoAdd.nombre !== "" && e.target.id === "Recargo" && e.key === "Enter"){
-        //        console.log(productoAdd)
-        //        dataRef.current.focus()
-        //        Agregar();
-        //    } 
-
-        //})
-    },[data , dataRef, cantidadRef, descuentoRef, recargoRef , productoAdd])
-    
     const Agregar = () => {
         dispatch(modCantidad({id:productoAdd.id , cantidad:-cantidad}))
         dispatch(addProducts({
@@ -118,7 +79,6 @@ const BuscadorProductos = ({
         <>
             <div className="box-buscador-productos">
                 <input 
-                    ref={dataRef}
                     placeholder="Productos" 
                     name={"data"}
                     id={'data'}
@@ -177,7 +137,6 @@ const BuscadorProductos = ({
                     Cantidad
                 </label>
                 {productoAdd !== undefined && <input
-                    ref={cantidadRef}
                     placeholder='Cantidad'
                     style={{textAlign: "end"}}
                     value={cantidad > productoAdd.cantidad ? productoAdd.cantidad : cantidad <= 0 ? 0 : cantidad} 
@@ -210,7 +169,6 @@ const BuscadorProductos = ({
                 productoAdd={productoAdd}
                 text={"Descuento"}
                 max={true}
-                referencia={descuentoRef}
             />
 
             <InputPrecio 
@@ -221,7 +179,6 @@ const BuscadorProductos = ({
                 productoAdd={productoAdd}
                 text={"Recargo"}
                 max={false}
-                referencia={recargoRef}
             />
 
             <div className="box-agregar-ventas centrado">

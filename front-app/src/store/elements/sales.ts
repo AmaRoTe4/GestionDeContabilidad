@@ -67,8 +67,8 @@ export const userSales = createSlice({
                 state[id].productos.push(action.payload.productos)
             }
             else {
-                const id = ids.indexOf(action.payload.productos.id)
-                state[id].productos[id].cantidad += action.payload.productos.cantidad
+                const id_producto = ids.indexOf(action.payload.productos.id)
+                state[id].productos[id_producto].cantidad += action.payload.productos.cantidad
             }
         },
         //id

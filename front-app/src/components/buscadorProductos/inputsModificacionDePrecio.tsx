@@ -8,7 +8,6 @@ interface Props {
     productoAdd:Producto;
     text:string;
     max:boolean;
-    referencia:React.RefObject<HTMLInputElement>
 }
 
 export default function InputPrecio(
@@ -20,7 +19,6 @@ export default function InputPrecio(
         productoAdd,
         text,
         max,
-        referencia
     }:Props
 ){
     return (
@@ -38,7 +36,6 @@ export default function InputPrecio(
                 }}>
                     <input
                         placeholder={text}
-                        ref={referencia}
                         style={{textAlign: "end" , width: "90%"}}
                         value={cant} 
                         type="number"
