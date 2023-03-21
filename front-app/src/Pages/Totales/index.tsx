@@ -8,6 +8,11 @@ export default function Totales(){
             <h1 className="mt-3 mb-3">Totales</h1>
 
             <div className="box-of-links-totales">
+                <Link className="btn-totales" to="/Totales/dias">
+                    <p>
+                        Resumenes Diarios
+                    </p>
+                </Link>
                 <Link className="btn-totales" to="/Totales/ventas">
                     <p>
                         Ventas

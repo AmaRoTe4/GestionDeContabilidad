@@ -1,8 +1,0 @@
-tablero -> ver si podemos hacer un boton que vulva para atras
-
-totales -> agregar totales por productos
-
-productos -> control de errores a la hora de crear uno (mostrar que esta mal mas que todo)
-
-movilidad en general en toda la app usando el techado...
-tena de coneciones y todo eso

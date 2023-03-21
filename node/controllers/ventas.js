@@ -3,6 +3,7 @@ import {ModelVentas} from '../models/models.js';
 export const getAllVentas = async (req, res) => {
     try{
         const modelos = await ModelVentas.findAll();
+        console.log(typeof(modelos))
         res.json(modelos);
     }catch(err){
         res.json({message: err.message});
